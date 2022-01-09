@@ -2,10 +2,10 @@
     <img src="./public/favicon-96x96.png" width="100">
     <h1>WMaseshi</h1>
     <img src="https://img.shields.io/badge/react.js-v17-61DBFB?logo=react&logoColor=white&style=flat-square">
-    <img src="https://img.shields.io/david/Maseshi/WMaseshi?logo=node.js&logoColor=white&style=flat-square">
     <img src="https://img.shields.io/github/stars/Maseshi/WMaseshi.svg?logo=github&style=flat-square">
     <img src="https://img.shields.io/github/license/Maseshi/WMaseshi.svg?logo=github&style=flat-square">
-    <img src="https://img.shields.io/github/workflow/status/Maseshi/WMaseshi/CITest?label=test&logo=circleci&style=flat-square">
+    <img src="https://img.shields.io/github/workflow/status/Maseshi/WMaseshi/CodeQL?label=test&logo=circleci&style=flat-square">
+    <img src="https://img.shields.io/website-up-down-green-red/https/maseshi.web.app.svg?logo=webpack&logoColor=white&style=flat-square">
 </div>
 
 All Maseshi personal website source code, developed with React.js.
