@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="../public/assets/icons/favicon-96x96.png" width="100">
+    <img src="../public/favicon-96x96.png" width="100">
     <h1>WMaseshi</h1>
     <img src="https://img.shields.io/badge/react.js-v17-61DBFB?logo=react&logoColor=white&style=flat-square">
     <img src="https://img.shields.io/david/Maseshi/WMaseshi?logo=node.js&logoColor=white&style=flat-square">
