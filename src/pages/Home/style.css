@@ -1,0 +1,139 @@
+.home-wave-top {
+    z-index: 1;
+    position: relative;
+}
+
+.home-welcome {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    padding-top: 100px;
+    background-color: #F0F0FA;
+}
+
+.home-welcome-greet {
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    width: 100%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.home-welcome-social-way > a > i {
+    font-size: 2em;
+    color: black;
+}
+
+.home-welcome-creator {
+    text-align: center;
+    align-self: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.home-welcome-creator-image {
+    margin: 15px;
+    border: 10px solid silver;
+    border-style: outset;
+    border-radius: 100px;
+}
+
+.home-about-image {
+    border-radius: 20px;
+    box-shadow: gainsboro 0px 10px 20px 10px;
+}
+
+.home-about-content {
+    align-self: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.home-skills {
+    background-color: #f0f0fa;
+}
+
+.home-skills-icon {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 100px;
+    background-color: ghostwhite;
+}
+
+.home-skills-icon > img {
+    padding: 20px;
+}
+
+.home-card-link {
+    color: unset;
+    text-decoration: none;
+}
+
+.home-card-link:hover {
+    color: unset;
+}
+
+.home-card {
+    top: 0;
+    width: auto;
+    height: 100%;
+    border-radius: 15px;
+    transition: box-shadow 0.3s, top 0.3s, margin-left 0.3s, margin-right 0.3s;
+}
+
+.home-card:hover {
+    top: -15px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0px 15px 15px gainsboro;
+}
+
+.home-btn {
+    border-radius: 100px;
+}
+
+.home-other-card {
+    padding: 10px;
+    height: 100%;
+    border-radius: 30px;
+}
+
+.home-other-btn {
+    border-radius: 100px;
+}
+
+.home-other-modal-content {
+    border: 0;
+    padding: 5px 5px 10px 10px;
+    border-radius: 20px;
+}
+
+.home-other-modal-header .home-other-modal-btn-close {
+    margin: 0;
+}
+
+.home-other-modal-header {
+    border: 0;
+}
+
+.home-other-modal-btn-close {
+    padding: 10px;
+    border-radius: 100px;
+    background-color: gainsboro;
+}
+
+.home-other-modal-horizon {
+    margin: 0;
+    width: 93%;
+    align-self: center;
+    border-radius: 100px;
+    border: 2px solid gainsboro;
+}
+
+@media screen and (max-width: 768px) {
+    .home-about-image {
+        width: 100%;
+    }
+}

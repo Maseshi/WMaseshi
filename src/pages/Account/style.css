@@ -1,0 +1,97 @@
+.account-modal-content {
+    border: 0;
+    padding: 5px 5px 10px 10px;
+    border-radius: 20px;
+}
+
+.account-modal-header .account-modal-btn-close {
+    margin: 0;
+}
+
+.account-modal-header {
+    border: 0;
+}
+
+.account-modal-btn-close {
+    padding: 10px;
+    border-radius: 100px;
+    background-color: gainsboro;
+}
+
+.account-modal-horizon {
+    margin: 0;
+    width: 93%;
+    align-self: center;
+    border-radius: 100px;
+    border: 2px solid gainsboro;
+}
+
+.account-profile {
+    margin-bottom: 20px;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: whitesmoke;
+    text-align: center;
+}
+
+.account-profile>img {
+    border-radius: 100%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.account-profile>i {
+    font-size: 100px;
+}
+
+.account-content-tab-title {
+    text-align: center;
+}
+
+.account-content-tab-card {
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.account-content-tab-input {
+    border-radius: 15px;
+}
+
+.account-content-tab-button {
+    border-radius: 100px;
+}
+
+.account-content-tab-content-profile-upload>input {
+    display: none;
+}
+
+.account-content-tab-content-profile-upload>button {
+    color: #CED4DA;
+    font-size: 50px;
+    padding-top: 21px;
+    padding-bottom: 21px;
+    padding-left: 35px;
+    padding-right: 35px;
+    border: 3px solid #CED4DA;
+    border-style: dotted;
+    border-radius: 100%;
+    background: none;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    .account-navbar>.nav-tabs {
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+    }
+
+    .account-navbar>.nav-tabs::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0px;
+    }
+
+    .account-navbar>.nav-tabs .nav-link {
+        white-space: nowrap;
+    }
+}
