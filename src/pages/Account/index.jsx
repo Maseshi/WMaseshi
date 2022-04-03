@@ -1,6 +1,12 @@
-import React, { Component } from 'react'
+import { useState, useEffect } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database"
+
+// Components
+import CookieAccept from '../../components/CookieAccept'
+
+// Functions
+import { isMobile } from '../../utils/functions/isMobile'
 
 import Profile from './Profile'
 import Navbar from './Navbar'
@@ -8,35 +14,20 @@ import Content from './Contents/index'
 
 import './style.css'
 
-export default class index extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentUser: '',
-            userData: ''
-        }
-    }
+export default function Account() {
+    const [userData, setUserData] = useState()
 
-    componentDidMount() {
+    useEffect(() => {
         const auth = getAuth()
-        const db = getDatabase();
-
-        const url = new URL(window.location)
-        const param = url.searchParams.get('tab')
-        const panel = document.getElementsByClassName('tab-pane')
+        const db = getDatabase()
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 const dbRef = ref(db, 'data/users/' + user.uid)
 
-                this.setState({
-                    currentUser: user
-                })
                 onValue(dbRef, (snapshot) => {
                     const data = snapshot.val()
-                    this.setState({
-                        userData: data
-                    })
+                    setUserData({user, data})
                 })
             } else {
                 const { Modal } = require('bootstrap')
@@ -59,16 +50,17 @@ export default class index extends Component {
                     keyboard: false
                 })
 
-                this.setState({
-                    currentUser: '',
-                    userData: ''
-                })
+                setUserData()
                 signInModal.toggle()
                 signInDismiss.hidden = true
                 registerDismiss.hidden = true
                 forgotDismiss.hidden = true
             }
         })
+
+        const url = new URL(window.location)
+        const param = url.searchParams.get('tab')
+        const panel = document.getElementsByClassName('tab-pane')
 
         for (let i = 0; i < panel.length; i++) {
             const id = panel[i].id.replace('v-pills-', '')
@@ -89,25 +81,26 @@ export default class index extends Component {
                 return content.classList.add('show', 'active')
             }
         }
-    }
+    }, [])
 
-    render() {
-        document.title = 'บัญชี | Maseshi'
-        
-        return (
-            <section className="account">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-3">
-                            <Profile currentUser={this.state.currentUser} userData={this.state.userData} />
-                            <Navbar currentUser={this.state.currentUser} userData={this.state.userData} />
-                        </div>
-                        <div className="col-md-9">
-                            <Content />
-                        </div>
+    document.title = 'บัญชี | Maseshi'
+
+    return (
+        <section className="account" id="account" >
+            <div className="row">
+                <div className={isMobile() ? "col-md-3" : "col-md-3 pe-0"}>
+                    <div className="container">
+                        <Profile userData={userData} />
+                        <Navbar />
                     </div>
                 </div>
-            </section>
-        )
-    }
+                <div className={isMobile() ? "col-md-9" : "col-md-9 ps-0"}>
+                    <div className={isMobile() ? "container" : "container ps-0"}>
+                        <Content userData={userData} />
+                    </div>
+                </div>
+            </div>
+            <CookieAccept />
+        </section>
+    )
 }
