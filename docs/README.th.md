@@ -1,7 +1,7 @@
 <div align="center">
-    <img src="../public/favicon-96x96.png" width="100">
+    <img src="https://raw.githubusercontent.com/Maseshi/WMaseshi/main/public/favicon-96x96.png" width="100">
     <h1>WMaseshi</h1>
-    <img src="https://img.shields.io/badge/react.js-v17-61DBFB?logo=react&logoColor=white&style=flat-square">
+    <img src="https://img.shields.io/badge/react.js-v18-61DBFB?logo=react&logoColor=white&style=flat-square">
     <img src="https://img.shields.io/github/stars/Maseshi/WMaseshi.svg?logo=github&style=flat-square">
     <img src="https://img.shields.io/github/license/Maseshi/WMaseshi.svg?logo=github&style=flat-square">
     <img src="https://img.shields.io/github/workflow/status/Maseshi/WMaseshi/CodeQL?label=test&logo=circleci&style=flat-square">
