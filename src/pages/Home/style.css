@@ -1,4 +1,4 @@
-.home-wave-top {
+.home-wave {
     z-index: 1;
     position: relative;
 }
@@ -33,9 +33,6 @@
 }
 
 .home-welcome-creator-image {
-    margin: 15px;
-    border: 10px solid silver;
-    border-style: outset;
     border-radius: 100px;
 }
 
@@ -75,6 +72,11 @@
     color: unset;
 }
 
+.home-card > .card-footer {
+    border: 0;
+    background-color: transparent;
+}
+
 .home-card {
     top: 0;
     width: auto;
@@ -91,7 +93,7 @@
 }
 
 .home-btn {
-    border-radius: 100px;
+    border-radius: 10px;
 }
 
 .home-other-card {
@@ -100,8 +102,13 @@
     border-radius: 30px;
 }
 
+.home-other-card > .card-footer {
+    border: 0;
+    background-color: transparent;
+}
+
 .home-other-btn {
-    border-radius: 100px;
+    border-radius: 15px;
 }
 
 .home-other-modal-content {
@@ -135,5 +142,12 @@
 @media screen and (max-width: 768px) {
     .home-about-image {
         width: 100%;
+    }
+    
+    .home-welcome-social-way {
+        display: table;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
     }
 }
