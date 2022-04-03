@@ -1,14 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import './index.css'
-import reportWebVitals from './reportWebVitals';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 
-ReactDOM.render(
-  <React.StrictMode>
+import App from './App'
+
+import reportWebVitals from './reportWebVitals'
+
+const rootElement = document.getElementById('root')
+const root = createRoot(rootElement)
+
+root.render(
+  <StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 )
 
-reportWebVitals();
+reportWebVitals()
