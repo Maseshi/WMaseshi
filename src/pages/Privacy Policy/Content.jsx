@@ -1,4 +1,4 @@
-import useMarkDown from '../../hooks/useMarkDown'
+import useMarkDown from '../../utils/hooks/useMarkDown'
 
 import pp from './privacy-policy.md'
 

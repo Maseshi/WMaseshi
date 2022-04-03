@@ -1,4 +1,4 @@
-import useMarkDown from '../../hooks/useMarkDown'
+import useMarkDown from '../../utils/hooks/useMarkDown'
 
 import tos from './terms-of-service.md'
 
