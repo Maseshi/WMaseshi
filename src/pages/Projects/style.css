@@ -1,0 +1,368 @@
+@font-face {
+    font-family: CascadiaCode;
+    src: url("../../assets/fonts/CascadiaCode/ttf/CascadiaCode.ttf");
+    font-display: swap;
+}
+
+.projects {
+    min-height: 100vh;
+}
+
+.projects-beta-content {
+    width: 100%;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 100px;
+    background-color: royalblue;
+}
+
+.projects-navbar {
+    padding: 0;
+}
+
+.projects-navbar-button {
+    position: fixed;
+    z-index: 2;
+    margin-top: 5px;
+    border-radius: 0px 10px 10px 0px;
+    padding: 15px 0px 15px 0px;
+    background-color: white;
+    box-shadow: gainsboro 0px 0px 10px 0px;
+}
+
+.projects-offcanvas-navbar {
+    flex: auto;
+    padding: 0;
+}
+
+.projects-search-box > input {
+    border-radius: 10px;
+}
+
+.projects-list-empty {
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: ghostwhite;
+}
+
+.projects-list-empty-header {
+    font-size: 30px;
+}
+
+.projects-list-loading.nav-link,
+.projects-list-data.nav-link {
+    color: black;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, .125);
+    padding: 0;
+}
+
+.projects-list-loading > .placeholder-glow {
+    padding-bottom: 0;
+}
+
+.projects-list-loading > .placeholder-glow > .placeholder {
+    border-radius: 10px;
+}
+
+.projects-list-loading > .placeholder-glow > .col-1 {
+    width: 30px;
+    height: 30px;
+}
+
+.projects-list-data.nav-link:hover {
+    color: black;
+    background-color: gainsboro;
+}
+
+.projects-list-data.nav-link.active:hover {
+    color: white;
+    background-color: #297eff;
+}
+
+.projects-list-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+}
+
+.projects-list-title-home {
+    color: black;
+    border: 0;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background-color: #efefef;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.projects-list-title-home:hover {
+    background-color: gainsboro;
+}
+
+.projects-list-title-home:active {
+    background-color: #cecece;
+}
+
+.projects-list-title-home:focus {
+    transition: background-color 0s ease-in-out;
+}
+
+.projects-loading-content {
+    border-radius: 10px;
+}
+
+.projects-welcome-languages > .row > * > .card {
+    cursor: pointer;
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.projects-welcome-languages > .row > * > .card.disabled {
+    cursor: auto;
+    background-color: ghostwhite;
+}
+
+.projects-welcome-languages > .row > * > .card.active {
+    color: white;
+    background-color: #297eff;
+}
+
+.projects-welcome-languages > .row > * > .card:hover {
+    background-color: gainsboro;
+}
+
+.projects-welcome-languages > .row > * > .card.disabled:hover {
+    background-color: whitesmoke;
+}
+
+.projects-welcome-languages > .row > * > .card.active:hover {
+    background-color: royalblue;
+}
+
+.projects-content-icon {
+    border-radius: 20px;
+}
+
+.projects-content-link {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.projects-content-button {
+    border-radius: 10px;
+}
+
+.projects-content-info-loading > .nav-tabs > li.nav-item > .nav-link,
+.projects-content-info > .nav-tabs > li.nav-item > .nav-link {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.projects-content-loading {
+    padding: 30px;
+    font-size: 30px;
+    background-color: ghostwhite;
+    text-align: center
+}
+
+.projects-content-empty {
+    padding: 30px;
+    font-size: 30px;
+    text-align: center
+}
+
+.projects-content-empty > i {
+    font-size: 80px;
+}
+
+.projects-news-detail {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.projects-news-detail > .row > .col-md-3 {
+    padding: 20px;
+    background-color: ghostwhite;
+}
+
+.projects-news-author-avatar {
+    border-radius: 10px;
+}
+
+.projects-news-message > p > img {
+    border-radius: 15px;
+    max-width: -webkit-fill-available;
+}
+
+.projects-changelog > .accordion-item:first-of-type,
+.projects-changelog > .accordion-item:first-of-type .accordion-button {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.projects-changelog > .accordion-item:last-of-type,
+.projects-changelog > .accordion-item:last-of-type .accordion-button {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.projects-changelog-accordion-body {
+    white-space: normal;
+}
+
+.projects-changelog-accordion-footer {
+    border-top: 1px solid gainsboro;
+    padding: 20px;
+}
+
+.projects-changelog-file-size {
+    float: right;
+}
+
+.projects-changelog-accordion-footer > .list-group > .list-group-item > .row > .col-md-2 {
+    text-align: right;
+}
+
+.projects-source-code-detail {
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    background-color: ghostwhite;
+}
+
+.projects-source-code-breadcrumb-home {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-radius: 10px;
+    background-color: lightblue;
+}
+
+.projects-source-code-breadcrumb-home.active {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-radius: 10px;
+    background-color: gainsboro;
+}
+
+.projects-source-code-directory {
+    border-radius: 10px;
+}
+
+.projects-source-code-directory > button > .row > .col-md-2 {
+    text-align: right;
+}
+
+.projects-source-code-file-size {
+    float: right;
+}
+
+.projects-source-code-content,
+.projects-source-code-content > .card-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.projects-source-code-content-file-action {
+    text-align: right;
+    align-self: center;
+}
+
+.projects-source-code-content-file-action > * {
+    margin-left: 5px;
+}
+
+.projects-source-code-content,
+.projects-source-code-content > .card-body {
+    padding: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.projects-source-code-content > .card-body > pre {
+    padding: 20px;
+    margin: 0;
+}
+
+.projects-source-code-content > .card-body > pre > code {
+    font-family: CascadiaCode;
+}
+
+.projects-source-code-content > .card-header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: aliceblue;
+}
+
+.projects-source-code-info {
+    padding: 10px;
+    text-align: center;
+}
+
+.projects-source-code-content-file-sha {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.projects-source-code-content-can-not-open {
+    font-family: Mitr;
+    text-align: center;
+}
+
+.projects-source-code-content-image {
+    border-radius: 10px;
+    text-align: center;
+}
+
+.projects-empty {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0, -50%);
+    text-align: center;
+}
+
+.projects-empty > i {
+    font-size: 60px;
+}
+
+@media screen and (max-width: 768px) {
+    .projects-content-info-loading > .nav-tabs,
+    .projects-content-info > .nav-tabs {
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+    }
+
+    .projects-content-info-loading > .nav-tabs::-webkit-scrollbar,
+    .projects-content-info > .nav-tabs::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0px;
+    }
+
+    .projects-content-info-loading > .nav-tabs .nav-link,
+    .projects-content-info > .nav-tabs .nav-link {
+        white-space: nowrap;
+    }
+
+    .projects-content-loading-name {
+        display: table;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .projects-content-name {
+        margin-top: 10px;
+        text-align: center;
+    }
+}
