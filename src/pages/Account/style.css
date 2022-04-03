@@ -27,7 +27,6 @@
 }
 
 .account-profile {
-    margin-bottom: 20px;
     padding: 30px;
     border-radius: 20px;
     background-color: whitesmoke;
@@ -44,6 +43,16 @@
     font-size: 100px;
 }
 
+.account-navbar > nav > button.nav-link,
+.account-navbar > nav > button.btn {
+    border-radius: 10px;
+}
+
+.account-navbar  > .nav-tabs > li.nav-item > .nav-link {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
 .account-content-tab-title {
     text-align: center;
 }
@@ -53,12 +62,18 @@
     border-radius: 20px;
 }
 
+hr:not([size]).account-content-tab-content-horizon {
+    height: 5px;
+    border-radius: 10px;
+    background-color: #ced4da;
+}
+
 .account-content-tab-input {
     border-radius: 15px;
 }
 
 .account-content-tab-button {
-    border-radius: 100px;
+    border-radius: 10px;
 }
 
 .account-content-tab-content-profile-upload>input {
