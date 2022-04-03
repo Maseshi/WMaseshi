@@ -1,0 +1,68 @@
+.navbar-style {
+    top: 0;
+    z-index: 1001;
+    width: 100%;
+    opacity: 0.95;
+    position: fixed;
+    transition: top 0.3s, opacity 0.3s, 0.3s;
+}
+
+.navbar-hidden {
+    opacity: 0;
+    top: -100px;
+}
+
+.navbar-show {
+    background-color: #FCFCFC;
+}
+
+.navbar-brand {
+    font-size: 28px;
+    font-family: 'Mitr-SemiBold';
+}
+
+.navbar-brand > img {
+    margin-right: 10px;
+}
+
+.navbar-text {
+    padding: 0;
+}
+
+.navbar-profile > .dropdown > .dropdown-menu {
+    margin-top: 10px;
+}
+
+.navbar-profile > .dropdown > ul.dropdown-menu {
+    border-radius: 15px;
+    width: max-content;
+}
+
+.navbar-profile > .dropdown > .dropdown-menu > div > select.form-select {
+    border-radius: 10px;
+}
+
+.btn-navbar-profile {
+    font-size: 40px;
+    padding: 0;
+    transition: opacity 0.2s;
+}
+
+.btn-navbar-profile:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-navbar-profile:hover {
+    opacity: 0.8;
+}
+
+.btn-navbar-profile > img {
+    border-radius: 100px;
+}
+
+@media screen and (max-width: 768px) {
+    .navbar-profile > .dropdown > ul.dropdown-menu {
+        width: 100%;
+    }
+}
