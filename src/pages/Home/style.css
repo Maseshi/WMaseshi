@@ -8,7 +8,7 @@
     height: 100vh;
     position: relative;
     padding-top: 100px;
-    background-color: #F0F0FA;
+    background-color: var(--bs-gray-200);
 }
 
 .home-welcome-greet {
@@ -20,25 +20,39 @@
     transform: translate(-50%, -50%);
 }
 
-.home-welcome-social-way > a > i {
+.home-welcome-social-way>a>i {
     font-size: 2em;
     color: black;
 }
 
 .home-welcome-creator {
-    text-align: center;
     align-self: center;
     align-items: center;
     vertical-align: middle;
 }
 
 .home-welcome-creator-image {
+    width: 150px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 100px;
+    background-size: cover;
+    border: 10px solid white;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: var(--bs-gray-500) 0 0 50px;
+    transition: background-image ease-in-out 0.2s;
+    background-image: url('../../assets/images/maseshi-creator.webp');
+}
+
+.home-welcome-creator-image:hover {
+    background-image: url('../../assets/images/chaiwat-suwannarat-creator.webp');
 }
 
 .home-about-image {
     border-radius: 20px;
-    box-shadow: gainsboro 0px 10px 20px 10px;
+    box-shadow: var(--bs-gray-500) 0px 0 50px;
 }
 
 .home-about-content {
@@ -59,7 +73,7 @@
     background-color: ghostwhite;
 }
 
-.home-skills-icon > img {
+.home-skills-icon img {
     padding: 20px;
 }
 
@@ -72,28 +86,28 @@
     color: unset;
 }
 
-.home-card > .card-footer {
-    border: 0;
-    background-color: transparent;
-}
-
 .home-card {
     top: 0;
+    border: 0;
     width: auto;
     height: 100%;
-    border-radius: 15px;
-    transition: box-shadow 0.3s, top 0.3s, margin-left 0.3s, margin-right 0.3s;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0px 10px 10px gainsboro;
+    transition: box-shadow 0.3s, top 0.3s;
 }
 
 .home-card:hover {
     top: -15px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0px 15px 15px gainsboro;
+    box-shadow: 0px 25px 15px gainsboro;
+}
+
+.home-card img {
+    object-fit: cover;
 }
 
 .home-btn {
-    border-radius: 10px;
+    border-radius: 15px;
 }
 
 .home-other-card {
@@ -102,7 +116,7 @@
     border-radius: 30px;
 }
 
-.home-other-card > .card-footer {
+.home-other-card>.card-footer {
     border: 0;
     background-color: transparent;
 }
@@ -111,39 +125,21 @@
     border-radius: 15px;
 }
 
-.home-other-modal-content {
-    border: 0;
-    padding: 5px 5px 10px 10px;
-    border-radius: 20px;
-}
-
-.home-other-modal-header .home-other-modal-btn-close {
-    margin: 0;
-}
-
-.home-other-modal-header {
-    border: 0;
-}
-
-.home-other-modal-btn-close {
-    padding: 10px;
-    border-radius: 100px;
-    background-color: gainsboro;
-}
-
-.home-other-modal-horizon {
-    margin: 0;
-    width: 93%;
-    align-self: center;
-    border-radius: 100px;
-    border: 2px solid gainsboro;
+.home-other-btn-funding-bmc.btn-whatever,
+.home-other-btn-funding-bmc.btn-whatever:hover,
+.home-other-btn-funding-bmc.btn-whatever:active,
+.home-other-btn-funding-bmc.btn-whatever:visited,
+.home-other-btn-funding-bmc.btn-whatever:focus {
+    background-color: #FFDD00;
+    border-color: #FFDD00;
 }
 
 @media screen and (max-width: 768px) {
     .home-about-image {
         width: 100%;
+        height: 200px;
     }
-    
+
     .home-welcome-social-way {
         display: table;
         margin-left: auto;

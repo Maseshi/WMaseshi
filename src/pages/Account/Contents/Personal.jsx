@@ -3,10 +3,11 @@ import { getDatabase, ref as databaseRef, update as updateDB } from 'firebase/da
 import { getAuth, onAuthStateChanged, updateProfile } from 'firebase/auth'
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
+import { resizeImage } from '../../../utils/functions/resizeImage'
+import { translator } from '../../../utils/functions/translator'
+
 export default function Personal(props) {
     const [gender, setGender] = useState('unspecified')
-    const [personalLabel, setPersonalLabel] = useState('บันทึก')
-    const [personalLabelDisabled, setPersonalLabelDisabled] = useState(false)
 
     const userData = props.userData
 
@@ -14,63 +15,15 @@ export default function Personal(props) {
         if (userData && userData.data) setGender(userData.data.gender)
     }, [userData])
 
-    const resizeImage = (settings) => {
-        var file = settings.file;
-        var maxSize = settings.maxSize;
-        var reader = new FileReader();
-        var image = new Image();
-        var canvas = document.createElement('canvas');
-        var dataURItoBlob = function (dataURI) {
-            var bytes = dataURI.split(',')[0].indexOf('base64') >= 0 ?
-                atob(dataURI.split(',')[1]) :
-                unescape(dataURI.split(',')[1]);
-            var mime = dataURI.split(',')[0].split(':')[1].split(';')[0];
-            var max = bytes.length;
-            var ia = new Uint8Array(max);
-            for (var i = 0; i < max; i++)
-                ia[i] = bytes.charCodeAt(i);
-            return new Blob([ia], { type: mime });
-        };
-        var resize = function () {
-            var width = image.width;
-            var height = image.height;
-            if (width > height) {
-                if (width > maxSize) {
-                    height *= maxSize / width;
-                    width = maxSize;
-                }
-            } else {
-                if (height > maxSize) {
-                    width *= maxSize / height;
-                    height = maxSize;
-                }
-            }
-            canvas.width = width;
-            canvas.height = height;
-            canvas.getContext('2d').drawImage(image, 0, 0, width, height);
-            var dataUrl = canvas.toDataURL('image/jpeg');
-            return dataURItoBlob(dataUrl);
-        };
-        return new Promise(function (ok, no) {
-            if (!file.type.match(/image.*/)) {
-                no(new Error("Not an image"));
-                return;
-            }
-            reader.onload = function (readerEvent) {
-                image.onload = function () { return ok(resize()); };
-                image.src = readerEvent.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-
-    let inputElement = ''
-
     return (
         <div className="tab-pane fade" id="v-pills-personal" role="tabpanel" aria-labelledby="v-pills-personal-tab" >
             <div className="account-content-tab-title">
-                <h1>ข้อมูลส่วนตัว</h1>
-                <p>การเพิ่มข้อมูลส่วนบุคคลของคุณจะช่วยให้เรารู้จักคุณได้มากขึ้น</p>
+                <h1>
+                    {translator().translate.pages.Account.Contents.Personal.personal}
+                </h1>
+                <p>
+                    {translator().translate.pages.Account.Contents.Personal.personal_info}
+                </p>
             </div>
             <br />
             <div className="account-content-tab-content">
@@ -78,7 +31,9 @@ export default function Personal(props) {
                 <div className="card mb-3 account-content-tab-card">
                     <div className="card-body">
                         <div className="account-content-tab-content-title">
-                            <h2><i className="bi bi-card-text"></i> ข้อมูลพื้นฐาน</h2>
+                            <h2>
+                                <i className="bi bi-card-text"></i> {translator().translate.pages.Account.Contents.Personal.basic_data}
+                            </h2>
                         </div>
                         <hr className="account-content-tab-content-horizon" />
                         <div className="row">
@@ -87,36 +42,55 @@ export default function Personal(props) {
                                     <>
                                         <div className="col-md-3 align-self-center text-center">
                                             <div className="account-content-tab-content-profile-upload">
-                                                <input type="file" ref={input => inputElement = input} id="personal-input-photo-reset" onChange={
-                                                    async (event) => {
-                                                        const auth = getAuth();
-                                                        const storage = getStorage();
-                                                        const storageRef = ref(storage, 'users/' + auth.currentUser.uid + '/avatar');
-                                                        const resetBtn = document.getElementById('personal-btn-photo-reset')
-                                                        const uploadBtn = document.getElementById('personal-btn-photo-upload')
-                                                        const resizedImage = await resizeImage({
-                                                            "file": event.target.files[0],
-                                                            "maxSize": 200
-                                                        });
+                                                <input
+                                                    type="file"
+                                                    id="personal-input-photo-reset"
+                                                    accept="image/*"
+                                                    onChange={
+                                                        async (event) => {
+                                                            const auth = getAuth();
+                                                            const storage = getStorage();
+                                                            const storageRef = ref(storage, 'users/' + auth.currentUser.uid + '/avatar');
 
-                                                        if (resetBtn) resetBtn.disabled = true
-                                                        uploadBtn.disabled = true
-                                                        event.target.disabled = true
-                                                        uploadBytes(storageRef, resizedImage).then(() => {
-                                                            getDownloadURL(storageRef)
-                                                                .then((url) => {
-                                                                    updateProfile(auth.currentUser, {
-                                                                        photoURL: url
-                                                                    }).then(() => {
-                                                                        if (resetBtn) resetBtn.disabled = false
-                                                                        uploadBtn.disabled = false
-                                                                        event.target.disabled = false
-                                                                    })
-                                                                });
-                                                        });
+                                                            const resetBtn = document.getElementById('personal-btn-photo-reset')
+                                                            const uploadBtn = document.getElementById('personal-btn-photo-upload')
+
+                                                            const resizedImage = await resizeImage({
+                                                                "file": event.target.files[0],
+                                                                "maxSize": 200
+                                                            });
+
+                                                            if (resetBtn) resetBtn.disabled = true
+                                                            uploadBtn.disabled = true
+                                                            event.target.disabled = true
+                                                            uploadBytes(storageRef, resizedImage).then(() => {
+                                                                getDownloadURL(storageRef)
+                                                                    .then((url) => {
+                                                                        updateProfile(auth.currentUser, {
+                                                                            photoURL: url
+                                                                        }).then(() => {
+                                                                            if (resetBtn) resetBtn.disabled = false
+                                                                            uploadBtn.disabled = false
+                                                                            event.target.disabled = false
+                                                                        })
+                                                                    });
+                                                            });
+                                                        }
                                                     }
-                                                } accept="image/*" />
-                                                <button type="button" className="btn account-content-tab-content-profile-upload" id="personal-btn-photo-upload" style={userData.user.photoURL ? { padding: 0 } : null} onClick={() => inputElement.click()}>
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="account-content-tab-content-profile-upload"
+                                                    id="personal-btn-photo-upload"
+                                                    style={userData.user.photoURL ? { padding: 0 } : null}
+                                                    onClick={
+                                                        () => {
+                                                            const inputPhoto = document.getElementById('personal-input-photo-reset')
+
+                                                            inputPhoto.click()
+                                                        }
+                                                    }
+                                                >
                                                     {
                                                         userData.user.photoURL ? (
                                                             <img src={userData.user.photoURL} alt="" width="120px" height="120px" />
@@ -150,7 +124,9 @@ export default function Personal(props) {
                                                                 })
                                                             })
                                                         }
-                                                    }>คืนค่าเริ่มต้น</button>
+                                                    }>
+                                                        {translator().translate.pages.Account.Contents.Personal.default}
+                                                    </button>
                                                 ) : ""
                                             }
                                         </div>
@@ -158,104 +134,145 @@ export default function Personal(props) {
                                             <div className="row g-2 mb-3">
                                                 <div className="col-md">
                                                     <div className="form-floating">
-                                                        <input type="text" className="form-control account-content-tab-input" id="personal-username" placeholder="ผู้ใช้" maxLength="20" defaultValue={userData.user.displayName} />
-                                                        <label htmlFor="personal-username">นามแฝงหรือชื่อเล่น</label>
+                                                        <input type="text" className="form-control account-content-tab-input" id="personal-username" placeholder={translator().translate.pages.Account.Contents.Personal.user} maxLength="20" defaultValue={userData.user.displayName} />
+                                                        <label htmlFor="personal-username">
+                                                            {translator().translate.pages.Account.Contents.Personal.nickname}
+                                                        </label>
                                                     </div>
                                                 </div>
                                                 <div className="col-md">
                                                     <div className="form-floating">
-                                                        <select className="form-select account-content-tab-input" id="personal-gender" value={gender} onChange={
-                                                            (event) => {
-                                                                setGender(event.target.value)
-                                                                event.target.value = gender
+                                                        <select
+                                                            className="form-select account-content-tab-input"
+                                                            id="personal-gender"
+                                                            value={gender}
+                                                            aria-label="gender"
+                                                            onChange={
+                                                                (event) => {
+                                                                    setGender(event.target.value)
+                                                                    event.target.value = gender
+                                                                }
                                                             }
-                                                        } aria-label="gender">
-                                                            <option value="unspecified">ไม่ระบุ</option>
-                                                            <option value="male">ชาย</option>
-                                                            <option value="female">หญิง</option>
-                                                            <option value="other">อื่นๆ</option>
+                                                        >
+                                                            <option value="unspecified">
+                                                                {translator().translate.pages.Account.Contents.Personal.unspecified}
+                                                            </option>
+                                                            <option value="male">
+                                                                {translator().translate.pages.Account.Contents.Personal.male}
+                                                            </option>
+                                                            <option value="female">
+                                                                {translator().translate.pages.Account.Contents.Personal.female}
+                                                            </option>
+                                                            <option value="other">
+                                                                {translator().translate.pages.Account.Contents.Personal.other}
+                                                            </option>
                                                         </select>
-                                                        <label htmlFor="personal-gender">เพศ</label>
+                                                        <label htmlFor="personal-gender">
+                                                            {translator().translate.pages.Account.Contents.Personal.gender}
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="form-floating mb-3">
-                                                <textarea className="form-control account-content-tab-input h-100" rows="5" style={{ resize: "none" }} maxLength="256" placeholder="สู่ความเวิ้งว้างอันไกลโพ้น" id="personal-description" defaultValue={userData.data.description}></textarea>
-                                                <label htmlFor="personal-description">คำอธิบาย</label>
+                                                <textarea className="form-control account-content-tab-input h-100" rows="5" style={{ resize: "none" }} maxLength="256" placeholder={translator().translate.pages.Account.Contents.Personal.description_placeholder} id="personal-description" defaultValue={userData.data.description}></textarea>
+                                                <label htmlFor="personal-description">
+                                                    {translator().translate.pages.Account.Contents.Personal.description}
+                                                </label>
                                             </div>
                                             <p className="text-warning" id="personal-basic-info-validation"></p>
                                             <div className="hstack gap-3">
-                                                <button type="button" className="btn btn-primary w-100 account-content-tab-button" onClick={
-                                                    () => {
-                                                        const auth = getAuth()
-                                                        const db = getDatabase()
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-primary w-100 account-content-tab-button"
+                                                    onClick={
+                                                        (event) => {
+                                                            const auth = getAuth()
+                                                            const db = getDatabase()
 
-                                                        const inputUsername = document.getElementById('personal-username')
-                                                        const inputDescription = document.getElementById('personal-description')
-                                                        const inputGender = document.getElementById('personal-gender')
+                                                            const inputUsername = document.getElementById('personal-username')
+                                                            const inputDescription = document.getElementById('personal-description')
+                                                            const inputGender = document.getElementById('personal-gender')
+                                                            const buttonPersonal = document.getElementById('personalBasicInfoCancel')
 
-                                                        const validationBasicInfo = document.getElementById('personal-basic-info-validation')
+                                                            const validationBasicInfo = document.getElementById('personal-basic-info-validation')
 
-                                                        validationBasicInfo.innerText = ''
+                                                            validationBasicInfo.innerText = ''
 
-                                                        if (inputUsername.value.length >= inputUsername.maxLength) return validationBasicInfo.innerText = 'ชื่อเล่นไม่สามารถตั้งได้มากกว่า ' + inputUsername.maxLength + ' ตัวอักษร'
-                                                        if (inputDescription.value.length >= inputDescription.maxLength) return validationBasicInfo.innerText = 'คำอธิบานไม่สามารถตั้งได้มากกว่า ' + inputDescription.maxLength + ' ตัวอักษร'
+                                                            if (inputUsername.value.length >= inputUsername.maxLength) return validationBasicInfo.innerText = translator().translate.pages.Account.Contents.Personal.name_can_not_more_than.replace('%s', inputUsername.maxLength)
+                                                            if (inputDescription.value.length >= inputDescription.maxLength) return validationBasicInfo.innerText = translator().translate.pages.Account.Contents.Personal.description_can_not_more_than.replace('%s', inputDescription.maxLength)
 
-                                                        setPersonalLabel('<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> บันทึก')
-                                                        setPersonalLabelDisabled(true)
+                                                            event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Account.Contents.Personal.save)
+                                                            event.target.disabled = true
+                                                            buttonPersonal.disabled = true
 
-                                                        onAuthStateChanged(auth, (user) => {
-                                                            if (user) {
-                                                                const dbRef = databaseRef(db, 'data/users/' + user.uid)
+                                                            onAuthStateChanged(auth, (user) => {
+                                                                if (user) {
+                                                                    const dbRef = databaseRef(db, 'projects/maseshi/users/' + user.uid)
 
-                                                                updateDB(dbRef, {
-                                                                    description: inputDescription.value,
-                                                                    gender: inputGender.value
-                                                                }).then(() => {
-                                                                    updateProfile(auth.currentUser, {
-                                                                        displayName: inputUsername.value
+                                                                    updateDB(dbRef, {
+                                                                        description: inputDescription.value,
+                                                                        gender: inputGender.value
                                                                     }).then(() => {
-                                                                        setPersonalLabel('<i class="bi bi-check-circle"></i> บันทึก')
-                                                                        setPersonalLabelDisabled(false)
+                                                                        updateProfile(auth.currentUser, {
+                                                                            displayName: inputUsername.value
+                                                                        }).then(() => {
+                                                                            event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Personal.save)
+                                                                            event.target.disabled = false
+                                                                            buttonPersonal.disabled = false
 
-                                                                        setTimeout(() => {
-                                                                            setPersonalLabel('บันทึก')
-                                                                            setPersonalLabelDisabled(false)
-                                                                        }, 3000)
+                                                                            setTimeout(() => {
+                                                                                event.target.innerHTML = translator().translate.pages.Account.Contents.Personal.save
+                                                                                event.target.disabled = false
+                                                                                buttonPersonal.disabled = false
+                                                                            }, 3000)
+                                                                        }).catch(() => {
+                                                                            event.target.innerHTML = '<i class="bi bi-x-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Personal.save)
+                                                                            event.target.disabled = false
+                                                                            buttonPersonal.disabled = false
+
+                                                                            setTimeout(() => {
+                                                                                event.target.innerHTML = translator().translate.pages.Account.Contents.Personal.save
+                                                                                event.target.disabled = false
+                                                                                buttonPersonal.disabled = false
+                                                                            }, 3000)
+                                                                        })
                                                                     }).catch(() => {
-                                                                        setPersonalLabel('<i class="bi bi-x-circle"></i> บันทึก')
-                                                                        setPersonalLabelDisabled(false)
+                                                                        event.target.innerHTML = '<i class="bi bi-x-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Personal.save)
+                                                                        event.target.disabled = false
+                                                                        buttonPersonal.disabled = false
 
                                                                         setTimeout(() => {
-                                                                            setPersonalLabel('บันทึก')
-                                                                            setPersonalLabelDisabled(false)
+                                                                            event.target.innerHTML = translator().translate.pages.Account.Contents.Personal.save
+                                                                            event.target.disabled = false
+                                                                            buttonPersonal.disabled = false
                                                                         }, 3000)
                                                                     })
-                                                                }).catch(() => {
-                                                                    setPersonalLabel('<i class="bi bi-x-circle"></i> บันทึก')
-                                                                    setPersonalLabelDisabled(false)
-
-                                                                    setTimeout(() => {
-                                                                        setPersonalLabel('บันทึก')
-                                                                        setPersonalLabelDisabled(false)
-                                                                    }, 3000)
-                                                                })
-                                                            }
-                                                        })
+                                                                }
+                                                            })
+                                                        }
                                                     }
-                                                } disabled={personalLabelDisabled} dangerouslySetInnerHTML={{ __html: personalLabel }}></button>
+                                                >
+                                                    {translator().translate.pages.Account.Contents.Personal.save}
+                                                </button>
                                                 <div className="vr"></div>
-                                                <button type="button" className="btn btn-outline-secondary w-100 account-content-tab-button" onClick={
-                                                    () => {
-                                                        const inputUsername = document.getElementById('personal-username')
-                                                        const inputGender = document.getElementById('personal-gender')
-                                                        const inputDescription = document.getElementById('personal-description')
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-outline-secondary w-100 account-content-tab-button"
+                                                    id="personalBasicInfoCancel"
+                                                    onClick={
+                                                        () => {
+                                                            const inputUsername = document.getElementById('personal-username')
+                                                            const inputGender = document.getElementById('personal-gender')
+                                                            const inputDescription = document.getElementById('personal-description')
 
-                                                        inputUsername.value = ""
-                                                        inputGender.value = "unspecified"
-                                                        inputDescription.value = ""
+                                                            inputUsername.value = ""
+                                                            inputGender.value = "unspecified"
+                                                            inputDescription.value = ""
+                                                        }
                                                     }
-                                                } disabled={personalLabelDisabled}>ตั้งใหม่</button>
+                                                >
+                                                    {translator().translate.pages.Account.Contents.Personal.reset}
+                                                </button>
                                             </div>
                                         </div>
                                     </>
@@ -274,11 +291,15 @@ export default function Personal(props) {
                 <div className="card account-content-tab-card">
                     <div className="card-body">
                         <div className="account-content-tab-content-title">
-                            <h2><i className="bi bi-key"></i> ข้อมูลการเข้าสู่ระบบ</h2>
+                            <h2>
+                                <i className="bi bi-key"></i> {translator().translate.pages.Account.Contents.Personal.login_information}
+                            </h2>
                         </div>
                         <hr className="account-content-tab-content-horizon" />
                         <div className="row mb-2">
-                            <label htmlFor="personal-email" className="col-sm-2 col-form-label">ที่อยู่อีเมล</label>
+                            <label htmlFor="personal-email" className="col-sm-2 col-form-label">
+                                {translator().translate.pages.Account.Contents.Personal.email_address}
+                            </label>
                             {
                                 userData && userData.user.email ? (
                                     <div className="col-sm-10">
@@ -292,7 +313,9 @@ export default function Personal(props) {
                             }
                         </div>
                         <div className="row mb-3">
-                            <label htmlFor="personal-email" className="col-sm-2 col-form-label">ระดับสิทธิ์</label>
+                            <label htmlFor="personal-email" className="col-sm-2 col-form-label">
+                                {translator().translate.pages.Account.Contents.Personal.permission_level}
+                            </label>
                             {
                                 userData && userData.data.role ? (
                                     <div className="col-sm-10">
@@ -305,22 +328,10 @@ export default function Personal(props) {
                                 )
                             }
                         </div>
-                        <div className="row mb-3">
-                            <label htmlFor="personal-password" className="col-sm-2 col-form-label">รหัสผ่าน</label>
-                            {
-                                userData ? (
-                                    <div className="col-sm-10">
-                                        <input type="password" readOnly className="form-control-plaintext" id="personal-password" value="----------" />
-                                    </div>
-                                ) : (
-                                    <div className="placeholder-glow col-sm-10">
-                                        <span className="placeholder w-100"></span>
-                                    </div>
-                                )
-                            }
-                        </div>
                         <div className="row">
-                            <label htmlFor="personal-uid" className="col-sm-2 col-form-label">รหัสประจำตัว</label>
+                            <label htmlFor="personal-uid" className="col-sm-2 col-form-label">
+                                {translator().translate.pages.Account.Contents.Personal.user_id}
+                            </label>
                             {
                                 userData && userData.user.uid ? (
                                     <div className="col-sm-8">
@@ -335,7 +346,7 @@ export default function Personal(props) {
                             <div className="col-sm-2 text-center">
                                 <button type="button" className="btn btn-primary account-content-tab-button" onClick={
                                     (event) => {
-                                        event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> คัดลอก'
+                                        event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Account.Contents.Personal.copy_user_id)
 
                                         const inputUid = document.getElementById('personal-uid')
 
@@ -344,12 +355,14 @@ export default function Personal(props) {
 
                                         navigator.clipboard.writeText(inputUid.value);
 
-                                        event.target.innerHTML = '<i class="bi bi-check-circle"></i> คัดลอกรหัส'
+                                        event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Personal.copy_user_id)
                                         setTimeout(() => {
-                                            event.target.innerHTML = 'คัดลอกรหัส'
+                                            event.target.innerHTML = translator().translate.pages.Account.Contents.Personal.copy_user_id
                                         }, 3000)
                                     }
-                                } disabled={userData && userData.user.uid ? false : true}>คัดลอกรหัส</button>
+                                } disabled={userData && userData.user.uid ? false : true}>
+                                    {translator().translate.pages.Account.Contents.Personal.copy_user_id}
+                                </button>
                             </div>
                         </div>
                     </div>

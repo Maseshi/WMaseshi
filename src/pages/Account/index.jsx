@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getDatabase, ref, onValue } from "firebase/database"
+import { getDatabase, ref, onValue } from 'firebase/database'
+import DocumentMeta from 'react-document-meta'
 
 // Components
 import CookieAccept from '../../components/CookieAccept'
 
-// Functions
-import { isMobile } from '../../utils/functions/isMobile'
+import { translator } from '../../utils/functions/translator'
 
 import Profile from './Profile'
 import Navbar from './Navbar'
@@ -18,43 +18,49 @@ export default function Account() {
     const [userData, setUserData] = useState()
 
     useEffect(() => {
+        const { Modal } = require('bootstrap')
+
+        const signIn = document.getElementById('signInModal')
+        const signInDismiss = document.getElementById('auth-modal-login-dismiss')
+        const register = document.getElementById('registerModal')
+        const registerDismiss = document.getElementById('auth-modal-register-dismiss')
+        const forgot = document.getElementById('forgotModal')
+        const forgotDismiss = document.getElementById('auth-modal-forgot-dismiss')
+        const signInModal = new Modal(signIn, {
+            backdrop: 'static',
+            keyboard: false
+        })
+        const registerModal = new Modal(register, {
+            backdrop: 'static',
+            keyboard: false
+        })
+        const forgotModal = new Modal(forgot, {
+            backdrop: 'static',
+            keyboard: false
+        })
+
+        signInDismiss.hidden = true
+        registerDismiss.hidden = true
+        forgotDismiss.hidden = true
+
         const auth = getAuth()
         const db = getDatabase()
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                const dbRef = ref(db, 'data/users/' + user.uid)
+                const dbRef = ref(db, 'projects/maseshi/users/' + user.uid)
 
                 onValue(dbRef, (snapshot) => {
                     const data = snapshot.val()
-                    setUserData({user, data})
-                })
-            } else {
-                const { Modal } = require('bootstrap')
-                const signIn = document.getElementById('signInModal')
-                const signInDismiss = document.getElementById('auth-modal-login-dismiss')
-                const register = document.getElementById('registerModal')
-                const registerDismiss = document.getElementById('auth-modal-register-dismiss')
-                const forgot = document.getElementById('forgotModal')
-                const forgotDismiss = document.getElementById('auth-modal-forgot-dismiss')
-                const signInModal = new Modal(signIn, {
-                    backdrop: 'static',
-                    keyboard: false
-                })
-                new Modal(register, {
-                    backdrop: 'static',
-                    keyboard: false
-                })
-                new Modal(forgot, {
-                    backdrop: 'static',
-                    keyboard: false
+                    setUserData({ user, data })
                 })
 
+                signInModal.hide()
+                registerModal.hide()
+                forgotModal.hide()
+            } else {
                 setUserData()
-                signInModal.toggle()
-                signInDismiss.hidden = true
-                registerDismiss.hidden = true
-                forgotDismiss.hidden = true
+                signInModal.show()
             }
         })
 
@@ -83,24 +89,38 @@ export default function Account() {
         }
     }, [])
 
-    document.title = 'บัญชี | Maseshi'
+    const meta = {
+        title: translator().translate.pages.Account.Account.website_title,
+        description: translator().translate.pages.Account.Account.website_description,
+        canonical: '/account',
+        meta: {
+            name: {
+                keywords: 'maseshi, chaiwatsuwannarat, fluke, chaiwat',
+                subject: translator().translate.pages.Account.Account.subject,
+                language: 'TH',
+                robots: 'index, follow',
+
+                'og:type': 'website',
+                'og:image': '/maseshi_banner.jpg',
+                'og:site_name': 'Maseshi'
+            }
+        }
+    }
 
     return (
-        <section className="account" id="account" >
-            <div className="row">
-                <div className={isMobile() ? "col-md-3" : "col-md-3 pe-0"}>
-                    <div className="container">
+        <DocumentMeta {...meta}>
+            <section className="account container-fluid" id="account">
+                <div className="row">
+                    <div className="col-md-3">
                         <Profile userData={userData} />
                         <Navbar />
                     </div>
-                </div>
-                <div className={isMobile() ? "col-md-9" : "col-md-9 ps-0"}>
-                    <div className={isMobile() ? "container" : "container ps-0"}>
+                    <div className="col-md-9">
                         <Content userData={userData} />
                     </div>
                 </div>
-            </div>
-            <CookieAccept />
-        </section>
+                <CookieAccept />
+            </section>
+        </DocumentMeta>
     )
 }

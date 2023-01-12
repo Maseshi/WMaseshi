@@ -3,27 +3,28 @@ import {
     getAuth,
     updateEmail,
     updatePassword,
-    sendEmailVerification
+    sendEmailVerification,
+    linkWithPopup,
+    unlink,
+    OAuthProvider,
+    GoogleAuthProvider,
+    FacebookAuthProvider,
+    GithubAuthProvider
 } from 'firebase/auth'
 
 // Function
 import { isMobile } from '../../../utils/functions/isMobile'
+import { translator } from '../../../utils/functions/translator'
+
+// Assets
+import microsoftLogo from '../../../assets/icons/microsoft.svg'
+import googleLogo from '../../../assets/icons/google.webp'
+import facebookLogo from '../../../assets/icons/facebook.webp'
+import githubLogo from '../../../assets/icons/github.webp'
 
 export default function Security(props) {
-    const [changeNewEmail, setChangeNewEmail] = useState(0)
-    const [validateEmail, setValidateEmail] = useState('')
-    const [validateVerifyEmail, setValidateVerifyEmail] = useState('')
-    const [emailLabel, setEmailLabel] = useState('<i class="bi bi-lock"></i> เปลี่ยนแปลง')
     const [emailError, setEmailError] = useState('')
-
-    const [changeNewPassword, setChangeNewPassword] = useState(0)
-    const [validatePassword, setValidatePassword] = useState('')
-    const [validateVerifyPassword, setValidateVerifyPassword] = useState('')
-    const [passwordLabel, setPasswordLabel] = useState('<i class="bi bi-lock"></i> เปลี่ยนแปลง')
     const [passwordError, setPasswordError] = useState('')
-
-    const [sendVerifyLinkLabel, setSendVerifyLinkLabel] = useState('ส่ง')
-    const [sendVerifyLinkDisabled, setSendVerifyLinkDisabled] = useState(false)
 
     const userData = props.userData
     const verify = props.verify
@@ -32,12 +33,28 @@ export default function Security(props) {
         const re = /\S+@\S+\.\S+/
         return re.test(string)
     }
+    const providerID = () => {
+        if (userData) {
+            const provider = []
+            const data = userData.user.providerData
+
+            for (let i = 0; i < data.length; i++) {
+                const ID = data[i].providerId
+
+                return provider.concat(ID)
+            }
+        }
+    }
 
     return (
         <div className="tab-pane fade" id="v-pills-security" role="tabpanel" aria-labelledby="v-pills-security-tab">
             <div className="account-content-tab-title">
-                <h1>ความปลอดภัย</h1>
-                <p>เพื่อป้องกันไม่ให้ผู้ที่ไม่ได้รับอนุณาตเข้าสู่ระบบในบัญชีของคุณ</p>
+                <h1>
+                    {translator().translate.pages.Account.Contents.Security.security}
+                </h1>
+                <p>
+                    {translator().translate.pages.Account.Contents.Security.security_information}
+                </p>
             </div>
             <br />
             <div className="account-content-tab-content">
@@ -45,206 +62,221 @@ export default function Security(props) {
                 <div className="card account-content-tab-card mb-3">
                     <div className="card-body">
                         <div className="account-content-tab-content-title">
-                            <h2><i className="bi bi-person-lines-fill"></i> เปลี่ยนแปลงบัญชี</h2>
+                            <h2>
+                                <i className="bi bi-person-lines-fill"></i> {translator().translate.pages.Account.Contents.Security.config_account}
+                            </h2>
                         </div>
                         <hr className="account-content-tab-content-horizon" />
                         <div className="row">
                             <div className={isMobile() ? "col-md-6 mb-3" : "col-md-6"}>
-                                <h3>เปลี่ยนที่อยู่อีเมล</h3>
-                                {
-                                    userData && userData.user.email ? (
-                                        <div className="form-floating mb-3">
-                                            <input type="email" className="form-control account-content-tab-input" id="security-email-current" placeholder="name@example.com" value={userData.user.email} readOnly />
-                                            <label htmlFor="security-email-current">อีเมลปัจจุบัน</label>
-                                        </div>
-                                    ) : (
-                                        <div className="form-floating mb-3">
-                                            <input type="email" className="form-control account-content-tab-input" id="security-email-current" placeholder="name@example.com" readOnly />
-                                            <label htmlFor="security-email-current">
-                                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                <span className="visually-hidden">Loading...</span> อีเมลปัจจุบัน
-                                            </label>
-                                        </div>
-                                    )
-                                }
+                                <h3>
+                                    {translator().translate.pages.Account.Contents.Security.change_email}
+                                </h3>
                                 <div className="form-floating mb-3">
-                                    <input type="email" className="form-control account-content-tab-input" id="security-email-new" onChange={
-                                        (event) => {
-                                            const currentEmail = document.getElementById('security-email-current')
+                                    <input
+                                        type="email"
+                                        className="form-control account-content-tab-input"
+                                        id="security-email-new"
+                                        placeholder="name@example.com"
+                                        aria-describedby="securityEmailNewFeedback"
+                                        onChange={
+                                            (event) => {
+                                                const newEmail = document.getElementById('security-email-confirm')
+                                                const validate = document.getElementById('securityEmailNewFeedback')
 
-                                            if (!emailValidity(event.target.value)) {
-                                                event.target.classList.add("is-invalid")
-                                                setValidateEmail('รูปแบบไม่ถูกต้อง')
-                                            } else {
-                                                event.target.classList.remove("is-invalid")
-                                                setValidateEmail('')
-                                                
-                                                if (event.target.value && event.target.value === currentEmail.value) {
-                                                    event.target.classList.add("is-invalid")
-                                                    setValidateEmail('กรุณาใช้อีเมลอื่น')
-                                                } else {
-                                                    event.target.classList.remove("is-invalid")
-                                                    setValidateEmail('')
+                                                if (event.target.value) {
+                                                    if (!emailValidity(event.target.value)) {
+                                                        event.target.classList.add("is-invalid")
+                                                        newEmail.disabled = true
+                                                        return validate.innerHTML = translator().translate.pages.Account.Contents.Security.invalid_format
+                                                    }
+
+                                                    if (event.target.value === userData.user.email) {
+                                                        event.target.classList.add("is-invalid")
+                                                        newEmail.disabled = true
+                                                        return validate.innerHTML = translator().translate.pages.Account.Contents.Security.duplicate_email
+                                                    }
                                                 }
+
+                                                event.target.classList.remove("is-invalid")
+                                                newEmail.disabled = false
+                                                validate.innerHTML = ''
                                             }
                                         }
-                                    } placeholder="name@example.com" aria-describedby="securityEmailNewFeedback" />
-                                    <label htmlFor="security-email-new">อีเมลใหม่</label>
-                                    <div className="invalid-feedback" id="securityEmailNewFeedback">{validateEmail}</div>
+                                    />
+                                    <label htmlFor="security-email-new">
+                                        {translator().translate.pages.Account.Contents.Security.new_email}
+                                    </label>
+                                    <div className="invalid-feedback" id="securityEmailNewFeedback"></div>
                                 </div>
                                 <div className="form-floating">
-                                    <input type="email" className="form-control account-content-tab-input" id="security-email-confirm" onChange={
-                                        (event) => {
-                                            const newEmail = document.getElementById('security-email-new')
+                                    <input
+                                        type="email"
+                                        className="form-control account-content-tab-input"
+                                        id="security-email-confirm"
+                                        placeholder="name@example.com"
+                                        aria-describedby="securityEmailVerifyFeedback"
+                                        onChange={
+                                            (event) => {
+                                                const newEmail = document.getElementById('security-email-new')
+                                                const validate = document.getElementById('securityEmailVerifyFeedback')
+                                                const button = document.getElementById('securityEmailButton')
 
-                                            if (event.target.value && !validateEmail && event.target.value === newEmail.value) {
+                                                if (event.target.value) {
+                                                    if (event.target.value !== newEmail.value) {
+                                                        event.target.classList.add("is-invalid")
+                                                        return validate.innerHTML = translator().translate.pages.Account.Contents.Security.duplicate_email
+                                                    }
+
+                                                    button.disabled = false
+                                                }
+
                                                 event.target.classList.remove("is-invalid")
-                                                setChangeNewEmail(1)
-                                                setValidateVerifyEmail('')
-                                            } else {
-                                                event.target.classList.add("is-invalid")
-                                                setChangeNewEmail(0)
-                                                setValidateVerifyEmail('อีเมลไม่ตรงกัน')
+                                                button.disabled = true
+                                                validate.innerHTML = ''
                                             }
                                         }
-                                    } placeholder="name@example.com" aria-describedby="securityEmailVerifyFeedback" disabled={validateEmail ? true : false} />
-                                    <label htmlFor="security-email-confirm">ยืนยันอีเมลใหม่</label>
-                                    <div className="invalid-feedback" id="securityEmailVerifyFeedback">{validateVerifyEmail}</div>
+                                    />
+                                    <label htmlFor="security-email-confirm">
+                                        {translator().translate.pages.Account.Contents.Security.verify_new_email}
+                                    </label>
+                                    <div className="invalid-feedback" id="securityEmailVerifyFeedback"></div>
                                 </div>
-                                {
-                                    changeNewEmail === 1 ? (
-                                        <>
-                                            <br />
-                                            <button className="account-content-tab-button btn btn-primary w-100" type="button" onClick={
-                                                () => {
-                                                    const auth = getAuth()
-                                                    const newEmail = document.getElementById('security-email-new')
-                                                    const emailConfirm = document.getElementById('security-email-confirm')
-                                                    const element = document.getElementById('verifyChangeModal')
+                                <br />
+                                <button
+                                    type="button"
+                                    className="account-content-tab-button btn btn-primary w-100"
+                                    id="securityEmailButton"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#verifyChangeModal"
+                                    disabled
+                                    onClick={
+                                        (event) => {
+                                            const auth = getAuth()
+                                            const newEmail = document.getElementById('security-email-new')
+                                            const emailConfirm = document.getElementById('security-email-confirm')
+                                            const element = document.getElementById('verifyChangeModal')
 
-                                                    newEmail.disabled = true
-                                                    emailConfirm.disabled = true
-                                                    setEmailLabel('<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> เปลี่ยนแปลง')
-                                                    setEmailError('')
+                                            newEmail.disabled = true
+                                            emailConfirm.disabled = true
+                                            event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
+                                            setEmailError('')
 
-                                                    element.addEventListener('hidden.bs.modal', () => {
-                                                        if (verify === 0) {
-                                                            setEmailLabel('<i class="bi bi-lock"></i> เปลี่ยนแปลง')
-                                                        }
-                                                        if (verify === 1) {
-                                                            updateEmail(auth.currentUser, emailConfirm.value).then(() => {
-                                                                newEmail.disabled = false
-                                                                emailConfirm.disabled = false
-                                                                setEmailLabel('<i class="bi bi-check-circle"></i> เปลี่ยนแปลง')
-                                                                setTimeout(() => {
-                                                                    setEmailLabel('<i class="bi bi-lock"></i> เปลี่ยนแปลง')
-                                                                }, 3000)
-                                                            }).catch((error) => {
-                                                                newEmail.disabled = false
-                                                                emailConfirm.disabled = false
-                                                                setEmailLabel('<i class="bi bi-x-circle"></i> เปลี่ยนแปลง')
-                                                                setEmailError('ไม่สามารถเปลี่ยนแปลงอีเมลได้ ข้อผิดพลาด: ' + error)
-                                                            });
-                                                        }
-                                                    })
+                                            element.addEventListener('hidden.bs.modal', () => {
+                                                if (verify) {
+                                                    updateEmail(auth.currentUser, emailConfirm.value).then(() => {
+                                                        newEmail.disabled = false
+                                                        emailConfirm.disabled = false
+                                                        event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
+                                                        setTimeout(() => {
+                                                            event.target.innerHTML = '<i class="bi bi-lock"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
+                                                        }, 3000)
+                                                    }).catch((error) => {
+                                                        newEmail.disabled = false
+                                                        emailConfirm.disabled = false
+                                                        event.target.innerHTML = '<i class="bi bi-x-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
+                                                        setEmailError(translator().translate.pages.Account.Contents.Security.can_not_change_email + '\n' + error)
+                                                    });
+                                                } else {
+                                                    event.target.innerHTML = '<i class="bi bi-lock"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
                                                 }
-                                            } data-bs-toggle="modal" data-bs-target="#verifyChangeModal" dangerouslySetInnerHTML={{ __html: emailLabel }}></button>
-                                            {emailError ? <span className="text-center text-warning w-100">{emailError}</span> : ""}
-                                        </>
-                                    ) : ""
-                                }
+                                            })
+                                        }
+                                    }
+                                >
+                                    <i className="bi bi-lock"></i> {translator().translate.pages.Account.Contents.Security.change}
+                                </button>
+                                {emailError ? <span className="text-center text-warning w-100">{emailError}</span> : ""}
                             </div>
                             <div className="col-md-6">
-                                <h3>เปลี่ยนรหัสผ่าน</h3>
-                                {
-                                    userData && userData.user.email ? (
-                                        <div className="form-floating mb-3">
-                                            <input type="password" className="form-control account-content-tab-input" id="security-password-current" placeholder="abcd0123" value="----------" readOnly />
-                                            <label htmlFor="security-password-current">รหัสผ่านปัจจุบัน</label>
-                                        </div>
-                                    ) : (
-                                        <div className="form-floating mb-3">
-                                            <input type="password" className="form-control account-content-tab-input" id="security-password-current" placeholder="abcd0123" readOnly />
-                                            <label htmlFor="security-password-current">
-                                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                <span className="visually-hidden">Loading...</span> รหัสผ่านปัจจุบัน
-                                            </label>
-                                        </div>
-                                    )
-                                }
+                                <h3>
+                                    {translator().translate.pages.Account.Contents.Security.change_password}
+                                </h3>
                                 <div className="form-floating mb-3">
-                                    <input type="password" className="form-control account-content-tab-input" id="security-password-new" onChange={
-                                        (event) => {
-                                            if (!event.target.value) {
-                                                event.target.classList.remove("is-invalid")
-                                                setValidatePassword('')
-                                            }
-                                        }
-                                    } placeholder="abcd0123" aria-describedby="securityPasswordNewFeedback" />
-                                    <label htmlFor="security-password-new">รหัสผ่านใหม่</label>
-                                    <div className="invalid-feedback" id="securityPasswordNewFeedback">{validatePassword}</div>
+                                    <input type="password" className="form-control account-content-tab-input" id="security-password-new" placeholder="abcd0123" aria-describedby="securityPasswordNewFeedback" />
+                                    <label htmlFor="security-password-new">
+                                        {translator().translate.pages.Account.Contents.Security.new_password}
+                                    </label>
+                                    <div className="invalid-feedback" id="securityPasswordNewFeedback"></div>
                                 </div>
                                 <div className="form-floating">
-                                    <input type="password" className="form-control account-content-tab-input" id="security-password-confirm" onChange={
-                                        (event) => {
-                                            const newPassword = document.getElementById('security-password-new')
+                                    <input
+                                        type="password"
+                                        className="form-control account-content-tab-input"
+                                        id="security-password-confirm"
+                                        placeholder="abcd0123"
+                                        aria-describedby="securityPasswordVerifyFeedback"
+                                        onChange={
+                                            (event) => {
+                                                const newPassword = document.getElementById('security-password-new')
+                                                const validate = document.getElementById('securityPasswordVerifyFeedback')
+                                                const button = document.getElementById('securityPasswordButton')
 
-                                            if (event.target.value && !validatePassword && event.target.value === newPassword.value) {
+                                                if (event.target.value) {
+                                                    if (event.target.value === newPassword.value) {
+                                                        event.target.classList.add("is-invalid")
+                                                        return validate.innerHTML = translator().translate.pages.Account.Contents.Security.password_not_match
+                                                    }
+
+                                                    button.disabled = false
+                                                }
+
                                                 event.target.classList.remove("is-invalid")
-                                                setChangeNewPassword(1)
-                                                setValidateVerifyPassword('')
-                                            } else {
-                                                event.target.classList.add("is-invalid")
-                                                setChangeNewPassword(0)
-                                                setValidateVerifyPassword('รหัสผ่านไม่ตรงกัน')
+                                                button.disabled = true
+                                                validate.innerHTML = ''
                                             }
                                         }
-                                    } placeholder="abcd0123" aria-describedby="securityPasswordVerifyFeedback" disabled={validatePassword ? true : false} />
-                                    <label htmlFor="security-password-confirm">ยืนยันรหัสผ่านใหม่</label>
-                                    <div className="invalid-feedback" id="securityPasswordVerifyFeedback">{validateVerifyPassword}</div>
+                                    />
+                                    <label htmlFor="security-password-confirm">
+                                        {translator().translate.pages.Account.Contents.Security.verify_new_password}
+                                    </label>
+                                    <div className="invalid-feedback" id="securityPasswordVerifyFeedback"></div>
                                 </div>
-                                {
-                                    changeNewPassword === 1 ? (
-                                        <>
-                                            <br />
-                                            <button className="account-content-tab-button btn btn-primary w-100" type="button" onClick={
-                                                () => {
-                                                    const auth = getAuth()
-                                                    const newPassword = document.getElementById('security-password-new')
-                                                    const passwordConfirm = document.getElementById('security-password-confirm')
-                                                    const element = document.getElementById('verifyChangeModal')
+                                <br />
+                                <button
+                                    className="account-content-tab-button btn btn-primary w-100"
+                                    type="button"
+                                    id="securityPasswordButton"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#verifyChangeModal"
+                                    disabled
+                                    onClick={
+                                        (event) => {
+                                            const auth = getAuth()
+                                            const newPassword = document.getElementById('security-password-new')
+                                            const passwordConfirm = document.getElementById('security-password-confirm')
+                                            const element = document.getElementById('verifyChangeModal')
 
-                                                    newPassword.disabled = true
-                                                    passwordConfirm.disabled = true
-                                                    setPasswordLabel('<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> เปลี่ยนแปลง')
-                                                    setPasswordError('')
+                                            newPassword.disabled = true
+                                            passwordConfirm.disabled = true
+                                            event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
+                                            setPasswordError('')
 
-                                                    element.addEventListener('hidden.bs.modal', () => {
-                                                        if (verify === 0) {
-                                                            setPasswordLabel('<i class="bi bi-lock"></i> เปลี่ยนแปลง')
-                                                        }
-                                                        if (verify === 1) {
-                                                            updatePassword(auth.currentUser, passwordConfirm.value).then(() => {
-                                                                newPassword.disabled = false
-                                                                passwordConfirm.disabled = false
-                                                                setPasswordLabel('<i class="bi bi-check-circle"></i> เปลี่ยนแปลง')
-                                                                setTimeout(() => {
-                                                                    setPasswordLabel('<i class="bi bi-lock"></i> เปลี่ยนแปลง')
-                                                                }, 3000)
-                                                            }).catch((error) => {
-                                                                newPassword.disabled = false
-                                                                passwordConfirm.disabled = false
-                                                                setPasswordLabel('<i class="bi bi-x-circle"></i> เปลี่ยนแปลง')
-                                                                setPasswordError('ไม่สามารถเปลี่ยนแปลงรหัสผ่านได้ ข้อผิดพลาด: ' + error)
-                                                            })
-                                                        }
+                                            element.addEventListener('hidden.bs.modal', () => {
+                                                if (verify) {
+                                                    updatePassword(auth.currentUser, passwordConfirm.value).then(() => {
+                                                        newPassword.disabled = false
+                                                        passwordConfirm.disabled = false
+                                                        event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
+                                                        setTimeout(() => {
+                                                            event.target.innerHTML = '<i class="bi bi-lock"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
+                                                        }, 3000)
+                                                    }).catch((error) => {
+                                                        newPassword.disabled = false
+                                                        passwordConfirm.disabled = false
+                                                        event.target.innerHTML = '<i class="bi bi-x-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
+                                                        setPasswordError(translator().translate.pages.Account.Contents.Security.can_not_change_password + '\n' + error)
                                                     })
+                                                } else {
+                                                    event.target.innerHTML = '<i class="bi bi-lock"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.change)
                                                 }
-                                            } data-bs-toggle="modal" data-bs-target="#verifyChangeModal" dangerouslySetInnerHTML={{ __html: passwordLabel }}></button>
-                                            {passwordError ? <span className="text-center text-warning w-100">{passwordError}</span> : ""}
-                                        </>
-                                    ) : ""
-                                }
+                                            })
+                                        }
+                                    }
+                                >
+                                    <i className="bi bi-lock"></i> {translator().translate.pages.Account.Contents.Security.change}
+                                </button>
+                                {passwordError ? <span className="text-center text-warning w-100">{passwordError}</span> : ""}
                             </div>
                         </div>
                     </div>
@@ -256,71 +288,96 @@ export default function Security(props) {
                         <div className="card account-content-tab-card">
                             <div className="card-body">
                                 <div className="account-content-tab-content-title">
-                                    <h2><i className="bi bi-check-circle"></i> การยืนยัน</h2>
+                                    <h2>
+                                        <i className="bi bi-check-circle"></i> {translator().translate.pages.Account.Contents.Security.confirmation}
+                                    </h2>
                                 </div>
                                 <hr className="account-content-tab-content-horizon" />
                                 <div className="card mb-3 account-content-tab-card">
                                     <div className="card-body hstack gap-3">
                                         {
-                                            userData ?
+                                            userData ? (
                                                 userData.user.emailVerified ? (
                                                     <>
-                                                        <span className="badge rounded-pill bg-success">ยืนยัน</span>
-                                                        <div className="me-auto">ยืนยันที่อยู่อีเมลของคุณ</div>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <span className="badge rounded-pill bg-warning text-dark">ไม่ยืนยัน</span>
-                                                        <div className="me-auto">ยืนยันที่อยู่อีเมลของคุณ</div>
-                                                        <button type="button" className="btn btn-primary account-content-tab-button" onClick={
-                                                            () => {
-                                                                const auth = getAuth();
-
-                                                                setSendVerifyLinkLabel('<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> ส่ง')
-                                                                setSendVerifyLinkDisabled(true)
-
-                                                                sendEmailVerification(auth.currentUser).then(() => {
-                                                                    setSendVerifyLinkLabel('<i class="bi bi-check-circle"></i> ส่ง')
-                                                                    setTimeout(() => {
-                                                                        let count = 57
-                                                                        const waitTimer = setInterval(() => {
-                                                                            if (count <= 0) {
-                                                                                clearInterval(waitTimer)
-                                                                                setSendVerifyLinkDisabled(false)
-                                                                            } else {
-                                                                                setSendVerifyLinkLabel(count + ' ส่ง')
-                                                                            }
-                                                                            count -= 1
-                                                                        }, 1000)
-                                                                    }, 3000)
-                                                                }).catch((error) => {
-                                                                    console.log(error)
-                                                                    setSendVerifyLinkLabel('<i class="bi bi-x-circle"></i> ส่ง')
-                                                                    setSendVerifyLinkDisabled(false)
-                                                                    setTimeout(() => {
-                                                                        setSendVerifyLinkLabel('ส่ง')
-                                                                    }, 3000)
-                                                                })
-                                                            }
-                                                        } disabled={sendVerifyLinkDisabled} dangerouslySetInnerHTML={{ __html: sendVerifyLinkLabel }}></button>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <span className="badge rounded-pill bg-secondary">
-                                                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                            <span className="visually-hidden">Loading...</span>
+                                                        <span className="badge rounded-pill bg-success">
+                                                            {translator().translate.pages.Account.Contents.Security.verify}
                                                         </span>
-                                                        <div className="me-auto">ยืนยันที่อยู่อีเมลของคุณ</div>
+                                                        <div className="me-auto">
+                                                            {translator().translate.pages.Account.Contents.Security.verify_email}
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span className="badge rounded-pill bg-warning text-dark">
+                                                            {translator().translate.pages.Account.Contents.Security.unverified}
+                                                        </span>
+                                                        <div className="me-auto">
+                                                            {translator().translate.pages.Account.Contents.Security.verify_email}
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary account-content-tab-button"
+                                                            onClick={
+                                                                (event) => {
+                                                                    const auth = getAuth();
+
+                                                                    event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.send)
+                                                                    event.target.disabled = true
+
+                                                                    sendEmailVerification(auth.currentUser).then(() => {
+                                                                        event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.send)
+                                                                        setTimeout(() => {
+                                                                            let count = 57
+                                                                            const waitTimer = setInterval(() => {
+                                                                                if (count <= 0) {
+                                                                                    clearInterval(waitTimer)
+                                                                                    event.target.disabled = false
+                                                                                } else {
+                                                                                    event.target.innerHTML = count + ' %s'.replace('%s', translator().translate.pages.Account.Contents.Security.send)
+                                                                                }
+                                                                                count -= 1
+                                                                            }, 1000)
+                                                                        }, 3000)
+                                                                    }).catch((error) => {
+                                                                        console.log(error)
+                                                                        event.target.innerHTML = '<i class="bi bi-x-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Security.send)
+                                                                        event.target.disabled = false
+                                                                        setTimeout(() => {
+                                                                            event.target.innerHTML = translator().translate.pages.Account.Contents.Security.send
+                                                                        }, 3000)
+                                                                    })
+                                                                }
+                                                            }
+                                                        >
+                                                            {translator().translate.pages.Account.Contents.Security.send}
+                                                        </button>
                                                     </>
                                                 )
+                                            ) : (
+                                                <>
+                                                    <span className="badge rounded-pill bg-secondary">
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                        <span className="visually-hidden">Loading...</span>
+                                                    </span>
+                                                    <div className="me-auto">
+                                                        {translator().translate.pages.Account.Contents.Security.verify_email}
+                                                    </div>
+                                                </>
+                                            )
                                         }
                                     </div>
                                 </div>
                                 <div className="card account-content-tab-card">
                                     <div className="card-body hstack gap-3">
-                                        <span className="badge rounded-pill bg-secondary">ปิด</span>
-                                        <div className="me-auto">ยืนยันแบบสองขั้นตอน</div>
-                                        <button type="button" className="btn btn-primary account-content-tab-button" disabled>เปิด</button>
+                                        <span className="badge rounded-pill bg-secondary">
+                                            {translator().translate.pages.Account.Contents.Security.disable}
+                                        </span>
+                                        <div className="me-auto">
+                                            {translator().translate.pages.Account.Contents.Security.two_factor}
+                                        </div>
+                                        <button type="button" className="btn btn-primary account-content-tab-button" disabled>
+                                            {translator().translate.pages.Account.Contents.Security.enable}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -332,21 +389,270 @@ export default function Security(props) {
                         <div className="card account-content-tab-card">
                             <div className="card-body">
                                 <div className="account-content-tab-content-title">
-                                    <h2><i className="bi bi-plug"></i> เชื่อมต่อบัญชี</h2>
+                                    <h2>
+                                        <i className="bi bi-plug"></i> {translator().translate.pages.Account.Contents.Security.connect_account}
+                                    </h2>
                                 </div>
                                 <hr className="account-content-tab-content-horizon" />
                                 <div className="card account-content-tab-card mb-3">
                                     <div className="card-body hstack gap-3">
-                                        <img src={require('../../../assets/icons/google.webp')} alt="google" width="20px" height="20px" />
-                                        <div className="me-auto">Google</div>
-                                        <button type="button" className="btn btn-primary account-content-tab-button" disabled>เชื่อมต่อ</button>
+                                        {
+                                            userData && providerID().includes('microsoft.com') ? (
+                                                <>
+                                                    <img src={microsoftLogo} alt="microsoft" width="20px" height="20px" />
+                                                    <div className="me-auto">Microsoft</div>
+                                                    <div className="hstack gap-3">
+                                                        <span className="user-select-all align-middle">
+                                                            {
+                                                                userData.user.providerData.find(data => data.providerId === 'microsoft.com').displayName || translator().translate.pages.Account.Contents.Security.unknown
+                                                            }
+                                                        </span>
+                                                        <div className="vr"></div>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-secondary account-content-tab-button"
+                                                            onClick={
+                                                                () => {
+                                                                    const auth = getAuth()
+                                                                    const provider = new OAuthProvider('microsoft.com')
+
+                                                                    unlink(auth.currentUser, provider)
+                                                                        .catch((error) => {
+                                                                            const errorCode = error.code
+                                                                            const errorMessage = error.message
+
+                                                                            console.log(errorCode, errorMessage)
+                                                                        })
+                                                                }
+                                                            }
+                                                        >
+                                                            {translator().translate.pages.Account.Contents.Security.revoke}
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img src={microsoftLogo} alt="microsoft" width="20px" height="20px" />
+                                                    <div className="me-auto">Microsoft</div>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary account-content-tab-button"
+                                                        onClick={
+                                                            () => {
+                                                                const auth = getAuth()
+                                                                const provider = new OAuthProvider('microsoft.com')
+
+                                                                linkWithPopup(auth.currentUser, provider)
+                                                                    .catch((error) => {
+                                                                        const errorCode = error.code
+                                                                        const errorMessage = error.message
+
+                                                                        console.log(errorCode, errorMessage)
+                                                                    })
+                                                            }
+                                                        }
+                                                    >
+                                                        {translator().translate.pages.Account.Contents.Security.connect}
+                                                    </button>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                                <div className="card account-content-tab-card mb-3">
+                                    <div className="card-body hstack gap-3">
+                                        {
+                                            userData && providerID().includes('google.com') ? (
+                                                <>
+                                                    <img src={googleLogo} alt="google" width="20px" height="20px" />
+                                                    <div className="me-auto">Google</div>
+                                                    <div className="hstack gap-3">
+                                                        <span className="user-select-all align-middle">
+                                                            {
+                                                                userData.user.providerData.find(data => data.providerId === 'google.com').displayName || translator().translate.pages.Account.Contents.Security.unknown
+                                                            }
+                                                        </span>
+                                                        <div className="vr"></div>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-secondary account-content-tab-button"
+                                                            onClick={
+                                                                () => {
+                                                                    const auth = getAuth()
+                                                                    const provider = new GoogleAuthProvider()
+
+                                                                    unlink(auth.currentUser, provider)
+                                                                        .catch((error) => {
+                                                                            const errorCode = error.code
+                                                                            const errorMessage = error.message
+
+                                                                            console.log(errorCode, errorMessage)
+                                                                        })
+                                                                }
+                                                            }
+                                                        >
+                                                            {translator().translate.pages.Account.Contents.Security.revoke}
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img src={googleLogo} alt="google" width="20px" height="20px" />
+                                                    <div className="me-auto">Google</div>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary account-content-tab-button"
+                                                        onClick={
+                                                            () => {
+                                                                const auth = getAuth()
+                                                                const provider = new GoogleAuthProvider()
+
+                                                                provider.addScope('https://www.googleapis.com/auth/contacts.readonly')
+                                                                linkWithPopup(auth.currentUser, provider)
+                                                                    .catch((error) => {
+                                                                        const errorCode = error.code
+                                                                        const errorMessage = error.message
+
+                                                                        console.log(errorCode, errorMessage)
+                                                                    })
+                                                            }
+                                                        }
+                                                    >
+                                                        {translator().translate.pages.Account.Contents.Security.connect}
+                                                    </button>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                                <div className="card account-content-tab-card mb-3">
+                                    <div className="card-body hstack gap-3">
+                                        {
+                                            userData && providerID().includes('facebook.com') ? (
+                                                <>
+                                                    <img src={facebookLogo} alt="facebook" width="20px" height="20px" />
+                                                    <div className="me-auto">Facebook</div>
+                                                    <div className="hstack gap-3">
+                                                        <span className="user-select-all align-middle">
+                                                            {
+                                                                userData.user.providerData.find(data => data.providerId === 'facebook.com').displayName || translator().translate.pages.Account.Contents.Security.unknown
+                                                            }
+                                                        </span>
+                                                        <div className="vr"></div>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-secondary account-content-tab-button"
+                                                            onClick={
+                                                                () => {
+                                                                    const auth = getAuth()
+                                                                    const provider = new FacebookAuthProvider()
+
+                                                                    unlink(auth.currentUser, provider)
+                                                                        .catch((error) => {
+                                                                            const errorCode = error.code
+                                                                            const errorMessage = error.message
+
+                                                                            console.log(errorCode, errorMessage)
+                                                                        })
+                                                                }
+                                                            }
+                                                        >
+                                                            {translator().translate.pages.Account.Contents.Security.revoke}
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img src={facebookLogo} alt="facebook" width="20px" height="20px" />
+                                                    <div className="me-auto">Facebook</div>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary account-content-tab-button"
+                                                        onClick={
+                                                            () => {
+                                                                const auth = getAuth()
+                                                                const provider = new FacebookAuthProvider()
+
+                                                                linkWithPopup(auth.currentUser, provider)
+                                                                    .catch((error) => {
+                                                                        const errorCode = error.code
+                                                                        const errorMessage = error.message
+
+                                                                        console.log(errorCode, errorMessage)
+                                                                    })
+                                                            }
+                                                        }
+                                                    >
+                                                        {translator().translate.pages.Account.Contents.Security.connect}
+                                                    </button>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                 </div>
                                 <div className="card account-content-tab-card">
                                     <div className="card-body hstack gap-3">
-                                        <img src={require("../../../assets/icons/facebook.webp")} alt="facebook" width="20px" height="20px" />
-                                        <div className="me-auto">Facebook</div>
-                                        <button type="button" className="btn btn-primary account-content-tab-button" disabled>เชื่อมต่อ</button>
+                                        {
+                                            userData && providerID().includes('github.com') ? (
+                                                <>
+                                                    <img src={githubLogo} alt="github" width="20px" height="20px" />
+                                                    <div className="me-auto">Github</div>
+                                                    <div className="hstack gap-3">
+                                                        <span className="user-select-all align-middle">
+                                                            {
+                                                                userData.user.providerData.find(data => data.providerId === 'github.com').displayName || translator().translate.pages.Account.Contents.Security.unknown
+                                                            }
+                                                        </span>
+                                                        <div className="vr"></div>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-secondary account-content-tab-button"
+                                                            onClick={
+                                                                () => {
+                                                                    const auth = getAuth()
+                                                                    const provider = new GithubAuthProvider()
+
+                                                                    unlink(auth.currentUser, provider)
+                                                                        .catch((error) => {
+                                                                            const errorCode = error.code
+                                                                            const errorMessage = error.message
+
+                                                                            console.log(errorCode, errorMessage)
+                                                                        })
+                                                                }
+                                                            }
+                                                        >
+                                                            {translator().translate.pages.Account.Contents.Security.revoke}
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img src={githubLogo} alt="github" width="20px" height="20px" />
+                                                    <div className="me-auto">Github</div>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary account-content-tab-button"
+                                                        onClick={
+                                                            () => {
+                                                                const auth = getAuth()
+                                                                const provider = new GithubAuthProvider()
+
+                                                                linkWithPopup(auth.currentUser, provider)
+                                                                    .catch((error) => {
+                                                                        const errorCode = error.code
+                                                                        const errorMessage = error.message
+
+                                                                        console.log(errorCode, errorMessage)
+                                                                    })
+                                                            }
+                                                        }
+                                                    >
+                                                        {translator().translate.pages.Account.Contents.Security.connect}
+                                                    </button>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -355,6 +661,6 @@ export default function Security(props) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

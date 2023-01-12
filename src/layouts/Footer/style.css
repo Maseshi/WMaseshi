@@ -10,9 +10,14 @@
 .footer-brand {
     color: black;
     opacity: 1;
-    font-size: 25px;
+    font-size: 28px;
     text-decoration: none;
+    font-family: 'Mitr-SemiBold';
     transition: opacity 0.3s ease-in-out;
+}
+
+.footer-brand > img {
+    margin-right: 10px;
 }
 
 .footer-brand:hover {
@@ -32,12 +37,10 @@
 
 .footer-link-a {
     color: black;
-    text-decoration: none;
 }
 
 .footer-link-a:hover {
     color: black;
-    text-decoration: underline;
 }
 
 .footer-link-a.disabled {
@@ -48,5 +51,5 @@
 
 .footer-raw {
     padding: 20px;
-    background-color: #E0E0E0;
+    background-color: var(--bs-gray-200);
 }

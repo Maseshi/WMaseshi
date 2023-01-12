@@ -16,7 +16,7 @@ export default function ScrollToTop() {
     }, [])
 
     return (
-        <button type="button" className={top ? "scroll-to-top-hidden btn" : "scroll-to-top btn"} onClick={() => window.scrollTo(0, 0)}>
+        <button type="button" className={top ? "scroll-to-top-hidden btn" : "scroll-to-top btn"} onClick={() => window.scrollTo(0, 0)} aria-label="Scroll to top">
             <i className="bi bi-chevron-up"></i>
         </button>
     )

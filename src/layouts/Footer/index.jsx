@@ -1,4 +1,8 @@
+import { Link } from 'react-router-dom'
+
 import Waves from '../../components/Waves/index'
+
+import { translator } from '../../utils/functions/translator'
 
 import './style.css'
 
@@ -10,41 +14,60 @@ export default function Footer() {
                 <div className="footer-info">
                     <div className="container">
                         <div className="row">
-                            <div className="col-md-4">
+                            <div className="col-md-4 mb-3">
                                 <a className="footer-brand" href="/">
-                                    <img className="d-inline-block align-middle" src="/favicon-96x96.png" alt="favicon" width="50" height="50" />
+                                    <img className="d-inline-block align-middle" src={process.env.PUBLIC_URL + '/static/media/favicon-96x96.png'} alt="favicon" width="50" height="50" />
                                     Maseshi
                                 </a>
                                 <br />
                                 <br />
-                                <p>เว็บไซต์ส่วนตัวของ Chaiwat Suwannarat มีไว้สำหรับกักเก็บและเผยแพร่ผลงานของตน ซึ่งทุกคนสามารถศึกษาหรือนำไปใช้งานได้ฟรี</p>
                                 <p>
-                                    หากมีข้อสงสัยใดๆ สามารถติดต่อได้ที่:
+                                    {translator().translate.layouts.Footer.website_info}
+                                </p>
+                                <p>
+                                    {translator().translate.layouts.Footer.need_to_contact}
                                     <br />
                                     <a href="mailto:dermhioasw123@gmail.com">dermhioasw123@gmail.com</a>
                                 </p>
                             </div>
-                            <div className="col-md-4">
-                                <h3>ลิงค์อื่นๆ</h3>
+                            <div className="col-md-4 mb-3">
+                                <h3>
+                                    {translator().translate.layouts.Footer.other_links}
+                                </h3>
                                 <br />
                                 <ul className="footer-link">
                                     <li className="footer-link-item">
-                                        <a className="footer-link-a" href="/account">บัญชี</a>
+                                        <Link className="footer-link-a" to="/projects">
+                                            {translator().translate.layouts.Footer.all_projects}
+                                        </Link>
                                     </li>
                                     <li className="footer-link-item">
-                                        <a className="footer-link-a" href="/privacy-policy">นโยบายความเป็นส่วนตัว</a>
+                                        <Link className="footer-link-a" to="/account">
+                                            {translator().translate.layouts.Footer.account}
+                                        </Link>
                                     </li>
                                     <li className="footer-link-item">
-                                        <a className="footer-link-a" href="/terms-of-service">เงื่อนไขการให้บริการ</a>
+                                        <Link className="footer-link-a" to="/privacy-policy">
+                                            {translator().translate.layouts.Footer.privacy_policy}
+                                        </Link>
+                                    </li>
+                                    <li className="footer-link-item">
+                                        <Link className="footer-link-a" to="/terms-of-service">
+                                            {translator().translate.layouts.Footer.terms_of_services}
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
                             <div className="col-md-4">
-                                <h3>แหล่งข้อมูล</h3>
+                                <h3>
+                                    {translator().translate.layouts.Footer.resources}
+                                </h3>
                                 <br />
                                 <ul className="footer-link">
                                     <li className="footer-link-item">
-                                        <a className="footer-link-a" href="./projects?project=wmaseshi" target="_blank" rel="noreferrer">โอเพ่นซอร์ส</a>
+                                        <Link className="footer-link-a" to="./projects?id=wmaseshi" target="_blank" rel="noreferrer">
+                                            {translator().translate.layouts.Footer.open_source}
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -53,10 +76,12 @@ export default function Footer() {
                 </div>
                 <div className="footer-raw text-center">
                     <span>
-                        <a href="/privacy-policy">นโยบายความเป็นส่วนตัว</a> • <a href="/terms-of-service">เงื่อนไขการให้บริการ</a>
+                        <Link to="/privacy-policy">{translator().translate.layouts.Footer.privacy_policy}</Link> • <Link to="/terms-of-service">{translator().translate.layouts.Footer.terms_of_services}</Link>
                     </span>
                     <br />
-                    <span>© 2563 - 2565 Chaiwat Suwannarat. สงวนลิขสิทธิ์</span>
+                    <span>
+                        {translator().translate.layouts.Footer.copyright}
+                    </span>
                 </div>
             </div>
         </footer>

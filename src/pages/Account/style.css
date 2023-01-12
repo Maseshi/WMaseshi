@@ -1,5 +1,4 @@
 .account-modal-content {
-    border: 0;
     padding: 5px 5px 10px 10px;
     border-radius: 20px;
 }
@@ -33,22 +32,21 @@
     text-align: center;
 }
 
-.account-profile>img {
+.account-profile img {
     border-radius: 100%;
     margin-top: 25px;
     margin-bottom: 25px;
 }
 
-.account-profile>i {
+.account-profile i {
     font-size: 100px;
 }
 
-.account-navbar > nav > button.nav-link,
-.account-navbar > nav > button.btn {
+.account-navbar > .nav-pills > .nav-link {
     border-radius: 10px;
 }
 
-.account-navbar  > .nav-tabs > li.nav-item > .nav-link {
+.account-navbar > .nav-tabs > .nav-link {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -63,6 +61,7 @@
 }
 
 hr:not([size]).account-content-tab-content-horizon {
+    border-top: none;
     height: 5px;
     border-radius: 10px;
     background-color: #ced4da;
@@ -87,8 +86,8 @@ hr:not([size]).account-content-tab-content-horizon {
     padding-bottom: 21px;
     padding-left: 35px;
     padding-right: 35px;
-    border: 3px solid #CED4DA;
-    border-style: dotted;
+    border: 5px solid #CED4DA;
+    border-style: dashed;
     border-radius: 100%;
     background: none;
     overflow: hidden;
