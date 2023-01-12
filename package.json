@@ -1,23 +1,27 @@
 {
   "name": "maseshi-react",
-  "version": "1.2.0",
+  "version": "1.3.4",
   "private": true,
   "dependencies": {
-    "@octokit/core": "^3.6.0",
-    "@popperjs/core": "^2.11.4",
-    "@testing-library/jest-dom": "^5.16.3",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^14.0.4",
-    "bootstrap": "^5.1.3",
-    "bootstrap-icons": "^1.8.1",
-    "firebase": "^9.6.9",
-    "highlight.js": "^11.5.0",
-    "markdown-it": "^12.3.2",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "^5.0.0",
-    "web-vitals": "^2.1.4"
+    "@octokit/core": "^4.1.0",
+    "@popperjs/core": "^2.11.6",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@webtoon/psd": "^0.3.0",
+    "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.3",
+    "firebase": "^9.15.0",
+    "highlight.js": "^11.7.0",
+    "markdown-it": "^13.0.1",
+    "react": "^18.2.0",
+    "react-document-meta": "^3.0.0-beta.2",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.6.2",
+    "web-vitals": "^3.1.1"
+  },
+  "devDependencies": {
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
