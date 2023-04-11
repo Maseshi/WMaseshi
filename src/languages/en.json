@@ -72,7 +72,9 @@
         "Footer": {
             "account": "Account",
             "all_projects": "All Projects",
+            "code_licensed": "Code licensed",
             "copyright": "© 2020 - 2022 Chaiwat Suwannarat. All rights reserved.",
+            "currently": "Currently",
             "need_to_contact": "If you have any questions can be contacted at:",
             "open_source": "Open-Source",
             "other_links": "Other links",
@@ -101,10 +103,16 @@
                 "customize": "Customize",
                 "dark_mode": "Dark Mode",
                 "log_out": "Log out",
+                "manage_account": "Manage accounts",
+                "or": "or",
                 "personal": "Personal",
                 "privacy": "Privacy",
+                "privacy_policy": "Privacy Policy",
+                "register": "Create a new account",
                 "security": "Security",
                 "settings": "Settings",
+                "sign_in": "Sign in",
+                "terms_of_services": "Terms of Service",
                 "user": "User"
             }
         }
@@ -114,7 +122,7 @@
             "Account": {
                 "website_description": "Login to your account to manage or view your personal information from here.",
                 "website_subject": "Your account in Maseshi",
-                "wevsite_title": "Account | Maseshi"
+                "website_title": "Account | Maseshi"
             },
             "Contents": {
                 "Contents": {
@@ -124,6 +132,8 @@
                     "incorrect_password": "Incorrect password",
                     "password": "Password",
                     "password_can_not_empty": "Please enter your password to verify your identity.",
+                    "this_tab_empty": "This tab is empty...",
+                    "this_tab_no_information": "We couldn't find anything on this page. Take a look at the side tabs to go to another page.",
                     "verify": "Verify",
                     "verify_changes": "Confirm changes"
                 },
@@ -218,6 +228,9 @@
             }
         },
         "Home": {
+            "Powered": {
+                "powered_by": "Powered by"
+            },
             "About": {
                 "about_me": "About me",
                 "about_me_subject": "Want to know more about Maseshi? This may help you.",
@@ -359,9 +372,20 @@
                             "test": "Test"
                         },
                         "GetStarted": {
+                            "compute": "Compute",
+                            "compute_description": "This model can be loaded on the Inference API on-demand.",
+                            "compute_error": "An internal system error occurred.",
+                            "compute_info": "FAQ",
+                            "compute_info_load_very_long": "I pressed compute but it took too long to load?",
+                            "compute_info_load_very_long_answer": "There are two possibilities: the model may be downloading or the system may use the CPU for computation.",
+                            "compute_info_why_is_black_image": "Why is it black image?",
+                            "compute_info_why_is_black_image_answer": "The system may detect sensitive areas. So you get a black image instead.",
+                            "compute_time": "Compute time on %s1: %s2 seconds",
+                            "hosted_inference_api": "Hosted inference",
                             "loading": "Loading",
                             "this_tab_is_empty": "This page has not been added.",
-                            "try_again_later": "Please try again later."
+                            "try_again_later": "Please try again later.",
+                            "your_sentence_here": "Type your sentence here..."
                         },
                         "News": {
                             "april": "April",
@@ -483,13 +507,25 @@
                             "Changelog": {
                                 "according_to_github": "According to GitHub.",
                                 "no_data": "No data",
-                                "page_description": "Information on changes or updates to each version of the project"
+                                "page_description": "Information on changes or updates to each version of the project",
+                                "reference_data": "Reference data"
                             },
                             "GetStarted": {
                                 "according_to_github": "According to GitHub",
                                 "custom_coming_soon": "Custom (coming soon)",
+                                "hosted_inference": "Host Summary",
+                                "hosted_inference_description": "Would you like to use an embedded server for processing machine learning models?",
+                                "hosted_inference_help_model": "If unsure you can explore the available models.",
+                                "hosted_inference_model_link": "Model Link",
+                                "hosted_inference_model_type": "Model type",
+                                "hosted_inference_model_type_text_to_image": "Convert text to image",
+                                "hosted_inference_no": "No, it's not necessary right now.",
+                                "hosted_inference_note": "(depending on server availability to use CPU or GPU for processing)",
+                                "hosted_inference_yes": "Yes, would like",
                                 "no_data": "No data",
-                                "page_description": "Information for the start of the project"
+                                "page_description": "Information for the start of the project",
+                                "reference_data": "Reference data",
+                                "reference_from_huggingface": "refer data from Huggingface"
                             },
                             "News": {
                                 "april": "April",
@@ -514,7 +550,8 @@
                             "SourceCode": {
                                 "according_to_github": "According to GitHub",
                                 "no_data": "No data",
-                                "page_description": "Source code which can be obtained from Maseshi's Github repository."
+                                "page_description": "Source code which can be obtained from Maseshi's Github repository.",
+                                "reference_data": "Reference data"
                             }
                         },
                         "UploadIcon": {
@@ -534,6 +571,8 @@
                     }
                 },
                 "Pages": {
+                    "cancel_changes": "Cancel changes",
+                    "edit_this_page": "Edit information for this page",
                     "project_not_found": "Project not found",
                     "project_not_found_information": "Maybe it has been moved or deleted and may be a private project.",
                     "website_title": "Project | Maseshi"

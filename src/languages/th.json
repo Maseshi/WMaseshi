@@ -71,7 +71,9 @@
         "Footer": {
             "account": "บัญชี",
             "all_projects": "โครงการทั้งหมด",
+            "code_licensed": "โค้ดลายเซ็น",
             "copyright": "© 2563 - 2565 Chaiwat Suwannarat. สงวนลิขสิทธิ์",
+            "currently": "ปัจจุบัน",
             "need_to_contact": "หากมีข้อสงสัยใดๆ สามารถติดต่อได้ที่:",
             "open_source": "โอเพ่นซอร์ส",
             "other_links": "ลิงค์อื่นๆ",
@@ -100,10 +102,16 @@
                 "customize": "ปรับแต่ง",
                 "dark_mode": "โหมดตอนกลางคืน",
                 "log_out": "ออกจากระบบ",
+                "manage_account": "จัดการบัญชี",
+                "or": "หรือ",
                 "personal": "ข้อมูลส่วนตัว",
                 "privacy": "ความเป็นส่วนตัว",
+                "privacy_policy": "นโยบายความเป็นส่วนตัว",
+                "register": "สร้างบัญชีใหม่",
                 "security": "ความปลอดภัย",
                 "settings": "การตั้งค่า",
+                "sign_in": "เข้าสู่ระบบ",
+                "terms_of_services": "เงื่อนไขการให้บริการ",
                 "user": "ผู้ใช้งาน"
             }
         }
@@ -113,7 +121,7 @@
             "Account": {
                 "website_description": "ลงชื่อเข้าใช้บัญชีของคุณเพื่อจัดการหรือดูข้อมูลส่วนตัวของคุณได้จากที่นี่",
                 "website_subject": "บัญชีของคุณใน Maseshi",
-                "wevsite_title": "บัญชี | Maseshi"
+                "website_title": "บัญชี | Maseshi"
             },
             "Contents": {
                 "Contents": {
@@ -123,6 +131,8 @@
                     "incorrect_password": "รหัสผ่านไม่ถูกต้อง",
                     "password": "รหัสผ่าน",
                     "password_can_not_empty": "กรุณากรอกรหัสผ่านเพื่อยืนยันตัวตน",
+                    "this_tab_empty": "แท็บนี้ว่างเปล่า...",
+                    "this_tab_no_information": "เราไม่พบอะไรเลยในหน้านี้ ลองดูที่แท็บด้านข้างเพื่อไปหน้าอื่น",
                     "verify": "ยืนยัน",
                     "verify_changes": "ยืนยันการเปลี่ยนแปลง"
                 },
@@ -236,6 +246,9 @@
                 "why_description": "สิ่งที่ดึงดูดให้ผมเข้าสู่วงการนี้มาจากความอยากรู้อยากเห็นของผมเองครับ อยากรู้ว่าภายในคอมพิวเตอร์มันทำงานยังไง เริ่มจากตรงไหน มีที่มายังไง ผมคิดจนกระทั่งอยากศึกษาในด้านของศาสตร์คอมพิวเตอร์มาเรื่อยๆ จนทำให้ผมสนใจมันเป็นพิเศษและทำให้เกิดโครงการหลายอย่างที่เห็นกันในตอนนี้",
                 "write_a_program": "เขียนโปรแกรม",
                 "years_old": "ปี"
+            },
+            "Powered": {
+                "powered_by": "ขับเคลื่อนโดย"
             },
             "Home": {
                 "website_description": "การเรียนรู้และพัฒนาคือสิ่งสำคัญเหมือนกับการฝึกเขียนโปรแกรมแล้วนำไปต่อยอด ในเว็บไซต์นี้จะนำเสนอถึงสิ่งที่ผมจะนำเสนอทั้งหมด",
@@ -358,9 +371,20 @@
                             "test": "ทดสอบ"
                         },
                         "GetStarted": {
+                            "compute": "คำนวณ",
+                            "compute_description": "โมเดลนี้สามารถโหลดได้บน Inference API ตามที่ต้องการ",
+                            "compute_error": "เกิดข้อผิดพลาดกับระบบภายใน",
+                            "compute_info": "คำถามที่พบบ่อย",
+                            "compute_info_load_very_long": "กดคำนวณแล้วแต่โหลดนานมาก?",
+                            "compute_info_load_very_long_answer": "มีความเป็นไปได้สองอย่าง คือ อาจจะกำลังดาวน์โหลดโมเดลหรือระบบอาจใช้ CPU ในการคำนวณ",
+                            "compute_info_why_is_black_image": "ทำไหมถึงได้ภาพสีดำ?",
+                            "compute_info_why_is_black_image_answer": "ระบบอาจตรวจพบเนื้อที่มีความละเอียดอ่อน คุณจึงได้ภาพสีดำแทน",
+                            "compute_time": "เวลาคำนวณบน %s1: %s2 วินาที",
+                            "hosted_inference_api": "โฮสต์แบบสรุป",
                             "loading": "กำลังโหลด",
                             "this_tab_is_empty": "หน้านี้ยังไม่ได้รับการเพิ่มข้อมูล",
-                            "try_again_later": "โปรดลองกลับมาอีกครั้งในภายหลัง"
+                            "try_again_later": "โปรดลองกลับมาอีกครั้งในภายหลัง",
+                            "your_sentence_here": "พิมพ์ประโยคของคุณที่นี่..."
                         },
                         "News": {
                             "april": "เมษายน",
@@ -482,18 +506,31 @@
                             "Changelog": {
                                 "according_to_github": "อ้างอิงข้อมูลจาก GitHub",
                                 "no_data": "ไม่มีข้อมูล",
-                                "page_description": "ข้อมูลการเปลี่ยนแปลงหรือการอัพเดทของโครงการในแต่ละเวอร์ชั่น"
+                                "page_description": "ข้อมูลการเปลี่ยนแปลงหรือการอัพเดทของโครงการในแต่ละเวอร์ชั่น",
+                                "reference_data": "การอ้างอิงข้อมูล"
                             },
                             "GetStarted": {
                                 "according_to_github": "อ้างอิงข้อมูลจาก GitHub",
                                 "custom_coming_soon": "กำหนดเอง (เร็วๆ นี้)",
+                                "hosted_inference": "โฮสต์แบบสรุป",
+                                "hosted_inference_description": "ต้องการใช้เซิร์ฟเวอร์ในตัวสำหรับใช้ในการประมวลผลโมเดล Machine Learning หรือไม่?",
+                                "hosted_inference_help_model": "หากไม่แน่ใจ สามารถสำรวจโมเดลที่มีใน",
+                                "hosted_inference_model_link": "ลิงค์โมเดล",
+                                "hosted_inference_model_type": "ประเภทของโมเดล",
+                                "hosted_inference_model_type_text_to_image": "แปลงข้อความเป็นรูปภาพ",
+                                "hosted_inference_no": "ไม่, ตอนนี้ยังไม่จำเป็น",
+                                "hosted_inference_note": "(ขึ้นอยู่กับความพร้อมของเซิร์ฟเวอร์ในการใช้ CPU หรือ GPU ในการประมวลผล)",
+                                "hosted_inference_yes": "ใช่, ต้องการ",
                                 "no_data": "ไม่มีข้อมูล",
-                                "page_description": "ข้อมูลสำหรับการเริ่มต้นใช้งานของโครงการดังกล่าว"
+                                "page_description": "ข้อมูลสำหรับการเริ่มต้นใช้งานของโครงการดังกล่าว",
+                                "reference_data": "การอ้างอิงข้อมูล",
+                                "reference_from_huggingface": "อ้างอิงข้อมูลจาก Huggingface"
                             },
                             "News": {
                                 "april": "เมษายน",
                                 "august": "สิงหาคม",
                                 "december": "ธันวาคม",
+                                "events": "เหตุการณ์ต่างๆ",
                                 "february": "กุมภาพันธ์",
                                 "january": "มกราคม",
                                 "july": "กรกฎาคม",
@@ -513,7 +550,8 @@
                             "SourceCode": {
                                 "according_to_github": "อ้างอิงข้อมูลจาก GitHub",
                                 "no_data": "ไม่มีข้อมูล",
-                                "page_description": "รหัสต้นฉบับซึ่งสามารถหาได้จากที่จัดเก็บบน Github ของ Maseshi"
+                                "page_description": "รหัสต้นฉบับซึ่งสามารถหาได้จากที่จัดเก็บบน Github ของ Maseshi",
+                                "reference_data": "การอ้างอิงข้อมูล"
                             }
                         },
                         "UploadIcon": {
@@ -533,6 +571,8 @@
                     }
                 },
                 "Pages": {
+                    "cancel_changes": "ยกเลิกการเปลี่ยนแปลง",
+                    "edit_this_page": "แก้ไขข้อมูลของหน้านี้",
                     "project_not_found": "ไม่พบโครงการ",
                     "project_not_found_information": "อาจจะถูกย้ายหรือลบไปแล้วและอาจเป็นโครงการส่วนตัว",
                     "website_title": "โครงการ | Maseshi"
