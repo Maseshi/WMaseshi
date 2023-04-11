@@ -17,7 +17,7 @@ export default function About() {
 
     return (
         <>
-            <Waves class={'home-wave'} r={255} g={255} b={255} />
+            <Waves className={'home-wave'} r={255} g={255} b={255} />
             <section className="home-about" id="about">
                 <div className="container">
                     <div className="home-about-title">
