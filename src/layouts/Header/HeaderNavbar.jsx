@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
+import HeaderLanguages from './HeaderLanguages'
 import HeaderMenu from './HeaderMenu'
 import HeaderNotification from './HeaderNotification'
 import HeaderProfile from './HeaderProfile'
@@ -50,7 +51,7 @@ export default function HeaderNavbar() {
     <nav className="navbar-style navbar navbar-expand-lg navbar-light">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          <img src={process.env.PUBLIC_URL + '/static/media/favicon-96x96.png'} alt="favicon" width="55" height="55" />
+          <img src={process.env.PUBLIC_URL + '/static/media/favicon-96x96.png'} alt="Maseshi" width="55" height="55" />
           Maseshi
         </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,6 +69,7 @@ export default function HeaderNavbar() {
             <hr />
             <div className="d-flex align-items-center justify-content-center">
               <HeaderNotification />
+              <HeaderLanguages />
               <HeaderProfile loaded={loaded} userData={userData} />
             </div>
           </div>
