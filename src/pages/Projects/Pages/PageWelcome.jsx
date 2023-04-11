@@ -24,10 +24,10 @@ export default function PageWelcome() {
                 </h5>
                 <ul>
                     <li>
-                        <span>Github: <a href="https://github.com/Maseshi" target="_blank" rel="noreferrer">https://github.com/Maseshi</a></span>
+                        <span>Github: <a href="https://github.com/Maseshi" target="_blank" rel="noreferrer noopener">https://github.com/Maseshi</a></span>
                     </li>
                     <li>
-                        <span>Translate: <a href="https://translate.google.com" target="_blank" rel="noreferrer">https://translate.google.com</a></span>
+                        <span>Translate: <a href="https://translate.google.com" target="_blank" rel="noreferrer noopener">https://translate.google.com</a></span>
                     </li>
                 </ul>
                 <h5>
