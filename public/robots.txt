@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://maseshi.web.app/sitemap.xml
