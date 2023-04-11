@@ -42,17 +42,21 @@
     font-size: 100px;
 }
 
-.account-navbar > .nav-pills > .nav-link {
+.account-navbar>.nav-pills>.nav-link {
     border-radius: 10px;
 }
 
-.account-navbar > .nav-tabs > .nav-link {
+.account-navbar>.nav-tabs>.nav-link {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
 
 .account-content-tab-title {
     text-align: center;
+}
+
+.account-content-tab-title i {
+    font-size: 40px;
 }
 
 .account-content-tab-card {
