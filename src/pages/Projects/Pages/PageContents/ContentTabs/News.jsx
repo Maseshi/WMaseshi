@@ -8,44 +8,38 @@ import NewsEditor from '../../PageEditor/NewsEditor'
 
 import { translator } from '../../../../../utils/functions/translator'
 
-export default function News(props) {
+export default function News({ data, userData, parameter, tabs }) {
   const [list, setList] = useState()
   const [avatar, setAvatar] = useState()
   const [action, setAction] = useState({
     new: false
   })
 
-  const dataProps = props.data
-  const userDataProps = props.userData
-  const parameterProps = props.parameter
-  const tabIDProps = props.tabID
-
   useEffect(() => {
-    const getData = async () => {
-      const docs = dataProps.tab.news
-      const markdown = new MarkdownIt({
-        html: true,
-        xhtmlOut: true,
-        breaks: true,
-        linkify: true,
-        highlight: function (str, lang) {
-          if (lang && HighlightJs.getLanguage(lang)) {
-            try {
-              return HighlightJs.highlight(str, { language: lang }).value
-            } catch (__) { }
-          }
-
-          return ''
+    const markdown = new MarkdownIt({
+      html: true,
+      xhtmlOut: true,
+      breaks: true,
+      linkify: true,
+      highlight: function (str, lang) {
+        if (lang && HighlightJs.getLanguage(lang)) {
+          try {
+            return HighlightJs.highlight(str, { language: lang }).value
+          } catch (__) { }
         }
-      })
 
-      markdown.renderer.rules.table_open = () => {
-        return '<table class="table">';
+        return ''
       }
+    })
+    markdown.renderer.rules.table_open = () => {
+      return '<table class="table">';
+    }
+    markdown.renderer.rules.blockquote_open = () => {
+      return '<blockquote class="blockquote">';
+    }
 
-      markdown.renderer.rules.blockquote_open = () => {
-        return '<blockquote class="blockquote">';
-      }
+    const getData = async () => {
+      const docs = data.tab.news
 
       if (docs && docs.length > 0) {
         let established = 0
@@ -137,15 +131,15 @@ export default function News(props) {
       }
     }
     getData()
-  }, [avatar, dataProps.tab.news])
+  }, [avatar, data.tab.news])
 
   return (
-    <div className={parameterProps.tab === tabIDProps[1] ? "tab-pane fade show active" : "tab-pane fade"} id={dataProps.id + "-news"} role="tabpanel" aria-labelledby={dataProps.id + "-news-tab"}>
+    <div className={parameter.tab === tabs[1] ? "tab-pane fade show active" : "tab-pane fade"} id={data.id + "-news"} role="tabpanel" aria-labelledby={data.id + "-news-tab"}>
       {
         list ? (
           <div className="projects-news">
             {
-              userDataProps && userDataProps.user.role === 'owner' ? (
+              userData && userData.user.role === 'owner' ? (
                 <>
                   {
                     action.new ? (
@@ -168,11 +162,11 @@ export default function News(props) {
                             textarea.disabled = true
 
                             const db = getFirestore()
-                            const dbRef = doc(db, "Projects", parameterProps.id)
+                            const dbRef = doc(db, "Projects", parameter.id)
 
-                            const username = userDataProps.auth.displayName
-                            const uid = userDataProps.auth.uid
-                            const role = userDataProps.user.role
+                            const username = userData.auth.displayName
+                            const uid = userData.auth.uid
+                            const role = userData.user.role
 
                             setDoc(dbRef, {
                               tab: {
@@ -214,10 +208,10 @@ export default function News(props) {
                             })
                           }
                         }
-                        userData={userDataProps}
+                        userData={userData}
                       />
                     ) : (
-                      parameterProps.id !== 'new-project' ? (
+                      parameter.id !== 'new-project' ? (
                         <button type="button" className="projects-news-new card mt-3 mb-3" onClick={
                           () => {
                             setAction({

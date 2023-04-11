@@ -14,7 +14,7 @@ import config from '../../../../../configs/data'
 
 import 'highlight.js/styles/github.css'
 
-export default function SourceCode(props) {
+export default function SourceCode({ data, parameter, tabs }) {
   const [directory, setDirectory] = useState([])
   const [content, setContent] = useState()
   const [file, setFile] = useState()
@@ -29,28 +29,23 @@ export default function SourceCode(props) {
       formatContent: ''
     }
   })
-
-  const dataProps = props.data
-  const parameterProps = props.parameter
-  const tabIDProps = props.tabID
-
-  const version = '1.2.0'
+  const version = '1.2.1'
+  const octokit = new Octokit({ auth: config.OCTOKIT })
   const imageExtensions = /.(apng|avif|gif|jpg|jpeg|jfif|pjpeg|pjp|png|svg|webp|bmp|ico|cur|tif|tiff)$/i
   const audioExtensions = /.(3gp|aa|aac|aax|act|aiff|alac|amr|ape|au|awb|dss|dvf|flac|gsm|iklax|ivs|m4a|m4b|m4p|mmf|mp3|mpc|msv|nmf|ogg|oga|mogg|opus|ra|rm|raw|rt64|sln|tta|voc|vox|wav|wma|wv|webm|8svx|cda)$/i
   const markdownExtensions = /.(md|markdown|mdown|mkdn|mkd|mdwn|mdtxt|mdtext)$/i
   const PhotoshopExtensions = /.(psd|pdd|psdt)$/i
   const FLStudioExtensions = /.(flp)$/i
-  const octokit = new Octokit({ auth: config.OCTOKIT })
 
   useEffect(() => {
     const getDirectory = async () => {
-      const OTkit = new Octokit({ auth: config.OCTOKIT })
-      const docs = dataProps.tab.sourcecode
+      const octokit = new Octokit({ auth: config.OCTOKIT })
+      const sourceCodeContent = data.tab.source_code.content
 
-      if (docs) {
-        const response = await OTkit.request('GET /repos/{owner}/{repo}/contents/', {
+      if (sourceCodeContent) {
+        const response = await octokit.request('GET /repos/{owner}/{repo}/contents/', {
           owner: 'Maseshi',
-          repo: docs
+          repo: sourceCodeContent
         })
 
         if (response.status === 404) return
@@ -65,17 +60,17 @@ export default function SourceCode(props) {
       }
     }
     getDirectory()
-  }, [dataProps])
+  }, [data])
 
   const backToDirectory = async (url, index) => {
-    const docs = dataProps.tab.sourcecode
+    const sourceCodeContent = data.tab.source_code.content
 
     setLoading(true)
 
-    if (docs) {
+    if (sourceCodeContent) {
       const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
         owner: 'Maseshi',
-        repo: docs,
+        repo: sourceCodeContent,
         path: url[index]
       })
 
@@ -102,16 +97,15 @@ export default function SourceCode(props) {
       }
     }
   }
-
   const openFolder = async (dir) => {
-    const docs = dataProps.tab.sourcecode
+    const sourceCodeContent = data.tab.source_code.content
 
     setLoading(true)
 
-    if (docs) {
+    if (sourceCodeContent) {
       const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
         owner: 'Maseshi',
-        repo: docs,
+        repo: sourceCodeContent,
         path: dir
       })
 
@@ -132,16 +126,15 @@ export default function SourceCode(props) {
       }
     }
   }
-
   const openFile = async (dir) => {
-    const docs = dataProps.tab.sourcecode
+    const sourceCodeContent = data.tab.source_code.content
 
     setLoading(true)
 
-    if (docs) {
+    if (sourceCodeContent) {
       const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
         owner: 'Maseshi',
-        repo: docs,
+        repo: sourceCodeContent,
         path: dir
       })
 
@@ -285,16 +278,93 @@ export default function SourceCode(props) {
     }
   }
 
+  const handleRawShow = () => {
+    const contentElement = document.querySelector('.projects-source-code-content > .card-body > pre')
+
+    setContent(
+      action.raw.show ? (
+        action.raw.formatContent
+      ) : (
+        action.raw.rawContent
+      )
+    )
+    setAction({
+      wordWrap: action.wordWrap,
+      raw: {
+        show: !action.raw.show,
+        rawContent: action.raw.rawContent,
+        formatContent: action.raw.formatContent
+      }
+    })
+
+    if (action.raw.show) {
+      contentElement.classList.remove('projects-source-code-content-raw-content')
+      contentElement.classList.add('projects-source-code-content-format-content')
+    } else {
+      contentElement.classList.add('projects-source-code-content-raw-content')
+      contentElement.classList.remove('projects-source-code-content-format-content')
+    }
+  }
+  const handleCopyCode = (event) => {
+    navigator.permissions.query({ name: "clipboard-write" }).then(result => {
+      if (result.state === "granted" || result.state === "prompt") {
+        const text = document.getElementById(data.id + "-" + file.name.toLowerCase() + "-code").innerText
+
+        navigator.clipboard.writeText(text).then(() => {
+          event.target.innerHTML = '<i class="bi bi-check"></i>'
+
+          setTimeout(() => {
+            event.target.innerHTML = '<i class="bi bi-files"></i>'
+          }, 3000)
+        }, () => {
+          event.target.innerHTML = '<i class="bi bi-x"></i>'
+
+          setTimeout(() => {
+            event.target.innerHTML = '<i class="bi bi-files"></i>'
+          }, 3000)
+        })
+      }
+    })
+  }
+  const handleWordWrap = () => {
+    const contentElement = document.querySelector('.projects-source-code-content > .card-body > pre')
+
+    setAction({
+      wordWrap: !action.wordWrap,
+      raw: {
+        show: action.raw.show,
+        rawContent: action.raw.rawContent,
+        formatContent: action.raw.formatContent
+      }
+    })
+
+    if (action.wordWrap) {
+      if (action.raw.show) {
+        contentElement.classList.add('projects-source-code-content-raw-content')
+      } else {
+        if (!action.raw.rawContent && !action.raw.formatContent) {
+          contentElement.classList.add('projects-source-code-content-raw-content')
+        } else {
+          contentElement.classList.add('projects-source-code-content-format-content')
+        }
+      }
+      contentElement.classList.remove('projects-source-code-content-word-wrap')
+    } else {
+      contentElement.classList.remove('projects-source-code-content-raw-content')
+      contentElement.classList.add('projects-source-code-content-word-wrap')
+    }
+  }
+
   return (
-    <div className={parameterProps.tab === tabIDProps[4] ? "tab-pane fade show active" : "tab-pane fade"} id={dataProps.id + "-source-code"} role="tabpanel" aria-labelledby={dataProps.id + "-source-code-tab"}>
+    <div className={parameter.tab === tabs[4] ? "tab-pane fade show active" : "tab-pane fade"} id={data.id + "-source-code"} role="tabpanel" aria-labelledby={data.id + "-source-code-tab"}>
       {
-        dataProps.tab.sourcecode ? (
+        data.tab.source_code.content ? (
           <>
             <div className="projects-source-code-notice">
               <p className="mt-3">
                 {translator().translate.pages.Projects.Pages.PageContents.Tabs.SourceCode.according_to_github}
                 <br />
-                {translator().translate.pages.Projects.Pages.PageContents.Tabs.SourceCode.need_more_information} <a href={'https://github.com/Maseshi/' + dataProps.tab.sourcecode}>https://github.com/Maseshi/{dataProps.tab.sourcecode}</a>
+                {translator().translate.pages.Projects.Pages.PageContents.Tabs.SourceCode.need_more_information} <a href={'https://github.com/Maseshi/' + data.tab.source_code.content}>https://github.com/Maseshi/{data.tab.source_code.content}</a>
               </p>
             </div>
             <div className="projects-source-code-detail">
@@ -306,7 +376,7 @@ export default function SourceCode(props) {
                         path.length ? (
                           <>
                             <li className="projects-source-code-breadcrumb-home breadcrumb-item">
-                              <a href={"#" + dataProps.id + "-source-code"} onClick={() => backToDirectory('', -1)}>
+                              <a href={"#" + data.id + "-source-code"} onClick={() => backToDirectory('', -1)}>
                                 <i className="bi bi-house-fill"></i>
                               </a>
                             </li>
@@ -452,97 +522,32 @@ export default function SourceCode(props) {
                         <div className="projects-source-code-content-file-action col-md-4">
                           {
                             action.raw.rawContent && action.raw.formatContent ? (
-                              <button className={action.raw.show ? "projects-content-button btn btn-outline-primary active" : "projects-content-button btn btn-outline-primary"} onClick={
-                                () => {
-                                  const contentElement = document.querySelector('.projects-source-code-content > .card-body > pre')
-
-                                  setContent(
-                                    action.raw.show ? (
-                                      action.raw.formatContent
-                                    ) : (
-                                      action.raw.rawContent
-                                    )
-                                  )
-                                  setAction({
-                                    wordWrap: action.wordWrap,
-                                    raw: {
-                                      show: !action.raw.show,
-                                      rawContent: action.raw.rawContent,
-                                      formatContent: action.raw.formatContent
-                                    }
-                                  })
-
-                                  if (action.raw.show) {
-                                    contentElement.classList.remove('projects-source-code-content-raw-content')
-                                    contentElement.classList.add('projects-source-code-content-format-content')
-                                  } else {
-                                    contentElement.classList.add('projects-source-code-content-raw-content')
-                                    contentElement.classList.remove('projects-source-code-content-format-content')
-                                  }
-                                }
-                              } data-bs-toggle="button" autoComplete="off" type="button" aria-pressed={action.raw.show ? "true" : "false"}>
+                              <button
+                                className={action.raw.show ? "btn btn-outline-primary active" : "btn btn-outline-primary"}
+                                onClick={() => handleRawShow}
+                                data-bs-toggle="button"
+                                autoComplete="off"
+                                type="button"
+                                aria-pressed={action.raw.show ? "true" : "false"}
+                              >
                                 <i className="bi bi-filetype-raw"></i>
                               </button>
                             ) : ('')
                           }
-                          <button className="projects-content-button btn btn-outline-primary" onClick={
-                            (event) => {
-                              navigator.permissions.query({ name: "clipboard-write" }).then(result => {
-                                if (result.state === "granted" || result.state === "prompt") {
-                                  const text = document.getElementById(dataProps.id + "-" + file.name.toLowerCase() + "-code").innerText
-
-                                  navigator.clipboard.writeText(text).then(() => {
-                                    event.target.innerHTML = '<i class="bi bi-check"></i>'
-
-                                    setTimeout(() => {
-                                      event.target.innerHTML = '<i class="bi bi-files"></i>'
-                                    }, 3000)
-                                  }, () => {
-                                    event.target.innerHTML = '<i class="bi bi-x"></i>'
-
-                                    setTimeout(() => {
-                                      event.target.innerHTML = '<i class="bi bi-files"></i>'
-                                    }, 3000)
-                                  })
-                                }
-                              })
-                            }
-                          } type="button">
+                          <button className="btn btn-outline-primary" onClick={(event) => handleCopyCode} type="button">
                             <i className="bi bi-files"></i>
                           </button>
-                          <button className={action.wordWrap ? "projects-content-button btn btn-outline-primary active" : "projects-content-button btn btn-outline-primary"} onClick={
-                            () => {
-                              const contentElement = document.querySelector('.projects-source-code-content > .card-body > pre')
-
-                              setAction({
-                                wordWrap: !action.wordWrap,
-                                raw: {
-                                  show: action.raw.show,
-                                  rawContent: action.raw.rawContent,
-                                  formatContent: action.raw.formatContent
-                                }
-                              })
-
-                              if (action.wordWrap) {
-                                if (action.raw.show) {
-                                  contentElement.classList.add('projects-source-code-content-raw-content')
-                                } else {
-                                  if (!action.raw.rawContent && !action.raw.formatContent) {
-                                    contentElement.classList.add('projects-source-code-content-raw-content')
-                                  } else {
-                                    contentElement.classList.add('projects-source-code-content-format-content')
-                                  }
-                                }
-                                contentElement.classList.remove('projects-source-code-content-word-wrap')
-                              } else {
-                                contentElement.classList.remove('projects-source-code-content-raw-content')
-                                contentElement.classList.add('projects-source-code-content-word-wrap')
-                              }
-                            }
-                          } data-bs-toggle="button" autoComplete="off" type="button" aria-pressed={action.wordWrap ? "true" : "false"}>
+                          <button
+                            className={action.wordWrap ? "btn btn-outline-primary active" : "btn btn-outline-primary"}
+                            onClick={() => handleWordWrap}
+                            data-bs-toggle="button"
+                            autoComplete="off"
+                            type="button"
+                            aria-pressed={action.wordWrap ? "true" : "false"}
+                          >
                             <i className="bi bi-card-text"></i>
                           </button>
-                          <a className="projects-content-button btn btn-primary" href={file.download_url} role="button">
+                          <a className="btn btn-primary" href={file.download_url} role="button">
                             <i className="bi bi-download"></i> {translator().translate.pages.Projects.Pages.PageContents.Tabs.SourceCode.download}
                           </a>
                         </div>
@@ -550,7 +555,7 @@ export default function SourceCode(props) {
                     </div>
                     <div className="card-body">
                       <pre className={action.raw.rawContent && action.raw.formatContent ? "projects-source-code-content-format-content" : "projects-source-code-content-raw-content"}>
-                        <code dangerouslySetInnerHTML={{ __html: content }} id={dataProps.id + "-" + file.name.toLowerCase() + "-code"}></code>
+                        <code dangerouslySetInnerHTML={{ __html: content }} id={data.id + "-" + file.name.toLowerCase() + "-code"}></code>
                       </pre>
                     </div>
                   </div>
