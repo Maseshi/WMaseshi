@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
-import AuthProviders from './AuthProviders'
+import Providers from './Providers'
 
 import { isMobile } from '../../utils/functions/isMobile'
 import { translator } from '../../utils/functions/translator'
@@ -148,7 +148,7 @@ export default function SignIn() {
                             </tbody>
                         </table>
                         <div className="auth-modal-options">
-                            <AuthProviders />
+                            <Providers />
                         </div>
                         <br />
                         <div className="auth-modal-content-rule text-center">

@@ -7,7 +7,7 @@ import {
 } from "firebase/auth"
 import { getDatabase, ref, set } from "firebase/database"
 
-import AuthProviders from './AuthProviders'
+import Providers from './Providers'
 
 import { isMobile } from '../../utils/functions/isMobile'
 import { translator } from '../../utils/functions/translator'
@@ -127,7 +127,7 @@ export default function Register() {
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="auth-modal-content-brand">
-                        <img src={process.env.PUBLIC_URL + '/images/favicon-96x96.png'} alt="favicon" width="50px" height="50px" />
+                        <img src={process.env.PUBLIC_URL + '/static/media/favicon-96x96.png'} alt="favicon" width="50px" height="50px" />
                         Maseshi
                     </div>
                     <div className="auth-modal-content">
@@ -190,7 +190,7 @@ export default function Register() {
                             </tbody>
                         </table>
                         <div className="auth-modal-options">
-                            <AuthProviders />
+                            <Providers />
                         </div>
                         <br />
                         <div className="auth-modal-content-rule text-center">
