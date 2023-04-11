@@ -9,10 +9,10 @@ export default function Projects() {
     const [list, setList] = useState([])
 
     useEffect(() => {
-        const db = getFirestore()
+        const database = getFirestore()
         const storage = getStorage()
 
-        getDocs(query(collection(db, 'Projects'), limit(4))).then((querySnapshot) => {
+        getDocs(query(collection(database, 'Projects'), limit(4))).then((querySnapshot) => {
             let url = '', count = 0
             const array = []
 
@@ -84,115 +84,48 @@ export default function Projects() {
                     <div className="row row-cols-1 row-cols-md-4 g-3">
                         {
                             list <= 0 ? (
-                                <>
-                                    <div className="col mb-3">
-                                        <div className="home-card card" aria-hidden="true">
-                                            <div className="card-img-top" alt="" width="100%" height="100%">
-                                                <span className="placeholder" style={{width: '100%', height: '200px'}}></span>
-                                            </div>
-                                            <div className="card-body">
-                                                <small className="card-subtitle placeholder-glow">
-                                                    <span className="placeholder col-2"></span>
-                                                </small>
-                                                <h4 className="card-title placeholder-glow">
-                                                    <span className="placeholder col-6"></span>
-                                                </h4>
-                                                <p className="card-text placeholder-glow">
-                                                    <span className="placeholder col-7"></span>
-                                                    <span className="placeholder col-4"></span>
-                                                    <span className="placeholder col-4"></span>
-                                                    <span className="placeholder col-6"></span>
-                                                    <span className="placeholder col-8"></span>
-                                                </p>
-                                                <p className="card-text placeholder-glow">
-                                                    <span className="placeholder col-7"></span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col mb-3">
-                                        <div className="home-card card" aria-hidden="true">
-                                            <div className="card-img-top" alt="" width="100%" height="100%">
-                                                <span className="placeholder" style={{width: '100%', height: '200px'}}></span>
-                                            </div>
-                                            <div className="card-body">
-                                                <small className="card-subtitle placeholder-glow">
-                                                    <span className="placeholder col-2"></span>
-                                                </small>
-                                                <h4 className="card-title placeholder-glow">
-                                                    <span className="placeholder col-6"></span>
-                                                </h4>
-                                                <p className="card-text placeholder-glow">
-                                                    <span className="placeholder col-7"></span>
-                                                    <span className="placeholder col-4"></span>
-                                                    <span className="placeholder col-4"></span>
-                                                    <span className="placeholder col-6"></span>
-                                                    <span className="placeholder col-8"></span>
-                                                </p>
-                                                <p className="card-text placeholder-glow">
-                                                    <span className="placeholder col-7"></span>
-                                                </p>
+                                Array.from({ length: 4 }, (__, index) => {
+                                    return (
+                                        <div className="col mb-3" key={index}>
+                                            <div className="home-card card" aria-hidden="true">
+                                                <div className="card-img-top" alt="" width="100%" height="100%">
+                                                    <span className="placeholder" style={{ width: '100%', height: '200px' }}></span>
+                                                </div>
+                                                <div className="card-body">
+                                                    <small className="card-subtitle placeholder-glow">
+                                                        <span className="placeholder col-2"></span>
+                                                    </small>
+                                                    <h4 className="card-title placeholder-glow">
+                                                        <span className="placeholder col-6"></span>
+                                                    </h4>
+                                                    <p className="card-text placeholder-glow">
+                                                        <span className="placeholder col-7"></span>
+                                                        <span className="placeholder col-4"></span>
+                                                        <span className="placeholder col-4"></span>
+                                                        <span className="placeholder col-6"></span>
+                                                        <span className="placeholder col-8"></span>
+                                                    </p>
+                                                    <p className="card-text placeholder-glow">
+                                                        <span className="placeholder col-7"></span>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="col mb-3">
-                                        <div className="home-card card" aria-hidden="true">
-                                            <div className="card-img-top" alt="" width="100%" height="100%">
-                                                <span className="placeholder" style={{width: '100%', height: '200px'}}></span>
-                                            </div>
-                                            <div className="card-body">
-                                                <small className="card-subtitle placeholder-glow">
-                                                    <span className="placeholder col-2"></span>
-                                                </small>
-                                                <h4 className="card-title placeholder-glow">
-                                                    <span className="placeholder col-6"></span>
-                                                </h4>
-                                                <p className="card-text placeholder-glow">
-                                                    <span className="placeholder col-7"></span>
-                                                    <span className="placeholder col-4"></span>
-                                                    <span className="placeholder col-4"></span>
-                                                    <span className="placeholder col-6"></span>
-                                                    <span className="placeholder col-8"></span>
-                                                </p>
-                                                <p className="card-text placeholder-glow">
-                                                    <span className="placeholder col-7"></span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col mb-3">
-                                        <div className="home-card card" aria-hidden="true">
-                                            <div className="card-img-top" alt="" width="100%" height="100%">
-                                                <span className="placeholder" style={{width: '100%', height: '200px'}}></span>
-                                            </div>
-                                            <div className="card-body">
-                                                <small className="card-subtitle placeholder-glow">
-                                                    <span className="placeholder col-2"></span>
-                                                </small>
-                                                <h4 className="card-title placeholder-glow">
-                                                    <span className="placeholder col-6"></span>
-                                                </h4>
-                                                <p className="card-text placeholder-glow">
-                                                    <span className="placeholder col-7"></span>
-                                                    <span className="placeholder col-4"></span>
-                                                    <span className="placeholder col-4"></span>
-                                                    <span className="placeholder col-6"></span>
-                                                    <span className="placeholder col-8"></span>
-                                                </p>
-                                                <p className="card-text placeholder-glow">
-                                                    <span className="placeholder col-7"></span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </>
+                                    )
+                                })
                             ) : (
                                 list.map((data, index) => {
                                     return (
                                         <div className="col" key={index}>
                                             <Link className="home-card-link" to={'./projects?id=' + data.id}>
                                                 <div className="home-card card">
-                                                    <img src={data.icon} className="card-img-top" alt="" width="100%" height="200px" />
+                                                    {
+                                                        data.icon ? (
+                                                            <img src={data.icon} className="card-img-top" alt={data.title.toLowerCase()} width="100%" height="200px" />
+                                                        ) : (
+                                                            <i className="bi bi-archive"></i>
+                                                        )
+                                                    }
                                                     <div className="card-body p-4">
                                                         <small className="card-subtitle text-muted">{data.type}</small>
                                                         <h4 className="card-title mt-3">{data.title}</h4>
@@ -211,7 +144,7 @@ export default function Projects() {
                     </div>
                     <br />
                     <div className="d-grid gap-2 me-2">
-                        <a className="home-btn btn btn-dark btn-lg" href="https://github.com/Maseshi" target="_blank" rel="noreferrer">
+                        <a className="home-btn btn btn-dark btn-lg" href="https://github.com/Maseshi" target="_blank" rel="noreferrer noopener">
                             <i className="bi bi-github"></i> Maseshi
                         </a>
                         <Link className="home-btn btn btn-outline-dark btn-lg" to="./projects">
