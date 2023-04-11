@@ -24,7 +24,7 @@ export default function Other() {
                                 </p>
                             </div>
                             <div className="card-footer">
-                                <a className="home-other-btn btn btn-light btn-lg w-100" href="https://github.com/Maseshi" target="_blank" rel="noreferrer" role="button">
+                                <a className="home-other-btn btn btn-light btn-lg w-100" href="https://github.com/Maseshi" target="_blank" rel="noreferrer noopener" role="button">
                                     {translator().translate.pages.Home.Other.explore}
                                 </a>
                             </div>
@@ -58,13 +58,13 @@ export default function Other() {
                 body={
                     <>
                         <div className="d-grid gap-2">
-                            <a className="home-other-btn home-other-btn-funding-bmc btn btn-whatever btn-lg w-100" href="https://www.buymeacoffee.com/maseshi" target="_blank" rel="noreferrer">
+                            <a className="home-other-btn home-other-btn-funding-bmc btn btn-whatever btn-lg w-100" href="https://www.buymeacoffee.com/maseshi" target="_blank" rel="noreferrer noopener">
                                 <img src={buyMeCoffeeLogo} width="30px" height="30px" alt="" /> {translator().translate.pages.Home.Other.buy_me_coffee}
                             </a>
                             <button className="home-other-btn btn btn-warning btn-lg w-100" type="button" data-bs-toggle="modal" data-bs-target="#trueMoneyModal">
                                 <img src={trueMoneyLogo} width="30px" height="30px" alt="" /> True Money
                             </button>
-                            <a className="home-other-btn btn btn-danger btn-lg w-100" href="https://www.patreon.com/maseshi" target="_blank" rel="noreferrer">
+                            <a className="home-other-btn btn btn-danger btn-lg w-100" href="https://www.patreon.com/maseshi" target="_blank" rel="noreferrer noopener">
                                 <img src={patreonLogo} width="30px" height="30px" alt="" /> Patreon
                             </a>
                         </div>
