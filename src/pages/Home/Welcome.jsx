@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom'
 import { translator } from '../../utils/functions/translator'
 
 export default function Welcome() {
+    const SocialMedia = (props) => {
+        return (
+            <a className="btn btn-link" href={props.href} target="_blank" rel="noreferrer noopener" aria-label={props.label}>
+                <i className={'bi bi-' + props.iconName}></i>
+            </a>
+        )
+    }
+
     return (
         <section className="home-welcome">
             <div className="home-welcome-greet">
@@ -30,18 +38,10 @@ export default function Welcome() {
                                 </button>
                             </div>
                             <span className="home-welcome-social-way">
-                                <a className="btn btn-link" href="https://web.facebook.com/chaiwat.fb/" target="_blank" rel="noreferrer" aria-label="Facebook">
-                                    <i className="bi bi-facebook"></i>
-                                </a>
-                                <a className="btn btn-link" href="https://github.com/Maseshi" target="_blank" rel="noreferrer" aria-label="Github">
-                                    <i className="bi bi-github"></i>
-                                </a>
-                                <a className="btn btn-link" href="https://www.instagram.com/chaiwat_itg/" target="_blank" rel="noreferrer" aria-label="Instagram">
-                                    <i className="bi bi-instagram"></i>
-                                </a>
-                                <a className="btn btn-link" href="https://twitter.com/maseshi_twt" target="_blank" rel="noreferrer" aria-label="Twitter">
-                                    <i className="bi bi-twitter"></i>
-                                </a>
+                                <SocialMedia href="https://web.facebook.com/maseshi.fb/" label="Facebook" iconName="facebook" />
+                                <SocialMedia href="https://github.com/Maseshi" label="Github" iconName="github" />
+                                <SocialMedia href="https://www.instagram.com/chaiwat_itg/" label="Instagram" iconName="instagram" />
+                                <SocialMedia href="https://twitter.com/maseshi_twt" label="Twitter" iconName="twitter" />
                             </span>
                         </div>
                     </div>
