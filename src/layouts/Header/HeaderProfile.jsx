@@ -1,21 +1,11 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
 
-import AuthProviders from '../../components/Authentication/AuthProviders'
+import Providers from '../../components/Authentication/Providers'
 
-import { setCookie } from '../../utils/functions/setCookie'
 import { translator } from '../../utils/functions/translator'
 
-import config from '../../configs/data'
-
-export default function HeaderProfile(props) {
-    const [firstClick, setFirstClick] = useState(false)
-    const [languageSelection, setLanguageSelection] = useState(translator().code)
-
-    const loadedProps = props.loaded
-    const userDataProps = props.userData
-
+export default function HeaderProfile({ loaded, userData }) {
     const handleLogout = () => {
         const auth = getAuth()
 
@@ -27,32 +17,12 @@ export default function HeaderProfile(props) {
     return (
         <div className="navbar-profile">
             {
-                loadedProps ? (
+                loaded ? (
                     <div className="dropdown">
-                        <button
-                            type="button"
-                            className="navbar-profile-button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                            onClick={
-                                () => {
-                                    const { Dropdown } = require('bootstrap')
-
-                                    const dropdown = document.querySelector('.navbar-profile-button')
-                                    const instance = Dropdown.getOrCreateInstance(dropdown)
-
-                                    if (!firstClick) {
-                                        setFirstClick(true)
-                                        instance.hide()
-                                    }
-
-                                    instance.toggle()
-                                }
-                            }
-                        >
+                        <button type="button" className="navbar-profile-button" data-bs-toggle="dropdown" aria-expanded="false">
                             {
-                                userDataProps && userDataProps.photoURL ? (
-                                    <img src={userDataProps.photoURL} alt="User Profile" width="40px" height="40px" />
+                                userData && userData.photoURL ? (
+                                    <img src={userData.photoURL} alt="User Profile" width="40px" height="40px" />
                                 ) : (
                                     <i className="bi bi-person-circle"></i>
                                 )
@@ -60,13 +30,13 @@ export default function HeaderProfile(props) {
                         </button>
                         <ul className="dropdown-menu dropdown-menu-end" style={{ margin: 0 }}>
                             {
-                                userDataProps ? (
+                                userData ? (
                                     <>
                                         <li>
                                             <h6 className="dropdown-header">
                                                 {
-                                                    userDataProps.displayName ? (
-                                                        userDataProps.displayName
+                                                    userData.displayName ? (
+                                                        userData.displayName
                                                     ) : (
                                                         translator().translate.layouts.Header.HeaderProfile.user
                                                     )
@@ -98,16 +68,16 @@ export default function HeaderProfile(props) {
                                     <>
                                         <li>
                                             <h6 className="dropdown-header">
-                                                จัดการบัญชี
+                                                {translator().translate.layouts.Header.HeaderProfile.manage_account}
                                             </h6>
                                         </li>
                                         <form className="px-4 py-3">
                                             <div className="d-grid gap-2 mb-3">
-                                                <button type="button" className="navbar-button btn btn-primary" data-bs-toggle="modal" data-bs-target="#signInModal">
-                                                    <i className="bi bi-box-arrow-in-right"></i> ลงชื่อเข้าใช้
+                                                <button type="button" className="navbar-button btn btn-primary" id="signInModalHeaderButton" data-bs-toggle="modal" data-bs-target="#signInModal">
+                                                    <i className="bi bi-box-arrow-in-right"></i> {translator().translate.layouts.Header.HeaderProfile.sign_in}
                                                 </button>
-                                                <button type="button" className="navbar-button btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">
-                                                    <i className="bi bi-plus-circle"></i> สร้างบัญชีใหม่
+                                                <button type="button" className="navbar-button btn btn-primary" id="registerModalHeaderButton" data-bs-toggle="modal" data-bs-target="#registerModal">
+                                                    <i className="bi bi-plus-circle"></i> {translator().translate.layouts.Header.HeaderProfile.register}
                                                 </button>
                                             </div>
                                             <table width="100%">
@@ -117,7 +87,7 @@ export default function HeaderProfile(props) {
                                                             <hr />
                                                         </td>
                                                         <td style={{ width: "1px", padding: "0 10px", whiteSpace: "nowrap" }}>
-                                                            หรือ
+                                                            {translator().translate.layouts.Header.HeaderProfile.or}
                                                         </td>
                                                         <td>
                                                             <hr />
@@ -126,10 +96,10 @@ export default function HeaderProfile(props) {
                                                 </tbody>
                                             </table>
                                             <div className="text-center mb-3">
-                                                <AuthProviders />
+                                                <Providers />
                                             </div>
                                             <div className="text-center">
-                                                <Link to="/privacy-policy">นโยบายความเป็นส่วนตัว</Link> &bull; <Link to="/terms-of-service">เงื่อนไขการให้บริการ</Link>
+                                                <Link to="/privacy-policy">{translator().translate.layouts.Header.HeaderProfile.privacy_policy}</Link> &bull; <Link to="/terms-of-service">{translator().translate.layouts.Header.HeaderProfile.terms_of_services}</Link>
                                             </div>
                                         </form>
                                     </>
@@ -144,36 +114,6 @@ export default function HeaderProfile(props) {
                                 </h6>
                             </li>
                             <div className="px-3 mb-3">
-                                <div className="input-group">
-                                    <div className="input-group-text">
-                                        <i className="bi bi-translate"></i>
-                                    </div>
-                                    <select
-                                        className="form-select"
-                                        value={languageSelection}
-                                        onChange={
-                                            (event) => {
-                                                setLanguageSelection(event.target.value)
-                                                setCookie('languageSelect', event.target.value, 60)
-                                                window.location.reload()
-                                            }
-                                        }
-                                        aria-label="Languages options"
-                                    >
-                                        {
-                                            config.LANGUAGES.map((lang, index) => {
-                                                const code = lang.code
-                                                const name = lang.name
-
-                                                return (
-                                                    <option key={index} value={code}>{name}</option>
-                                                )
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="px-3 mb-3">
                                 <div className="form-check form-switch">
                                     <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" disabled />
                                     <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
@@ -182,7 +122,7 @@ export default function HeaderProfile(props) {
                                 </div>
                             </div>
                             {
-                                userDataProps ? (
+                                userData ? (
                                     <>
                                         <li>
                                             <hr className="dropdown-divider" />
