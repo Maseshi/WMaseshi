@@ -14,6 +14,7 @@ export default function Main() {
             <Routes>
                 <Route path="*" element={<PageNotFound />} />
                 <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/account" element={<Account />} />
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/terms-of-service" element={<ToS />} />
