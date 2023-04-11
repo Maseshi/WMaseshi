@@ -1,10 +1,22 @@
+import { useSearchParams } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
 
 // Function
 import { isMobile } from '../../utils/functions/isMobile'
 import { translator } from '../../utils/functions/translator'
 
-export default function Navbar() {
+export default function Navbar({ tabs }) {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const tabParam = searchParams.get('tab')
+
+    const handleLogout = () => {
+        const auth = getAuth()
+
+        signOut(auth).catch((error) => {
+            console.log(error)
+        })
+    }
+
     return (
         <div className="account-navbar mb-3">
             <nav
@@ -14,78 +26,74 @@ export default function Navbar() {
                 aria-orientation="vertical"
             >
                 <button
-                    className="nav-link"
+                    className={
+                        tabParam ? (
+                            tabParam === 'personal' ? (
+                                'nav-link active'
+                            ) : (
+                                'nav-link'
+                            )
+                        ) : (
+                            'nav-link active'
+                        )
+                    }
                     id="v-pills-personal-tab"
                     data-bs-toggle="pill"
                     data-bs-target="#v-pills-personal"
                     type="button"
                     role="tab"
                     aria-controls="v-pills-personal"
-                    aria-selected="false"
-                    onClick={
-                        () => {
-                            const url = new URL(window.location)
-                            url.searchParams.set('tab', 'personal')
-                            window.history.pushState({}, '', url)
-                        }
+                    aria-selected={
+                        tabParam ? (
+                            tabParam === 'personal' ? (
+                                'true'
+                            ) : (
+                                'false'
+                            )
+                        ) : (
+                            'false'
+                        )
                     }
+                    onClick={() => setSearchParams({ 'tab': 'personal' })}
                 >
                     <i className="bi bi-journal-richtext"></i> {translator().translate.pages.Account.Navbar.personal}
                 </button>
                 <button
-                    className="nav-link"
+                    className={tabParam === 'security' ? 'nav-link active' : 'nav-link'}
                     id="v-pills-security-tab"
                     data-bs-toggle="pill"
                     data-bs-target="#v-pills-security"
                     type="button"
                     role="tab"
                     aria-controls="v-pills-security"
-                    aria-selected="false"
-                    onClick={
-                        () => {
-                            const url = new URL(window.location)
-                            url.searchParams.set('tab', 'security')
-                            window.history.pushState({}, '', url)
-                        }
-                    }
+                    aria-selected={tabParam === 'security' ? 'true' : 'false'}
+                    onClick={() => setSearchParams({ 'tab': 'security' })}
                 >
                     <i className="bi bi-shield-shaded"></i> {translator().translate.pages.Account.Navbar.security}
                 </button>
                 <button
-                    className="nav-link"
+                    className={tabParam === 'privacy' ? 'nav-link active' : 'nav-link'}
                     id="v-pills-privacy-tab"
                     data-bs-toggle="pill"
                     data-bs-target="#v-pills-privacy"
                     type="button"
                     role="tab"
                     aria-controls="v-pills-privacy"
-                    aria-selected="false"
-                    onClick={
-                        () => {
-                            const url = new URL(window.location)
-                            url.searchParams.set('tab', 'privacy')
-                            window.history.pushState({}, '', url)
-                        }
-                    }
+                    aria-selected={tabParam === 'privacy' ? 'true' : 'false'}
+                    onClick={() => setSearchParams({ 'tab': 'privacy' })}
                 >
                     <i className="bi bi-lock"></i> {translator().translate.pages.Account.Navbar.privacy}
                 </button>
                 <button
-                    className="nav-link"
+                    className={tabParam === 'settings' ? 'nav-link active' : 'nav-link'}
                     id="v-pills-settings-tab"
                     data-bs-toggle="pill"
                     data-bs-target="#v-pills-settings"
                     type="button"
                     role="tab"
                     aria-controls="v-pills-settings"
-                    aria-selected="false"
-                    onClick={
-                        () => {
-                            const url = new URL(window.location)
-                            url.searchParams.set('tab', 'settings')
-                            window.history.pushState({}, '', url)
-                        }
-                    }
+                    aria-selected={tabParam === 'settings' ? 'true' : 'false'}
+                    onClick={() => setSearchParams({ 'tab': 'settings' })}
                 >
                     <i className="bi bi-nut"></i> {translator().translate.pages.Account.Navbar.settings}
                 </button>
@@ -93,18 +101,7 @@ export default function Navbar() {
                     isMobile() ? '' : (
                         <>
                             <hr />
-                            <button
-                                className="btn btn-outline-danger"
-                                id="v-pills-settings-tab"
-                                onClick={
-                                    () => {
-                                        const auth = getAuth()
-                                        signOut(auth).catch((error) => {
-                                            console.log(error)
-                                        })
-                                    }
-                                }
-                            >
+                            <button className="btn btn-outline-danger" id="v-pills-settings-tab" onClick={() => handleLogout}>
                                 <i className="bi bi-box-arrow-left"></i> {translator().translate.pages.Account.Navbar.log_out}
                             </button>
                         </>
