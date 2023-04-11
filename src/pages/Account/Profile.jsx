@@ -1,8 +1,6 @@
 import { translator } from '../../utils/functions/translator'
 
-export default function Profile(props) {
-    const userData = props.userData
-
+export default function Profile({ userData }) {
     return (
         <div className="account-profile mb-3">
             {

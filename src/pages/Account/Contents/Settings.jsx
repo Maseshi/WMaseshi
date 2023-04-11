@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { getAuth, deleteUser } from 'firebase/auth'
 import { getDatabase, ref, remove } from 'firebase/database'
 import { getStorage, ref as storageRef, deleteObject } from 'firebase/storage'
@@ -8,15 +9,65 @@ import { translator } from '../../../utils/functions/translator'
 
 import config from '../../../configs/data'
 
-export default function Settings(props) {
+export default function Settings({ userData, verify }) {
+    const [searchParams] = useSearchParams()
     const [languageSelection, setLanguageSelection] = useState(translator().code)
     const [deleteAccountError, setDeleteAccountError] = useState('')
+    const tabParam = searchParams.get('tab')
 
-    const userData = props.userData
-    const verify = props.verify
+    const handleLanguageChange = (event) => {
+        setLanguageSelection(event.target.value)
+        setCookie('languageSelect', event.target.value, 60)
+        window.location.reload()
+    }
+    const handleRemoveAccount = (event) => {
+        const auth = getAuth()
+        const database = getDatabase()
+        const storage = getStorage()
+        const user = auth.currentUser
+        const dbRef = ref(database, 'projects/maseshi/users/' + user.uid)
+        const stRef = storageRef(storage, 'users/' + user.uid)
+        const element = document.getElementById('verifyChangeModal')
+
+        event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Account.Contents.Settings.delete_account)
+        event.target.disabled = true
+
+        element.addEventListener('hidden.bs.modal', () => {
+            if (verify) {
+                deleteUser(user).then(() => {
+                    remove(dbRef).then(() => {
+                        deleteObject(stRef).then(() => {
+                            event.target.disabled = false
+                            event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Settings.delete_account)
+                            setTimeout(() => {
+                                event.target.innerHTML = translator().translate.pages.Account.Contents.Settings.delete_account
+                            }, 3000)
+                        })
+                    })
+                }).catch((error) => {
+                    event.target.innerHTML = '<i class="bi bi-x-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Settings.delete_account)
+                    setDeleteAccountError(translator().translate.pages.Account.Contents.Settings.can_not_delete_account + '\n' + error.message)
+                });
+            } else {
+                event.target.innerHTML = '<i class="bi bi-lock"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Settings.delete_account)
+                event.target.disabled = false
+            }
+        })
+    }
 
     return (
-        <div className="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+        <div
+            className={
+                tabParam === 'settings' ? (
+                    'tab-pane fade show active'
+                ) : (
+                    'tab-pane fade'
+                )
+            }
+            id="v-pills-settings"
+            role="tabpanel"
+            aria-labelledby="v-pills-settings-tab"
+        >
             <div className="account-content-tab-title">
                 <h1>
                     {translator().translate.pages.Account.Contents.Settings.settings}
@@ -38,18 +89,7 @@ export default function Settings(props) {
                         <hr className="account-content-tab-content-horizon" />
                         <div className="card account-content-tab-card mb-3">
                             <div className="card-body hstack gap-3">
-                                <select
-                                    className="form-select w-auto"
-                                    value={languageSelection}
-                                    onChange={
-                                        (event) => {
-                                            setLanguageSelection(event.target.value)
-                                            setCookie('languageSelect', event.target.value, 60)
-                                            window.location.reload()
-                                        }
-                                    }
-                                    aria-label="Languages options"
-                                >
+                                <select className="form-select w-auto" value={languageSelection} onChange={(event) => handleLanguageChange(event)} aria-label="Languages options">
                                     {
                                         config.LANGUAGES.map((lang, index) => {
                                             const code = lang.code
@@ -104,49 +144,7 @@ export default function Settings(props) {
                                 <p className="card-content">
                                     {translator().translate.pages.Account.Contents.Settings.delete_account_and_services_information}
                                 </p>
-                                <button
-                                    type="button"
-                                    className="btn btn-danger account-content-tab-button"
-                                    disabled={userData && userData.user.email ? false : true}
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#verifyChangeModal"
-                                    onClick={
-                                        (event) => {
-                                            const auth = getAuth()
-                                            const database = getDatabase()
-                                            const storage = getStorage()
-                                            const user = auth.currentUser
-                                            const dbRef = ref(database, 'projects/maseshi/users/' + user.uid)
-                                            const stRef = storageRef(storage, 'users/' + user.uid)
-                                            const element = document.getElementById('verifyChangeModal')
-
-                                            event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Account.Contents.Settings.delete_account)
-                                            event.target.disabled = true
-
-                                            element.addEventListener('hidden.bs.modal', () => {
-                                                if (verify) {
-                                                    deleteUser(user).then(() => {
-                                                        remove(dbRef).then(() => {
-                                                            deleteObject(stRef).then(() => {
-                                                                event.target.disabled = false
-                                                                event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Settings.delete_account)
-                                                                setTimeout(() => {
-                                                                    event.target.innerHTML = translator().translate.pages.Account.Contents.Settings.delete_account
-                                                                }, 3000)
-                                                            })
-                                                        })
-                                                    }).catch((error) => {
-                                                        event.target.innerHTML = '<i class="bi bi-x-circle"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Settings.delete_account)
-                                                        setDeleteAccountError(translator().translate.pages.Account.Contents.Settings.can_not_delete_account + '\n' + error.message)
-                                                    });
-                                                } else {
-                                                    event.target.innerHTML = '<i class="bi bi-lock"></i> %s'.replace('%s', translator().translate.pages.Account.Contents.Settings.delete_account)
-                                                    event.target.disabled = false
-                                                }
-                                            })
-                                        }
-                                    }
-                                >
+                                <button type="button" className="btn btn-danger account-content-tab-button" disabled={userData && userData.user.email ? false : true} data-bs-toggle="modal" data-bs-target="#verifyChangeModal" onClick={(event) => handleRemoveAccount(event)}>
                                     <i className="bi bi-lock"></i> {translator().translate.pages.Account.Contents.Settings.delete_account}
                                 </button>
                                 {deleteAccountError ? <p className="text-danger fs-6 mb-0 mt-1">{deleteAccountError}</p> : ''}

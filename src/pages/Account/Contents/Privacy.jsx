@@ -1,22 +1,83 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { getDatabase, ref as databaseRef, update as updateDB } from "firebase/database"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 import { translator } from '../../../utils/functions/translator'
 
-export default function Privacy(props) {
+export default function Privacy({ userData }) {
+    const [searchParams] = useSearchParams()
     const [pp, setPp] = useState(false)
     const [tos, setTos] = useState(false)
-
-    const userData = props.userData
+    const tabParam = searchParams.get('tab')
 
     useEffect(() => {
         if (userData && userData.data) setPp(userData.data.rule.pp)
         if (userData && userData.data) setTos(userData.data.rule.tos)
     }, [userData])
 
+    const handleChangePP = (event) => {
+        const auth = getAuth()
+        const db = getDatabase()
+
+        event.target.disabled = true
+        setPp(event.target.checked)
+        event.target.checked = pp
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const dbRef = databaseRef(db, 'data/users/' + user.uid + '/rule')
+
+                updateDB(dbRef, {
+                    pp: event.target.checked
+                }).then(() => {
+                    event.target.disabled = false
+                }).catch((error) => {
+                    setPp(event.target.checked ? false : true)
+                    event.target.checked = pp
+                    console.log(error)
+                })
+            }
+        })
+    }
+    const handleChangeTOS = (event) => {
+        const auth = getAuth()
+        const db = getDatabase()
+
+        event.target.disabled = true
+        setTos(event.target.checked)
+        event.target.checked = tos
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const dbRef = databaseRef(db, 'projects/maseshi/users/' + user.uid + '/rule')
+
+                updateDB(dbRef, {
+                    tos: event.target.checked
+                }).then(() => {
+                    event.target.disabled = false
+                }).catch((error) => {
+                    setTos(event.target.checked ? false : true)
+                    event.target.checked = tos
+                    console.log(error)
+                })
+            }
+        })
+    }
+
     return (
-        <div className="tab-pane fade" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+        <div
+            className={
+                tabParam === 'privacy' ? (
+                    'tab-pane fade show active'
+                ) : (
+                    'tab-pane fade'
+                )
+            }
+            id="v-pills-privacy"
+            role="tabpanel"
+            aria-labelledby="v-pills-privacy-tab"
+        >
             <div className="account-content-tab-title">
                 <h1>
                     {translator().translate.pages.Account.Contents.Privacy.privacy}
@@ -41,48 +102,9 @@ export default function Privacy(props) {
                                 <div className="form-check form-switch me-auto">
                                     {
                                         userData && userData.data && userData.data.rule.pp ? (
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                role="switch"
-                                                id="privacy-pp"
-                                                checked={pp}
-                                                onChange={
-                                                    (event) => {
-                                                        const auth = getAuth()
-                                                        const db = getDatabase()
-
-                                                        event.target.disabled = true
-                                                        setPp(event.target.checked)
-                                                        event.target.checked = pp
-
-                                                        onAuthStateChanged(auth, (user) => {
-                                                            if (user) {
-                                                                const dbRef = databaseRef(db, 'data/users/' + user.uid + '/rule')
-
-                                                                updateDB(dbRef, {
-                                                                    pp: event.target.checked
-                                                                }).then(() => {
-                                                                    event.target.disabled = false
-                                                                }).catch((error) => {
-                                                                    setPp(event.target.checked ? false : true)
-                                                                    event.target.checked = pp
-                                                                    console.log(error)
-                                                                })
-                                                            }
-                                                        })
-                                                    }
-                                                }
-                                            />
+                                            <input className="form-check-input" type="checkbox" role="switch" id="privacy-pp" checked={pp} onChange={(event) => handleChangePP(event)} />
                                         ) : (
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                role="switch"
-                                                id="privacy-pp"
-                                                disabled
-                                                checked
-                                            />
+                                            <input className="form-check-input" type="checkbox" role="switch" id="privacy-pp" disabled checked />
                                         )
                                     }
                                     <label className="form-check-label" htmlFor="privacy-pp">
@@ -99,48 +121,9 @@ export default function Privacy(props) {
                                 <div className="form-check form-switch me-auto">
                                     {
                                         userData && userData.data && userData.data.rule.tos ? (
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                role="switch"
-                                                id="privacy-tos"
-                                                checked={tos}
-                                                onChange={
-                                                    (event) => {
-                                                        const auth = getAuth()
-                                                        const db = getDatabase()
-
-                                                        event.target.disabled = true
-                                                        setTos(event.target.checked)
-                                                        event.target.checked = tos
-
-                                                        onAuthStateChanged(auth, (user) => {
-                                                            if (user) {
-                                                                const dbRef = databaseRef(db, 'projects/maseshi/users/' + user.uid + '/rule')
-
-                                                                updateDB(dbRef, {
-                                                                    tos: event.target.checked
-                                                                }).then(() => {
-                                                                    event.target.disabled = false
-                                                                }).catch((error) => {
-                                                                    setTos(event.target.checked ? false : true)
-                                                                    event.target.checked = tos
-                                                                    console.log(error)
-                                                                })
-                                                            }
-                                                        })
-                                                    }
-                                                }
-                                            />
+                                            <input className="form-check-input" type="checkbox" role="switch" id="privacy-tos" checked={tos} onChange={(event) => handleChangeTOS(event)} />
                                         ) : (
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                role="switch"
-                                                id="privacy-tos"
-                                                disabled
-                                                checked
-                                            />
+                                            <input className="form-check-input" type="checkbox" role="switch" id="privacy-tos" disabled checked />
                                         )
                                     }
                                     <label className="form-check-label" htmlFor="privacy-tos">
@@ -155,14 +138,7 @@ export default function Privacy(props) {
                         <div className="card account-content-tab-card">
                             <div className="card-body hstack gap-3">
                                 <div className="form-check form-switch me-auto">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        role="switch"
-                                        id="privacy-tos"
-                                        checked
-                                        disabled
-                                    />
+                                    <input className="form-check-input" type="checkbox" role="switch" id="privacy-tos" checked disabled />
                                     <label className="form-check-label" htmlFor="privacy-tos">
                                         {translator().translate.pages.Account.Contents.Privacy.cookie_policy}
                                     </label>
