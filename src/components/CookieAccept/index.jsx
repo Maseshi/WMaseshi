@@ -23,7 +23,7 @@ export default function CookieAccept() {
                     <p className="m-0">
                         {translator().translate.components.CookieAccept.cookie_info}
                     </p>
-                    <a href="https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&hl=th" target="_blank" rel="noreferrer">
+                    <a href="https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&hl=th" target="_blank" rel="noreferrer noopener">
                         {translator().translate.components.CookieAccept.learn_more}
                     </a>
                 </div>
