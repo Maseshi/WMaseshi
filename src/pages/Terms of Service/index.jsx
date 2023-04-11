@@ -1,4 +1,4 @@
-import DocumentMeta from 'react-document-meta'
+import { Helmet } from 'react-helmet'
 
 import CookieAccept from '../../components/CookieAccept'
 import useMarkDown from '../../utils/hooks/useMarkDown'
@@ -12,26 +12,23 @@ import './style.css'
 export default function TermsOfService() {
     const xmlString = useMarkDown(tos)
 
-    const meta = {
-        title: translator().translate.pages.TermsOfService.website_title,
-        description: translator().translate.pages.TermsOfService.website_description,
-        canonical: '/terms-of-service',
-        meta: {
-            name: {
-                keywords: 'maseshi, chaiwatsuwannarat, fluke, chaiwat',
-                subject: translator().translate.pages.TermsOfService.website_subject,
-                language: 'TH',
-                robots: 'index, follow',
-
-                'og:type': 'website',
-                'og:image': '/maseshi_banner.jpg',
-                'og:site_name': 'Maseshi'
-            }
-        }
-    }
-
     return (
-        <DocumentMeta {...meta}>
+        <>
+            <Helmet>
+                <title>{translator().translate.pages.TermsOfService.website_title}</title>
+                <meta name="description" content={translator().translate.pages.TermsOfService.website_description} />
+                <meta name="keywords" content="maseshi, chaiwatsuwannarat, fluke, chaiwat" />
+                <meta name="subject" content={translator().translate.pages.TermsOfService.website_subject} />
+                <meta name="language" content="TH" />
+                <meta name="robots" content="index, follow" />
+                <meta property="og:site_name" content="Maseshi" />
+                <meta property="og:title" content={translator().translate.pages.TermsOfService.website_title} />
+                <meta property="og:description" content={translator().translate.pages.TermsOfService.website_description} />
+                <meta property="og:image" content={process.env.PUBLIC_URL + '/maseshi_banner.jpg'} />
+                <meta property="og:url" content='https://maseshi.web.app/terms-of-service' />
+                <meta property="og:type" content="website" />
+                <link rel="canonical" href='https://maseshi.web.app/terms-of-service' />
+            </Helmet>
             <div className="tos-welcome">
                 <div className="container">
                     <h1>
@@ -50,6 +47,6 @@ export default function TermsOfService() {
                 <div className="container" dangerouslySetInnerHTML={{ __html: xmlString }}></div>
             </section>
             <CookieAccept />
-        </DocumentMeta>
+        </>
     )
 }

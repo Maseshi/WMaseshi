@@ -1,29 +1,27 @@
-import DocumentMeta from 'react-document-meta'
+import { Helmet } from 'react-helmet'
 
 import { translator } from '../../utils/functions/translator'
 
 import './style.css'
 
 export default function PageNotFound() {
-    const meta = {
-        title: translator().translate.pages.PageNotFound.website_title,
-        description: translator().translate.pages.PageNotFound.descriptions,
-        meta: {
-            name: {
-                keywords: 'maseshi, chaiwatsuwannarat, fluke, chaiwat',
-                subject: translator().translate.pages.PageNotFound.website_subject,
-                language: 'TH',
-                robots: 'noindex, nofollow',
-
-                'og:type': 'website',
-                'og:image': '/maseshi_banner.jpg',
-                'og:site_name': 'Maseshi'
-            }
-        }
-    }
-
     return (
-        <DocumentMeta {...meta}>
+        <>
+            <Helmet>
+                <title>{translator().translate.pages.PageNotFound.website_title}</title>
+                <meta name="description" content={translator().translate.pages.PageNotFound.descriptions} />
+                <meta name="keywords" content="maseshi, chaiwatsuwannarat, fluke, chaiwat" />
+                <meta name="subject" content={translator().translate.pages.PageNotFound.website_subject} />
+                <meta name="language" content="TH" />
+                <meta name="robots" content="index, follow" />
+                <meta property="og:site_name" content="Maseshi" />
+                <meta property="og:title" content={translator().translate.pages.PageNotFound.website_title} />
+                <meta property="og:description" content={translator().translate.pages.PageNotFound.descriptions} />
+                <meta property="og:image" content={process.env.PUBLIC_URL + '/maseshi_banner.jpg'} />
+                <meta property="og:url" content={'https://maseshi.web.app/' + window.location.pathname} />
+                <meta property="og:type" content="website" />
+                <link rel="canonical" href={'https://maseshi.web.app/' + window.location.pathname} />
+            </Helmet>
             <section className="page-not-found">
                 <div className="container">
                     <div className="row">
@@ -63,6 +61,6 @@ export default function PageNotFound() {
                     </div>
                 </div>
             </section>
-        </DocumentMeta>
+        </>
     )
 }
