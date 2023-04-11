@@ -1,33 +1,52 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { resizeImage } from '../../../../../utils/functions/resizeImage'
 import { translator } from '../../../../../utils/functions/translator'
 
-export default function UploadIcon() {
+export default function UploadIcon({ data }) {
     const [photoURL, setPhotoURL] = useState()
+
+    useEffect(() => {
+        if (data) setPhotoURL(data.icon)
+    }, [data])
+
+    const handleUploadIcon = async (event) => {
+        const resizedImage = await resizeImage({
+            "file": event.target.files[0],
+            "maxSize": 200
+        })
+
+        setPhotoURL(URL.createObjectURL(resizedImage))
+    }
 
     return (
         <div className="projects-new-upload-icon text-center mb-3">
             <input
                 type="file"
                 accept="image/*"
-                id="newProjectUploadIcon"
-                hidden
-                onChange={
-                    async (event) => {
-                        const resizedImage = await resizeImage({
-                            "file": event.target.files[0],
-                            "maxSize": 200
-                        });
-
-                        setPhotoURL(URL.createObjectURL(resizedImage))
-                    }
+                id={
+                    data ? (
+                        'editorProject' + (data ? data.title.replace(' ', '') : '') + 'UploadIcon'
+                    ) : (
+                        'editorProjectUploadIcon'
+                    )
                 }
+                hidden={true}
+                onChange={(event) => handleUploadIcon(event)}
             />
-            <label htmlFor="newProjectUploadIcon" style={photoURL ? { padding: 0 } : null}>
+            <label
+                htmlFor={
+                    data ? (
+                        'editorProject' + (data ? data.title.replace(' ', '') : '') + 'UploadIcon'
+                    ) : (
+                        'editorProjectUploadIcon'
+                    )
+                }
+                style={photoURL ? { padding: 0 } : null}
+            >
                 {
                     photoURL ? (
-                        <img src={photoURL} alt="preview" width="120px" height="120px" />
+                        <img src={photoURL} alt="preview-icon" width="120px" height="120px" />
                     ) : (
                         <i className="bi bi-plus"></i>
                     )
@@ -40,7 +59,7 @@ export default function UploadIcon() {
                         className="btn btn-primary mt-3"
                         onClick={
                             () => {
-                                const uploadIcon = document.getElementById("newProjectUploadIcon")
+                                const uploadIcon = document.getElementById("editorProject" + (data ? data.title.replace(' ', '') : '') + "UploadIcon")
 
                                 uploadIcon.value = ''
                                 setPhotoURL()
