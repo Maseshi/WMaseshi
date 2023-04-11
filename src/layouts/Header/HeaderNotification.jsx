@@ -4,7 +4,6 @@ import { timeSince } from '../../utils/functions/timeSince'
 import { translator } from '../../utils/functions/translator'
 
 export default function HeaderNotification() {
-    const [firstClick, setFirstClick] = useState(false)
     const [notification, setNotification] = useState(localStorage.getItem('notification'))
 
     useEffect(() => {
@@ -17,31 +16,15 @@ export default function HeaderNotification() {
         })
     }, [])
 
+    const handleClearNotify = () => {
+        localStorage.setItem('notification', '[]')
+        window.dispatchEvent(new Event('storage'))
+    }
+
     return (
         <div className="navar-notification me-3">
             <div className="dropdown">
-                <button
-                    type="button"
-                    className="navbar-notification-button"
-                    data-bs-toggle="dropdown"
-                    data-bs-auto-close="outside"
-                    aria-expanded="false"
-                    onClick={
-                        () => {
-                            const { Dropdown } = require('bootstrap')
-
-                            const dropdown = document.querySelector('.navbar-notification-button')
-                            const instance = Dropdown.getOrCreateInstance(dropdown)
-
-                            if (!firstClick) {
-                                setFirstClick(true)
-                                instance.hide()
-                            }
-
-                            instance.toggle()
-                        }
-                    }
-                >
+                <button type="button" className="navbar-notification-button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                     <i className="bi bi-bell"></i>
                     {
                         notification && JSON.parse(notification).length ? (
@@ -64,16 +47,7 @@ export default function HeaderNotification() {
                             <div className="align-self-end align-self-center ms-auto me-3">
                                 {
                                     notification && JSON.parse(notification).length ? (
-                                        <button
-                                            type="button"
-                                            className="navbar-button btn btn-light justify-content-end"
-                                            onClick={
-                                                () => {
-                                                    localStorage.setItem('notification', '[]')
-                                                    window.dispatchEvent(new Event('storage'))
-                                                }
-                                            }
-                                        >
+                                        <button type="button" className="navbar-button btn btn-light justify-content-end" onClick={() => handleClearNotify}>
                                             {translator().translate.layouts.Header.HeaderNotification.clear}
                                         </button>
                                     ) : ''
@@ -97,6 +71,18 @@ export default function HeaderNotification() {
                                         const buttonName = data.button ? data.button.name : ''
                                         const buttonLink = data.button ? data.button.link : ''
 
+                                        const handleDismissNotify = () => {
+                                            const list = JSON.parse(notification)
+                                            const item = list.indexOf(index)
+
+                                            if (item > -1) list.splice(item, 1)
+
+                                            const json = JSON.stringify(list)
+
+                                            localStorage.setItem('notification', json)
+                                            window.dispatchEvent(new Event('storage'))
+                                        }
+
                                         return (
                                             <div className="toast fade show" role="alert" aria-live="assertive" aria-atomic="true" key={index}>
                                                 <div className="toast-header">
@@ -107,25 +93,7 @@ export default function HeaderNotification() {
                                                     <small>
                                                         {timeSince(new Date(when))}
                                                     </small>
-                                                    <button
-                                                        type="button"
-                                                        className="btn-close"
-                                                        data-bs-dismiss="toast"
-                                                        aria-label="Close"
-                                                        onClick={
-                                                            () => {
-                                                                const list = JSON.parse(notification)
-                                                                const item = list.indexOf(index)
-
-                                                                if (item > -1) list.splice(item, 1)
-
-                                                                const json = JSON.stringify(list)
-
-                                                                localStorage.setItem('notification', json)
-                                                                window.dispatchEvent(new Event('storage'))
-                                                            }
-                                                        }
-                                                    ></button>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close" onClick={() => handleDismissNotify}></button>
                                                 </div>
                                                 <div className="toast-body">
                                                     {description}
