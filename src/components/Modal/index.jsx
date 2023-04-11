@@ -1,10 +1,6 @@
 import './style.css'
 
-export default function Modal(props) {
-    const id = props.id
-    const title = props.title
-    const body = props.body
-
+export default function Modal({ id, title, body }) {
     return (
         <div className="maseshi-modal modal fade" id={id + 'Modal'} tabIndex="-1" aria-labelledby={id + 'ModalLabel'} aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">

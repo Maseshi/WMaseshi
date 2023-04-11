@@ -1,56 +1,50 @@
 import './style.css'
 
-export default function Waves(props) {
-    const positionProps = props.position
-    const classProps = props.class
-    let rProps = props.r ? props.r : 240
-    let gProps = props.g ? props.g : 240
-    let bProps = props.b ? props.b : 250
-
+export default function Waves({ position, className, r = 240, g = 240, b = 240 }) {
     // Condition of R color
-    if (typeof rProps === 'string') {
-        rProps = 240
+    if (typeof r === 'string') {
+        r = 240
         console.log('Color R must be a number only.')
     }
-    if ((typeof rProps === 'number' && rProps > 255) || (typeof rProps === 'number' && rProps < 0)) {
-        rProps = (rProps > 255 ? 255 : rProps) || (rProps < 0 ? 0 : rProps)
+    if ((typeof r === 'number' && r > 255) || (typeof r === 'number' && r < 0)) {
+        r = (r > 255 ? 255 : r) || (r < 0 ? 0 : r)
 
         console.log('Color R should not be greater than 255 and less than 0.')
     }
 
     // Condition of G color
-    if (typeof gProps === 'string') {
-        gProps = 240
+    if (typeof g === 'string') {
+        g = 240
         console.log('Color G must be a number only.')
     }
-    if ((typeof gProps === 'number' && gProps > 255) || (typeof gProps === 'number' && gProps < 0)) {
-        gProps = (gProps > 255 ? 255 : gProps) || (gProps < 0 ? 0 : gProps)
+    if ((typeof g === 'number' && g > 255) || (typeof g === 'number' && g < 0)) {
+        g = (g > 255 ? 255 : g) || (g < 0 ? 0 : g)
 
         console.log('Color G should not be greater than 255 and less than 0.')
     }
 
     // Condition of B color
-    if (typeof bProps === 'string') {
-        bProps = 250
+    if (typeof b === 'string') {
+        b = 250
         console.log('Color B must be a number only.')
     }
-    if ((typeof bProps === 'number' && bProps > 255) || (typeof bProps === 'number' && bProps < 0)) {
-        bProps = (bProps > 255 ? 255 : bProps) || (bProps < 0 ? 0 : bProps)
+    if ((typeof b === 'number' && b > 255) || (typeof b === 'number' && b < 0)) {
+        b = (b > 255 ? 255 : b) || (b < 0 ? 0 : b)
 
         console.log('Color B should not be greater than 255 and less than 0.')
     }
 
     return (
         <div className={
-            positionProps ? (
-                positionProps === 'top' ? (
-                    "waves-top " + classProps
+            position ? (
+                position === 'top' ? (
+                    "waves-top " + (className || "")
                 ) : (
-                    "waves-bottom " + classProps
+                    "waves-bottom " + (className || "")
                 )
             ) : (
-                !positionProps && classProps ? (
-                    classProps
+                !position && className ? (
+                    className
                 ) : (
                     "waves-top"
                 )
@@ -61,10 +55,10 @@ export default function Waves(props) {
                     <path id={"waves-gentle-wave"} d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
                 </defs>
                 <g className="waves-parallax">
-                    <use xlinkHref={"#waves-gentle-wave"} x="48" y="0" fill={"rgba(" + rProps.toString() + ", " + gProps.toString() + ", " + bProps.toString() + ", 0.7)"} />
-                    <use xlinkHref={"#waves-gentle-wave"} x="48" y="3" fill={"rgba(" + rProps.toString() + ", " + gProps.toString() + ", " + bProps.toString() + ", 0.5)"} />
-                    <use xlinkHref={"#waves-gentle-wave"} x="48" y="5" fill={"rgba(" + rProps.toString() + ", " + gProps.toString() + ", " + bProps.toString() + ", 0.3)"} />
-                    <use xlinkHref={"#waves-gentle-wave"} x="48" y="7" fill={"rgba(" + rProps.toString() + ", " + gProps.toString() + ", " + bProps.toString() + ", 1)"} />
+                    <use xlinkHref={"#waves-gentle-wave"} x="48" y="0" fill={"rgba(" + r.toString() + ", " + g.toString() + ", " + b.toString() + ", 0.7)"} />
+                    <use xlinkHref={"#waves-gentle-wave"} x="48" y="3" fill={"rgba(" + r.toString() + ", " + g.toString() + ", " + b.toString() + ", 0.5)"} />
+                    <use xlinkHref={"#waves-gentle-wave"} x="48" y="5" fill={"rgba(" + r.toString() + ", " + g.toString() + ", " + b.toString() + ", 0.3)"} />
+                    <use xlinkHref={"#waves-gentle-wave"} x="48" y="7" fill={"rgba(" + r.toString() + ", " + g.toString() + ", " + b.toString() + ", 1)"} />
                 </g>
             </svg>
         </div>
