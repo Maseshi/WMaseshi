@@ -6,7 +6,6 @@
     <img src="https://img.shields.io/badge/react.js-v18-61DBFB?logo=react&logoColor=white&style=for-the-badge">
     <img src="https://img.shields.io/github/stars/Maseshi/WMaseshi.svg?logo=github&style=for-the-badge">
     <img src="https://img.shields.io/github/license/Maseshi/WMaseshi.svg?logo=github&style=for-the-badge">
-    <img src="https://img.shields.io/github/workflow/status/Maseshi/WMaseshi/CodeQL?label=test&logo=circleci&style=for-the-badge">
     <img src="https://img.shields.io/website-up-down-green-red/https/maseshi.web.app.svg?logo=webpack&logoColor=white&style=for-the-badge">
 </div>
 
