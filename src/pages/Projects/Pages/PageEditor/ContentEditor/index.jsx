@@ -1,81 +1,82 @@
 import { useState } from 'react'
-import { getFirestore, doc, setDoc } from 'firebase/firestore'
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getFirestore, doc, setDoc, deleteDoc } from 'firebase/firestore'
+import { getStorage, ref, uploadBytes } from 'firebase/storage'
 
+import ContentTabs from '../../PageContents/ContentTabs/index'
 import ContentDetail from '../../PageContents/ContentDetail'
-import ContentTabs from '../../PageContents/ContentTabs'
-import UploadIcon from './UploadIcon'
-import Details from './Details'
-import GetStart from './Tabs/GetStart'
-import News from './Tabs/News'
-import Documents from './Tabs/Documents'
-import Changelog from './Tabs/Changelog'
-import SourceCode from './Tabs/SourceCode'
+import EditorIcon from './EditorIcon'
+import EditorDetails from './EditorDetails'
+import GetStart from './EditorTabs/GetStart'
+import News from './EditorTabs/News'
+import Documents from './EditorTabs/Documents'
+import Changelog from './EditorTabs/Changelog'
+import SourceCode from './EditorTabs/SourceCode'
 
 import { resizeImage } from '../../../../../utils/functions/resizeImage'
 import { validURL } from '../../../../../utils/functions/validURL'
-import { translator } from '../../../../../utils/functions/translator';
+import { translator } from '../../../../../utils/functions/translator'
 
-export default function ProjectsEditor(props) {
+export default function ContentEditor({ data, userData, parameter, pages }) {
     const [previewData, setPreviewData] = useState()
     const [previewMode, setPreviewMode] = useState(false)
     const [clearData, setClearData] = useState(false)
-
-    const userDataProps = props.userData
-    const loadedProps = props.loaded
-    const parameterProps = props.parameter
-    const pagesIDProps = props.pagesID
-
-    const news = []
+    const newsData = []
 
     const checkInput = () => {
-        const projectName = document.getElementById("newProjectName")
-        const ProjectNameValidate = document.getElementById("newProjectNameValidate")
-        const projectType = document.getElementById("newProjectType")
-        const projectTypeValidate = document.getElementById("newProjectTypeValidate")
-        const projectDate = document.getElementById("newProjectDate")
-        const projectStatus = document.getElementById("newProjectStatus")
-        const projectTag = document.getElementById("newProjectTag")
-        const projectButtonName = document.getElementById("newProjectButtonName")
-        const projectButtonLink = document.getElementById("newProjectButtonLink")
-        const projectButtonValidate = document.getElementById("newProjectButtonValidate")
-        const projectLink = document.getElementById("newProjectLink")
-        const projectLinkValidate = document.getElementById("newProjectLinkValidate")
-        const projectDescription = document.getElementById("newProjectDescription")
-        const projectDescriptionValidate = document.getElementById("newProjectDescriptionValidate")
-        const getStartInfo = document.querySelector('input[name="getStartInfo"]:checked')
-        const getStartRefURL = document.getElementById("getStartRefURL")
-        const changelogInfo = document.querySelector('input[name="changelogInfo"]:checked')
-        const changelogRefURL = document.getElementById("changelogRefURL")
-        const sourceCodeInfo = document.querySelector('input[name="sourceCodeInfo"]:checked')
-        const sourceCodeRefURL = document.getElementById("sourceCodeRefURL")
+        const projectName = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Name')
+        const projectNameValidate = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'NameValidate')
+        const projectType = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Type')
+        const projectTypeValidate = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'TypeValidate')
+        const projectDate = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Date')
+        const projectStatus = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Status')
+        const projectTag = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Tag')
+        const projectButtonName = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'ButtonName')
+        const projectButtonLink = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'ButtonLink')
+        const projectButtonValidate = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'ButtonValidate')
+        const projectLink = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Link')
+        const projectLinkValidate = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'LinkValidate')
+        const projectDescription = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Description')
+        const projectDescriptionValidate = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'DescriptionValidate')
+
+        const getStartTab = document.querySelector('input[name="getStartTab' + (data ? data.title.replace(' ', '') : '') + '"]:checked')
+        const getStartTabInputGithub = document.getElementById('getStartTab' + (data ? data.title.replace(' ', '') : '') + 'InputGithub')
+        const getStartTabInputHuggingface = document.getElementById('getStartTab' + (data ? data.title.replace(' ', '') : '') + 'InputHuggingface')
+        const getStartTabHost = document.querySelector('input[name="getStartTab' + (data ? data.title.replace(' ', '') : '') + 'Host"]:checked')
+        const getStartTabInputTypeHostTrue = document.getElementById('getStartTab' + (data ? data.title.replace(' ', '') : '') + 'InputTypeHostTrue')
+        const getStartTabInputLinkHostTrue = document.getElementById('getStartTab' + (data ? data.title.replace(' ', '') : '') + 'InputLinkHostTrue')
+
+        const changelogTab = document.querySelector('input[name="changelogTab' + (data ? data.title.replace(' ', '') : '') + '"]:checked')
+        const changelogTabInputGithub = document.getElementById('changelogTab' + (data ? data.title.replace(' ', '') : '') + 'InputGithub')
+
+        const sourceCodeTab = document.querySelector('input[name="sourceCodeTab' + (data ? data.title.replace(' ', '') : '') + '"]:checked')
+        const sourceCodeTabInputGithub = document.getElementById('sourceCodeTab' + (data ? data.title.replace(' ', '') : '') + 'InputGithub')
 
         const format = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/
 
         // Verify the project name and convert it to project ID.
         if (!projectName.value) {
-            ProjectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_is_empty
+            projectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_is_empty
             projectName.classList.remove('is-valid')
             projectName.classList.add('is-invalid')
             return false
         }
 
         if (format.test(projectName.value)) {
-            ProjectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_must_do_not_have_special_character
+            projectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_must_do_not_have_special_character
             projectName.classList.remove('is-valid')
             projectName.classList.add('is-invalid')
             return false
         }
 
         if (projectName.value.length < projectName.minLength) {
-            ProjectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_too_short.replace('%s', projectName.minLength)
+            projectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_too_short.replace('%s', projectName.minLength)
             projectName.classList.remove('is-valid')
             projectName.classList.add('is-invalid')
             return false
         }
 
         if (projectName.value.length >= projectName.maxLength) {
-            ProjectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_too_long.replace('%s', projectName.maxLength)
+            projectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_too_long.replace('%s', projectName.maxLength)
             projectName.classList.remove('is-valid')
             projectName.classList.add('is-invalid')
             return false
@@ -83,11 +84,13 @@ export default function ProjectsEditor(props) {
 
         const projectID = projectName.value.toLowerCase().replace(' ', '-')
 
-        if (pagesIDProps.includes('new-project')) pagesIDProps.splice(pagesIDProps.indexOf('new-project'), 1)
-        if (pagesIDProps.includes(projectID)) {
-            ProjectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_is_duplicate
-            projectName.classList.add('is-invalid')
-            return false
+        if (pages.includes('new-project')) pages.splice(pages.indexOf('new-project'), 1)
+        if (!data) {
+            if (pages.includes(projectID)) {
+                projectNameValidate.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.name_is_duplicate
+                projectName.classList.add('is-invalid')
+                return false
+            }
         }
 
         // Verify the project type
@@ -185,49 +188,76 @@ export default function ProjectsEditor(props) {
         }
 
         return {
-            id: projectID,
             title: projectName.value,
             type: projectType.value,
             established: projectDate.value ? new Date(projectDate.value) : '',
-            status: Number(projectStatus.value),
-            tag: tags,
-            button: [
-                {
-                    color: 0,
-                    disabled: false,
-                    link: projectButtonLink.value,
-                    name: projectButtonName.value
-                }
-            ],
-            link: projectLink.value,
+            status: projectStatus.value ? Number(projectStatus.value) : 7,
+            tag: projectType.value ? tags : '',
+            button: projectButtonName.value || projectButtonLink.value ? (
+                [
+                    {
+                        color: 0,
+                        disabled: false,
+                        link: projectButtonLink.value ? projectButtonLink.value : '',
+                        name: projectButtonName.value ? projectButtonName.value : ''
+                    }
+                ]
+            ) : '',
+            link: projectLink.value ? [projectLink.value] : [],
             description: projectDescription.value,
             tab: {
-                changelog: changelogInfo.value === '0' ? '' : changelogRefURL.value,
+                changelog: {
+                    type: changelogTab.value ? changelogTab.value : 'none',
+                    content: changelogTab.value === 'github' ? changelogTabInputGithub.value : ''
+                },
                 document: '',
-                news: news,
-                sourcecode: sourceCodeInfo.value === '0' ? '' : sourceCodeRefURL.value,
-                started: getStartInfo.value === '0' ? '' : 'https://raw.githubusercontent.com/Maseshi/' + getStartRefURL.value
+                news: newsData,
+                source_code: {
+                    type: sourceCodeTab.value ? sourceCodeTab.value : 'none',
+                    content: sourceCodeTab.value === 'github' ? sourceCodeTabInputGithub.value : ''
+                },
+                get_start: {
+                    type: getStartTab ? getStartTab.value : 'none',
+                    host: {
+                        enable: getStartTabHost.value ? (getStartTabHost.value === "true") : false,
+                        type: getStartTabInputTypeHostTrue && getStartTabInputTypeHostTrue.value ? getStartTabInputTypeHostTrue.value : '',
+                        repo_model: getStartTabInputLinkHostTrue && getStartTabInputLinkHostTrue.value ? getStartTabInputLinkHostTrue.value : ''
+                    },
+                    content: getStartTab.value === 'github' ? (
+                        getStartTabInputGithub.value ? ('https://raw.githubusercontent.com/Maseshi/' + getStartTabInputGithub.value) : ''
+                    ) : getStartTab.value === 'huggingface' ? (
+                        getStartTabInputHuggingface.value ? ('https://huggingface.co/Maseshi/' + getStartTabInputHuggingface.value) : ''
+                    ) : ''
+                }
             }
         }
     }
-
     const disableInput = (boolean) => {
-        const projectName = document.getElementById("newProjectName")
-        const projectType = document.getElementById("newProjectType")
-        const projectDate = document.getElementById("newProjectDate")
-        const projectStatus = document.getElementById("newProjectStatus")
-        const projectTag = document.getElementById("newProjectTag")
-        const projectButtonName = document.getElementById("newProjectButtonName")
-        const projectButtonLink = document.getElementById("newProjectButtonLink")
-        const projectLink = document.getElementById("newProjectLink")
-        const projectDescription = document.getElementById("newProjectDescription")
-        const getStartInfo = document.querySelector('input[name="getStartInfo"]:checked')
-        const getStartRefURL = document.getElementById("getStartRefURL")
-        const changelogInfo = document.querySelector('input[name="changelogInfo"]:checked')
-        const changelogRefURL = document.getElementById("changelogRefURL")
-        const sourceCodeInfo = document.querySelector('input[name="sourceCodeInfo"]:checked')
-        const sourceCodeRefURL = document.getElementById("sourceCodeRefURL")
+        const projectIcon = document.getElementById("editorProject" + (data ? data.title.replace(' ', '') : '') + "UploadIcon")
+        const projectName = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Name')
+        const projectType = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Type')
+        const projectDate = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Date')
+        const projectStatus = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Status')
+        const projectTag = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Tag')
+        const projectButtonName = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'ButtonName')
+        const projectButtonLink = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'ButtonLink')
+        const projectLink = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Link')
+        const projectDescription = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Description')
 
+        const getStartTabValueNone = document.getElementById('getStartTab' + (data ? data.title.replace(' ', '') : '') + 'ValueNone')
+        const getStartTabValueGithub = document.getElementById('getStartTab' + (data ? data.title.replace(' ', '') : '') + 'ValueGithub')
+        const getStartTabValueHuggingface = document.getElementById('getStartTab' + (data ? data.title.replace(' ', '') : '') + 'ValueHuggingface')
+        const getStartTabInputGithub = document.getElementById('getStartTab' + (data ? data.title.replace(' ', '') : '') + 'InputGithub')
+
+        const changelogTabValueNone = document.getElementById('changelogTab' + (data ? data.title.replace(' ', '') : '') + 'ValueNone')
+        const changelogTabValueGithub = document.getElementById('changelogTab' + (data ? data.title.replace(' ', '') : '') + 'ValueGithub')
+        const changelogTabInputGithub = document.getElementById('changelogTab' + (data ? data.title.replace(' ', '') : '') + 'InputGithub')
+
+        const sourceCodeTabValueNone = document.getElementById('sourceCodeTab' + (data ? data.title.replace(' ', '') : '') + 'ValueNone')
+        const sourceCodeTabValueGithub = document.getElementById('sourceCodeTab' + (data ? data.title.replace(' ', '') : '') + 'ValueGithub')
+        const sourceCodeTabInputGithub = document.getElementById('sourceCodeTab' + (data ? data.title.replace(' ', '') : '') + 'InputGithub')
+
+        projectIcon.disabled = boolean
         projectName.disabled = boolean
         projectType.disabled = boolean
         projectDate.disabled = boolean
@@ -237,18 +267,133 @@ export default function ProjectsEditor(props) {
         projectButtonLink.disabled = boolean
         projectLink.disabled = boolean
         projectDescription.disabled = boolean
-        getStartInfo.disabled = boolean
-        if (getStartRefURL) getStartRefURL.disabled = boolean
-        changelogInfo.disabled = boolean
-        if (changelogRefURL) changelogRefURL.disabled = boolean
-        sourceCodeInfo.disabled = boolean
-        if (sourceCodeRefURL) sourceCodeRefURL.disabled = boolean
+
+        getStartTabValueNone.disabled = boolean
+        getStartTabValueGithub.disabled = boolean
+        getStartTabValueHuggingface.disabled = boolean
+        if (getStartTabInputGithub) getStartTabInputGithub.disabled = boolean
+
+        changelogTabValueNone.disabled = boolean
+        changelogTabValueGithub.disabled = boolean
+        if (changelogTabInputGithub) changelogTabInputGithub.disabled = boolean
+
+        sourceCodeTabValueNone.disabled = boolean
+        sourceCodeTabValueGithub.disabled = boolean
+        if (sourceCodeTabInputGithub) sourceCodeTabInputGithub.disabled = boolean
+    }
+
+    const handleSubmit = async (event) => {
+        const storage = getStorage()
+        const database = getFirestore()
+
+        const uploadIconInput = document.getElementById("editorProject" + (data ? data.title.replace(' ', '') : '') + "UploadIcon")
+        const projectNameInput = document.getElementById("editorProject" + (data ? data.title.replace(' ', '') : '') + "Name")
+
+        let projectIcon = data ? data.iconReference.path : ''
+        const projectID = projectNameInput.value.toLowerCase().replace(' ', '-')
+        const projectData = checkInput(event)
+
+        disableInput(true)
+        event.target.disabled = true
+        event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public)
+
+        try {
+            if (projectData) {
+                if (uploadIconInput.files[0]) {
+                    const iconFileName = 'ic_' + (data ? data.id.replace('-', '_') : projectID.replace('-', '_')) + '.webp'
+                    const storageRef = ref(storage, 'data/images/' + (data ? data.id : projectID) + '/' + iconFileName)
+                    const resizedImage = await resizeImage({
+                        file: uploadIconInput.files[0],
+                        maxSize: 200
+                    })
+                    const snapshot = await uploadBytes(storageRef, resizedImage)
+
+                    projectIcon = snapshot.ref.fullPath
+                }
+
+                await setDoc(doc(database, 'Projects', (data ? data.id : projectID)), {
+                    image: {
+                        background: '',
+                        icon: projectIcon ? doc(database, projectIcon) : ''
+                    },
+                    ...projectData
+                })
+
+                if (data) {
+                    const cancelButton = document.getElementById('editorProject' + (data ? data.title.replace(' ', '') : '') + 'Cancel')
+
+                    if (data.id !== projectID) {
+                        await deleteDoc(doc(database, 'Projects', data.id))
+
+                        const renewProject = document.getElementById('v-pills-' + projectID)
+
+                        if (renewProject) renewProject.click()
+                    } else {
+                        if (cancelButton) cancelButton.click()
+                    }
+                } else {
+                    const newProject = document.getElementById('v-pills-' + projectID)
+
+                    if (newProject) newProject.click()
+                }
+            }
+
+            disableInput(false)
+            event.target.disabled = false
+            event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public)
+            setTimeout(() => {
+                event.target.innerHTML = '<i class="bi bi-check2-square"></i> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public)
+                setClearData(true)
+                setTimeout(() => {
+                    setClearData(false)
+                }, 3000)
+            }, 3000)
+        } catch (error) {
+            console.log(error)
+            disableInput(false)
+            event.target.disabled = false
+            event.target.innerHTML = '<i class="bi bi-x-circle"></i> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public)
+            setTimeout(() => {
+                event.target.innerHTML = '<i class="bi bi-check2-square"></i> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public)
+            }, 3000)
+        }
+    }
+    const handlePreview = async (event) => {
+        const uploadIconInput = document.getElementById("editorProject" + (data ? data.title.replace(' ', '') : '') + "UploadIcon")
+
+        let projectIcon = data ? data.icon : ''
+        const projectData = checkInput(event)
+
+        disableInput(true)
+        event.target.disabled = true
+        event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.example_view)
+
+        if (projectData) {
+            if (uploadIconInput.files[0]) {
+                const resizedImage = await resizeImage({
+                    file: uploadIconInput.files[0],
+                    maxSize: 200
+                })
+                projectIcon = URL.createObjectURL(resizedImage)
+            }
+
+            setPreviewData({
+                id: data.id,
+                icon: projectIcon,
+                ...projectData
+            })
+            setPreviewMode(true)
+        }
+
+        disableInput(false)
+        event.target.disabled = false
+        event.target.innerHTML = '<i class="bi bi-display"></i> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.example_view)
     }
 
     return (
         <>
             {
-                loadedProps && userDataProps && userDataProps.user.role === 'owner' ? (
+                userData && userData.user.role === 'owner' ? (
                     <>
                         {
                             clearData ? (
@@ -264,21 +409,34 @@ export default function ProjectsEditor(props) {
                                 </div>
                             ) : (
                                 <div className="projects-new-create" hidden={previewMode ? true : false}>
-                                    <div className="text-center">
-                                        <h2>
-                                            {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.new_project}
-                                        </h2>
-                                        <p>
-                                            {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.new_project_description}
-                                        </p>
-                                    </div>
+                                    {
+                                        data ? (
+                                            <div className="text-center">
+                                                <h2>
+                                                    แก้ไขข้อมูล
+                                                </h2>
+                                                <p>
+                                                    กำลังเปลี่ยนข้อมูลของโครงการ {data.title}
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <div className="text-center">
+                                                <h2>
+                                                    {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.new_project}
+                                                </h2>
+                                                <p>
+                                                    {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.new_project_description}
+                                                </p>
+                                            </div>
+                                        )
+                                    }
                                     <br />
                                     <div className="row">
                                         <div className="col-md-2">
-                                            <UploadIcon />
+                                            <EditorIcon data={data} />
                                         </div>
                                         <div className="col-md-10">
-                                            <Details pagesID={pagesIDProps} />
+                                            <EditorDetails data={data} pages={pages} />
                                         </div>
                                     </div>
                                     <hr />
@@ -290,134 +448,187 @@ export default function ProjectsEditor(props) {
                                     </p>
                                     <div className="projects-new-detail d-flex align-items-start">
                                         <div className="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                            <button className="nav-link active" id="v-pills-get-start-tab" data-bs-toggle="pill" data-bs-target="#v-pills-get-start" type="button" role="tab" aria-controls="v-pills-get-start" aria-selected="true">
+                                            <button
+                                                className="nav-link active"
+                                                id={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-get-start-tab'
+                                                    ) : (
+                                                        'v-pills-get-start-tab'
+                                                    )
+                                                }
+                                                data-bs-toggle="pill"
+                                                data-bs-target={
+                                                    data ? (
+                                                        '#v-pills-' + data.id + '-get-start'
+                                                    ) : (
+                                                        '#v-pills-get-start'
+                                                    )
+                                                }
+                                                type="button"
+                                                role="tab"
+                                                aria-controls={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-get-start'
+                                                    ) : (
+                                                        'v-pills-get-start'
+                                                    )
+                                                }
+                                                aria-selected="true"
+                                            >
                                                 {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.get_started}
                                             </button>
-                                            <button className="nav-link" id="v-pills-news-tab" data-bs-toggle="pill" data-bs-target="#v-pills-news" type="button" role="tab" aria-controls="v-pills-news" aria-selected="false">
+                                            <button
+                                                className="nav-link"
+                                                id={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-news-tab'
+                                                    ) : (
+                                                        'v-pills-news-tab'
+                                                    )
+                                                }
+                                                data-bs-toggle="pill"
+                                                data-bs-target={
+                                                    data ? (
+                                                        '#v-pills-' + data.id + '-news'
+                                                    ) : (
+                                                        '#v-pills-news-tab'
+                                                    )
+                                                }
+                                                type="button"
+                                                role="tab"
+                                                aria-controls={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-news'
+                                                    ) : (
+                                                        'v-pills-news-tab'
+                                                    )
+                                                }
+                                                aria-selected="false"
+                                            >
                                                 {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.news}
                                             </button>
-                                            <button className="nav-link" id="v-pills-documents-tab" data-bs-toggle="pill" data-bs-target="#v-pills-documents" type="button" role="tab" aria-controls="v-pills-documents" aria-selected="false" disabled>
+                                            <button
+                                                className="nav-link"
+                                                id={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-documents-tab'
+                                                    ) : (
+                                                        'v-pills-documents-tab'
+                                                    )
+                                                }
+                                                data-bs-toggle="pill"
+                                                data-bs-target={
+                                                    data ? (
+                                                        '#v-pills-' + data.id + '-documents'
+                                                    ) : (
+                                                        '#v-pills-documents'
+                                                    )
+                                                }
+                                                type="button"
+                                                role="tab"
+                                                aria-controls={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-documents'
+                                                    ) : (
+                                                        'v-pills-documents'
+                                                    )
+                                                }
+                                                aria-selected="false"
+                                                disabled
+                                            >
                                                 {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.documents_soon}
                                             </button>
-                                            <button className="nav-link" id="v-pills-changelog-tab" data-bs-toggle="pill" data-bs-target="#v-pills-changelog" type="button" role="tab" aria-controls="v-pills-changelog" aria-selected="false">
+                                            <button
+                                                className="nav-link"
+                                                id={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-changelog-tab'
+                                                    ) : (
+                                                        'v-pills-changelog-tab'
+                                                    )
+                                                }
+                                                data-bs-toggle="pill"
+                                                data-bs-target={
+                                                    data ? (
+                                                        '#v-pills-' + data.id + '-changelog'
+                                                    ) : (
+                                                        '#v-pills-changelog'
+                                                    )
+                                                }
+                                                type="button"
+                                                role="tab"
+                                                aria-controls={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-changelog'
+                                                    ) : (
+                                                        'v-pills-changelog'
+                                                    )
+                                                }
+                                                aria-selected="false"
+                                            >
                                                 {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.changelog}
                                             </button>
-                                            <button className="nav-link" id="v-pills-source-code-tab" data-bs-toggle="pill" data-bs-target="#v-pills-source-code" type="button" role="tab" aria-controls="v-pills-source-code" aria-selected="false">
+                                            <button
+                                                className="nav-link"
+                                                id={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-source-code-tab'
+                                                    ) : (
+                                                        'v-pills-source-code-tab'
+                                                    )
+                                                }
+                                                data-bs-toggle="pill"
+                                                data-bs-target={
+                                                    data ? (
+                                                        '#v-pills-' + data.id + '-source-code'
+                                                    ) : (
+                                                        '#v-pills-source-code'
+                                                    )
+                                                }
+                                                type="button"
+                                                role="tab"
+                                                aria-controls={
+                                                    data ? (
+                                                        'v-pills-' + data.id + '-source-code'
+                                                    ) : (
+                                                        'v-pills-source-code'
+                                                    )
+                                                }
+                                                aria-selected="false"
+                                            >
                                                 {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.source_code}
                                             </button>
                                         </div>
                                         <div className="projects-new-detail-content tab-content" id="v-pills-tabContent">
-                                            <GetStart />
-                                            <News news={news} userData={userDataProps} />
-                                            <Documents />
-                                            <Changelog />
-                                            <SourceCode />
+                                            <GetStart data={data} />
+                                            <News data={data} newsData={newsData} userData={userData} />
+                                            <Documents data={data} />
+                                            <Changelog data={data} />
+                                            <SourceCode data={data} />
                                         </div>
                                     </div>
                                     <hr />
                                     <div className="projects-new-action">
-                                        <div className="text-center d-grid gap-2 d-md-block">
-                                            <button
-                                                className="projects-content-button btn btn-primary mx-2"
-                                                type="button"
-                                                onClick={
-                                                    async (event) => {
-                                                        disableInput(true)
-                                                        event.target.disabled = true
-                                                        event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public)
-
-                                                        const uploadIcon = document.getElementById("newProjectUploadIcon")
-                                                        const projectName = document.getElementById("newProjectName")
-                                                        const projectID = projectName.value.toLowerCase().replace(' ', '-')
-                                                        const data = checkInput(event)
-
-                                                        uploadIcon.disabled = true
-
-                                                        if (data) {
-                                                            let url
-                                                            const db = getFirestore();
-
-                                                            if (uploadIcon.files[0]) {
-                                                                const storage = getStorage()
-                                                                const fileName = 'ic_' + projectID.replace('-', '_') + '.webp'
-                                                                const storageRef = ref(storage, 'data/images/' + projectID + '/' + fileName)
-                                                                const resizedImage = await resizeImage({
-                                                                    "file": uploadIcon.files[0],
-                                                                    "maxSize": 200
-                                                                })
-                                                                const snapshot = await uploadBytes(storageRef, resizedImage)
-                                                                url = snapshot.ref.fullPath
-                                                            }
-
-                                                            await setDoc(doc(db, 'Projects', data.id), {
-                                                                image: {
-                                                                    background: '',
-                                                                    icon: url ? doc(db, url) : ''
-                                                                },
-                                                                ...data
-                                                            })
-
-                                                            const newProject = document.getElementById('v-pills-' + data.id)
-
-                                                            if (newProject) newProject.click()
-                                                        }
-
-                                                        disableInput(false)
-                                                        uploadIcon.disabled = false
-                                                        event.target.disabled = false
-                                                        event.target.innerHTML = '<i class="bi bi-check-circle"></i> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public)
-                                                        setTimeout(() => {
-                                                            setClearData(true)
-                                                            setTimeout(() => {
-                                                                setClearData(false)
-                                                            }, 3000)
-                                                        }, 3000)
-                                                    }
-                                                }
-                                            >
-                                                {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public}
-                                            </button>
-                                            <button
-                                                className="projects-content-button btn btn-secondary mx-2"
-                                                type="button"
-                                                onClick={
-                                                    async (event) => {
-                                                        disableInput(true)
-                                                        event.target.disabled = true
-                                                        event.target.innerHTML = '<span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span> %s'.replace('%s', translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.example_view)
-
-                                                        const uploadIcon = document.getElementById("newProjectUploadIcon")
-                                                        const data = checkInput(event)
-
-                                                        uploadIcon.disabled = true
-
-                                                        if (data) {
-                                                            let url
-
-                                                            if (uploadIcon.files[0]) {
-                                                                const resizedImage = await resizeImage({
-                                                                    "file": uploadIcon.files[0],
-                                                                    "maxSize": 200
-                                                                });
-                                                                url = URL.createObjectURL(resizedImage)
-                                                            }
-
-                                                            setPreviewData({
-                                                                icon: url,
-                                                                ...data
-                                                            })
-                                                            setPreviewMode(true)
-                                                        }
-
-                                                        disableInput(false)
-                                                        uploadIcon.disabled = false
-                                                        event.target.disabled = false
-                                                        event.target.innerHTML = translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.example_view
-                                                    }
-                                                }
-                                            >
-                                                {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.example_view}
-                                            </button>
+                                        <div className="row row-cols-1 row-cols-md-2 g-2">
+                                            <div className="col">
+                                                <button
+                                                    className="btn btn-primary w-100"
+                                                    type="button"
+                                                    onClick={(event) => handleSubmit(event)}
+                                                >
+                                                    <i className="bi bi-check2-square"></i> {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.public}
+                                                </button>
+                                            </div>
+                                            <div className="col">
+                                                <button
+                                                    className="btn btn-secondary w-100"
+                                                    type="button"
+                                                    onClick={(event) => handlePreview(event)}
+                                                >
+                                                    <i className="bi bi-display"></i> {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.example_view}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -431,13 +642,11 @@ export default function ProjectsEditor(props) {
                                             <span className="navbar-brand mb-0 h1">
                                                 <i className="bi bi-view-stacked"></i> {translator().translate.pages.Projects.Pages.PageEditor.ContentEditor.ContentEditor.example_mode}
                                             </span>
-                                            <span class="navbar-text">
+                                            <span className="navbar-text">
                                                 <button
                                                     type="button"
                                                     className="btn btn-light"
-                                                    onClick={
-                                                        () => setPreviewMode(false)
-                                                    }
+                                                    onClick={() => setPreviewMode(false)}
                                                 >
                                                     <i className="bi bi-x-lg"></i>
                                                 </button>
@@ -446,7 +655,7 @@ export default function ProjectsEditor(props) {
                                     </nav>
                                     <br />
                                     <ContentDetail data={previewData} />
-                                    <ContentTabs data={previewData} userData={userDataProps} parameter={parameterProps} />
+                                    <ContentTabs data={previewData} userData={userData} parameter={parameter} />
                                 </div>
                             ) : ''
                         }
