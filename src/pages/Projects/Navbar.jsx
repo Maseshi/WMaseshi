@@ -2,16 +2,11 @@ import { useState } from "react"
 
 import { translator } from '../../utils/functions/translator'
 
-export default function Navbar(props) {
+export default function Navbar({ data, userData, parameter }) {
     const [query, setQuery] = useState()
 
-    const dataProps = props.data
-    const userDataProps = props.userData
-    const loadedProps = props.loaded
-    const parameterProps = props.parameter
-
     const checkSearchResult = () => {
-        return dataProps.filter(data => {
+        return data.filter(data => {
             if (query) {
                 if (query !== '') {
                     if (data.title.toLowerCase().includes(query.toLowerCase())) {
@@ -28,6 +23,30 @@ export default function Navbar(props) {
         })
     }
 
+    const handleHomeButton = () => {
+        document.title = translator().translate.pages.Projects.Navbar.website_title
+
+        const url = new URL(window.location)
+
+        url.searchParams.delete('id')
+        url.searchParams.delete('tab')
+        window.history.pushState({}, '', url)
+    }
+    const handleNewProject = () => {
+        document.title = translator().translate.pages.Projects.Navbar.website_title_new_projects
+
+        const url = new URL(window.location)
+        const homeButton = document.getElementById('v-pills-home-tab')
+
+        url.searchParams.set('id', 'new-project')
+        window.history.pushState({}, '', url)
+
+        if (homeButton.classList.contains('active')) {
+            homeButton.classList.remove('active')
+            homeButton.setAttribute('aria-selected', 'false')
+        }
+    }
+
     return (
         <nav className="projects-navbar navbar navbar-expand-lg">
             <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasProjectsNavbar" aria-labelledby="offcanvasProjectsNavbarLabel">
@@ -41,11 +60,11 @@ export default function Navbar(props) {
                     <div className="projects-offcanvas-navbar">
                         <div className="projects-beta-content mb-3">
                             <span>
-                                {translator().translate.pages.Projects.Navbar.currently_beta}
+                                <i className="bi bi-exclamation-circle"></i> {translator().translate.pages.Projects.Navbar.currently_beta}
                             </span>
                         </div>
                         <div className="projects-search-box form-floating mb-3">
-                            <input type="text" className="form-control" id="inputSearchProjects" onChange={event => setQuery(event.target.value)} placeholder={translator().translate.pages.Projects.Navbar.search_projects} disabled={loadedProps ? dataProps ? false : true : true} />
+                            <input type="text" className="form-control" id="inputSearchProjects" onChange={event => setQuery(event.target.value)} placeholder={translator().translate.pages.Projects.Navbar.search_projects} disabled={data ? false : true} />
                             <label htmlFor="inputSearchProjects">
                                 <i className="bi bi-search"></i> {translator().translate.pages.Projects.Navbar.search_projects}
                             </label>
@@ -56,87 +75,62 @@ export default function Navbar(props) {
                                     <div className="d-flex flex-row">
                                         <span data-bs-dismiss="offcanvas" aria-label="Close">
                                             <button
-                                                className={!parameterProps.id ? "projects-list-title-home active" : "projects-list-title-home"}
+                                                className={!parameter.id ? "projects-list-title-home active" : "projects-list-title-home"}
                                                 id="v-pills-home-tab"
                                                 data-bs-toggle="pill"
                                                 data-bs-target="#v-pills-home"
                                                 type="button"
                                                 role="tab"
                                                 aria-controls="v-pills-home"
-                                                aria-selected={!parameterProps.id ? "true" : "false"}
-                                                onClick={
-                                                    () => {
-                                                        document.title = translator().translate.pages.Projects.Navbar.website_title
-
-                                                        const url = new URL(window.location)
-
-                                                        url.searchParams.delete('id')
-                                                        url.searchParams.delete('tab')
-                                                        window.history.pushState({}, '', url)
-                                                    }
-                                                }
+                                                aria-selected={!parameter.id ? "true" : "false"}
+                                                onClick={() => handleHomeButton}
                                             >
                                                 <i className="bi bi-house"></i>
                                             </button>
                                         </span>
                                         <h5 className="projects-list-title-name flex-fill align-self-center ms-2 mb-0">
-                                            {document.title = translator().translate.pages.Projects.Navbar.projects}
+                                            {translator().translate.pages.Projects.Navbar.projects}
                                         </h5>
                                         <div className="projects-list-title-badge align-self-center">
                                             <span className="badge rounded-pill bg-primary">
                                                 {
-                                                    dataProps ? (
-                                                        loadedProps ? dataProps.length : (
-                                                            <div className="spinner-border spinner-border-sm" role="status">
-                                                                <span className="visually-hidden">Loading...</span>
-                                                            </div>
-                                                        )
-                                                    ) : 0
+                                                    data.length > 0 ? (
+                                                        data.length
+                                                    ) : (
+                                                        <div className="spinner-border spinner-border-sm" role="status">
+                                                            <span className="visually-hidden">Loading...</span>
+                                                        </div>
+                                                    )
                                                 }
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                                 {
-                                    dataProps ? (
-                                        loadedProps ? (
+                                    userData && userData.user.role === 'owner' ? (
+                                        <button
+                                            className={parameter.id === 'new-project' ? "projects-list-data card nav-link mb-2 active" : "projects-list-data card nav-link mb-2"}
+                                            id="v-pills-new-project-tab"
+                                            data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-new-project"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="v-pills-new-project"
+                                            aria-selected={parameter.id === 'new-project' ? "true" : "false"}
+                                            onClick={() => handleNewProject}
+                                        >
+                                            <div className="card-body" data-bs-dismiss="offcanvas" aria-label="Close">
+                                                <i className="bi bi-plus"></i>
+                                            </div>
+                                        </button>
+                                    ) : (
+                                        ''
+                                    )
+                                }
+                                {
+                                    data ? (
+                                        data.length > 0 ? (
                                             <>
-                                                {
-                                                    userDataProps && userDataProps.user.role === 'owner' ? (
-                                                        <button
-                                                            className={parameterProps.id === 'new-project' ? "projects-list-data card nav-link mb-2 active" : "projects-list-data card nav-link mb-2"}
-                                                            id="v-pills-new-project-tab"
-                                                            data-bs-toggle="pill"
-                                                            data-bs-target="#v-pills-new-project"
-                                                            type="button"
-                                                            role="tab"
-                                                            aria-controls="v-pills-new-project"
-                                                            aria-selected={parameterProps.id === 'new-project' ? "true" : "false"}
-                                                            onClick={
-                                                                () => {
-                                                                    document.title = translator().translate.pages.Projects.Navbar.website_title_new_projects
-
-                                                                    const url = new URL(window.location)
-                                                                    const homeButton = document.getElementById('v-pills-home-tab')
-
-                                                                    url.searchParams.set('id', 'new-project')
-                                                                    window.history.pushState({}, '', url)
-
-                                                                    if (homeButton.classList.contains('active')) {
-                                                                        homeButton.classList.remove('active')
-                                                                        homeButton.setAttribute('aria-selected', 'false')
-                                                                    }
-                                                                }
-                                                            }
-                                                        >
-                                                            <div className="card-body" data-bs-dismiss="offcanvas" aria-label="Close">
-                                                                <i className="bi bi-plus"></i>
-                                                            </div>
-                                                        </button>
-                                                    ) : (
-                                                        ''
-                                                    )
-                                                }
                                                 {
                                                     !checkSearchResult().length ? (
                                                         <div className="projects-list-search-empty">
@@ -149,7 +143,7 @@ export default function Navbar(props) {
                                                     ) : ''
                                                 }
                                                 {
-                                                    dataProps.sort((a, b) => a.title.localeCompare(b.title))
+                                                    data.sort((a, b) => a.title.localeCompare(b.title))
                                                         .filter(data => {
                                                             if (query) {
                                                                 if (query !== '') {
@@ -166,32 +160,32 @@ export default function Navbar(props) {
                                                             }
                                                         })
                                                         .map((data, index) => {
+                                                            const handleProjects = () => {
+                                                                document.title = data.title + ' - ' + translator().translate.pages.Projects.Navbar.website_title
+
+                                                                const url = new URL(window.location)
+                                                                const homeButton = document.getElementById('v-pills-home-tab')
+
+                                                                url.searchParams.set('id', data.id)
+                                                                window.history.pushState({}, '', url)
+
+                                                                if (homeButton.classList.contains('active')) {
+                                                                    homeButton.classList.remove('active')
+                                                                    homeButton.setAttribute('aria-selected', 'false')
+                                                                }
+                                                            }
+
                                                             return (
                                                                 <button
-                                                                    className={parameterProps.id === data.id ? "projects-list-data card nav-link mb-2 active" : "projects-list-data card nav-link mb-2"}
+                                                                    className={parameter.id === data.id ? "projects-list-data card nav-link mb-2 active" : "projects-list-data card nav-link mb-2"}
                                                                     id={"v-pills-" + data.id + "-tab"}
                                                                     data-bs-toggle="pill"
                                                                     data-bs-target={"#v-pills-" + data.id}
                                                                     type="button"
                                                                     role="tab"
                                                                     aria-controls={"v-pills-" + data.id}
-                                                                    aria-selected={parameterProps.id === data.id ? "true" : "false"}
-                                                                    onClick={
-                                                                        () => {
-                                                                            document.title = data.title + ' - ' + translator().translate.pages.Projects.Navbar.website_title_new_projects
-
-                                                                            const url = new URL(window.location)
-                                                                            const homeButton = document.getElementById('v-pills-home-tab')
-
-                                                                            url.searchParams.set('id', data.id)
-                                                                            window.history.pushState({}, '', url)
-
-                                                                            if (homeButton.classList.contains('active')) {
-                                                                                homeButton.classList.remove('active')
-                                                                                homeButton.setAttribute('aria-selected', 'false')
-                                                                            }
-                                                                        }
-                                                                    }
+                                                                    aria-selected={parameter.id === data.id ? "true" : "false"}
+                                                                    onClick={() => handleProjects}
                                                                     key={index}
                                                                 >
                                                                     <div className="card-body" data-bs-dismiss="offcanvas" aria-label="Close">
@@ -216,54 +210,36 @@ export default function Navbar(props) {
                                                 }
                                             </>
                                         ) : (
-                                            <>
-                                                <div className="projects-list-loading card nav-link mb-3" aria-hidden="true">
-                                                    <div className="card-body placeholder-glow">
-                                                        <span className="placeholder col-1"></span> <span className="placeholder col-4"></span>
-                                                    </div>
+                                            <div className="projects-list-empty">
+                                                <div className="projects-list-empty-header">
+                                                    <i className="bi bi-journal-x"></i>
+                                                    <br />
+                                                    <span>
+                                                        {translator().translate.pages.Projects.Navbar.no_data}
+                                                    </span>
                                                 </div>
-                                                <div className="projects-list-loading card nav-link mb-3" aria-hidden="true">
-                                                    <div className="card-body placeholder-glow">
-                                                        <span className="placeholder col-1"></span> <span className="placeholder col-4"></span>
-                                                    </div>
-                                                </div>
-                                                <div className="projects-list-loading card nav-link mb-3" aria-hidden="true">
-                                                    <div className="card-body placeholder-glow">
-                                                        <span className="placeholder col-1"></span> <span className="placeholder col-4"></span>
-                                                    </div>
-                                                </div>
-                                                <div className="projects-list-loading card nav-link mb-3" aria-hidden="true">
-                                                    <div className="card-body placeholder-glow">
-                                                        <span className="placeholder col-1"></span> <span className="placeholder col-4"></span>
-                                                    </div>
-                                                </div>
-                                                <div className="projects-list-loading card nav-link mb-3" aria-hidden="true">
-                                                    <div className="card-body placeholder-glow">
-                                                        <span className="placeholder col-1"></span> <span className="placeholder col-4"></span>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )
-                                    ) : (
-                                        <div className="projects-list-empty">
-                                            <div className="projects-list-empty-header">
-                                                <i className="bi bi-journal-x"></i>
-                                                <br />
                                                 <span>
-                                                    {translator().translate.pages.Projects.Navbar.no_data}
+                                                    {translator().translate.pages.Projects.Navbar.no_data_information}
                                                 </span>
                                             </div>
-                                            <span>
-                                                {translator().translate.pages.Projects.Navbar.no_data_information}
-                                            </span>
-                                        </div>
+                                        )
+                                    ) : (
+                                        Array.from({ length: 8 }, (__, index) => {
+                                            return (
+                                                <div className="projects-list-loading card nav-link mb-3" aria-hidden="true" key={index}>
+                                                    <div className="card-body placeholder-glow">
+                                                        <span className="placeholder col-1"></span> <span className="placeholder col-4"></span>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
                                     )
                                 }
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </div >
+        </nav >
     )
 }
