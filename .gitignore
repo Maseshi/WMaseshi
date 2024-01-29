@@ -9,6 +9,14 @@ firestore.indexes.json
 firestore.rules
 storage.rules
 
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # dependencies
 /node_modules
 /.pnp
@@ -24,12 +32,13 @@ storage.rules
 
 # misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# logs
+# debug
 logs
 *.log
 npm-debug.log*
