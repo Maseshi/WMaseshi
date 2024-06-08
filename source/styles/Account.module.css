@@ -1,0 +1,133 @@
+.profile {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('@/assets/images/cover/light-background.png');
+}
+
+[data-bs-theme=dark] .profile {
+    background-image: url('@/assets/images/cover/dark-background.png');
+}
+
+.auth {
+    -webkit-backdrop-filter: blur(10px);
+    
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    background: linear-gradient(to bottom,
+            transparent,
+            rgb(255, 255, 255)) rgb(214, 219, 220);
+}
+
+[data-bs-theme=dark] .auth {
+    background: linear-gradient(to bottom,
+            transparent,
+            rgb(0, 0, 0)) rgb(0, 0, 0);
+}
+
+.auth::before {
+    background: radial-gradient(rgba(255, 255, 255, 1),
+            rgba(255, 255, 255, 0));
+    border-radius: 50%;
+    width: 480px;
+    height: 360px;
+    margin-left: -400px;
+}
+
+[data-bs-theme=dark] .auth::before {
+    background: linear-gradient(to bottom right,
+            rgba(1, 65, 255, 0),
+            rgba(1, 65, 255, 0),
+            rgba(1, 65, 255, 0.3));
+}
+
+.auth::after {
+    background: conic-gradient(from 180deg at 50% 50%,
+            #16abff33 0deg,
+            #0885ff33 55deg,
+            #54d6ff33 120deg,
+            #0071ff33 160deg,
+            transparent 360deg);
+    width: 240px;
+    height: 180px;
+    z-index: -1;
+}
+
+[data-bs-theme=dark] .auth::after {
+    background: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+}
+
+.auth::before,
+.auth::after {
+  content: '';
+  left: 50%;
+  position: fixed;
+  filter: blur(45px);
+  transform: translateZ(0);
+}
+
+.card {
+    width: 400px;
+    padding: 15px;
+    margin: 60px auto;
+    border-radius: 20px;
+    background-color: #FFFFFF6B;
+}
+
+[data-bs-theme=dark] .card {
+    background-color: #2125296B;
+}
+
+.brand {
+    padding: 10px;
+    font-size: 25px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.brand img {
+    margin-right: 10px;
+}
+
+.input,
+.label {
+    display: block;
+    margin: 0;
+}
+
+.input {
+    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+    border: cornflowerblue solid 2px;
+}
+
+.label {
+    padding: 0;
+    position: absolute;
+    margin-left: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: var(--bs-light);
+    transform: translate(0, -12px);
+}
+
+[data-bs-theme=dark] .label {
+    background-color: var(--bs-dark);
+}
+
+.result {
+    color: orange;
+}
+
+@media screen and (max-width: 768px) {
+    .content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+}

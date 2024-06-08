@@ -1,0 +1,104 @@
+.link {
+    color: var(--bs-body-color);
+}
+
+.link:hover {
+    color: var(--bs-body-color);
+    background-color: var(--bs-gray-200);
+}
+
+[data-bs-theme=dark] .link:hover {
+    background-color: var(--bs-body-bg);
+}
+
+.icon,
+.bi {
+    filter: blur(50px);
+}
+
+.icon {
+    object-fit: cover;
+    object-position: center;
+    background-repeat: none;
+}
+
+.bi {
+    height: 200px;
+    font-size: 200px;
+    text-align: center;
+}
+
+.icon-bi {
+    display: block;
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background-color: var(--bs-light);
+}
+
+[data-bs-theme=dark] .icon-bi {
+    background-color: var(--bs-dark);
+}
+
+.icon-bi > i {
+    vertical-align: sub;
+}
+
+.sidebar-button {
+    -webkit-backdrop-filter: blur(3px);
+
+    left: 0;
+    bottom: 25px;
+    border: none;
+    z-index: 1030;
+    position: fixed;
+    background-color: #0d6dfd88;
+    backdrop-filter: blur(3px);
+    border-top-left-radius: 0 !important;
+    border-end-start-radius: 0 !important;
+}
+
+.sidebar {
+    overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.tabs-title {
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.tabs-title::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.breadcrumb {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-radius: 10px;
+    background-color: gainsboro;
+}
+
+[data-bs-theme=dark] .breadcrumb {
+    background-color: #232323;
+}
+
+.header-content {
+    background-color: #F0F8FF;
+}
+
+[data-bs-theme=dark] .header-content {
+    background-color: #0F0700;
+}

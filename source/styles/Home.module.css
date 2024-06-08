@@ -1,0 +1,68 @@
+.welcome {
+    width: 100%;
+    height: 100vh;
+    background-color: #EAEAEA;
+}
+
+[data-bs-theme=dark] .welcome {
+    background-color: #151515;
+}
+
+.creator {
+    width: 150px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 100px;
+    background-size: cover;
+    border: 10px solid white;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: var(--bs-gray-500) 0 0 50px;
+    transition: background-image ease-in-out 0.2s;
+    background-image: url('@/assets/images/maseshi-creator.webp');
+}
+
+.creator:hover {
+    width: 150px;
+    height: 150px;
+    background-image: url('@/assets/images/chaiwat-suwannarat-creator.webp');
+}
+
+.waves {
+    position: relative;
+}
+
+.skills,
+.powered {
+    background-color: #F0F0FA;
+}
+
+[data-bs-theme=dark] .skills,
+[data-bs-theme=dark] .powered {
+    background-color: #0F0F0F;
+}
+
+.skills-icon {
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 100px;
+    background-color: ghostwhite;
+}
+
+.other-card {
+    padding: 10px;
+    height: 100%;
+    border-radius: 30px;
+}
+
+.funding-bmc,
+.funding-bmc:hover,
+.funding-bmc:active,
+.funding-bmc:visited,
+.funding-bmc:focus {
+    background-color: #FFDD00;
+    border-color: #FFDD00;
+}

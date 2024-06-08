@@ -1,0 +1,34 @@
+.modal {
+    -webkit-backdrop-filter: blur(5px);
+
+    backdrop-filter: blur(5px);
+}
+
+.backdrop {
+    -webkit-backdrop-filter: blur(10px);
+
+    backdrop-filter: blur(10px);
+    background-color: rgba(250, 250, 250, 0.5);
+}
+
+[data-bs-theme=dark] .backdrop {
+    background-color: rgba(5, 5, 5, 0.5);
+}
+
+.header {
+    border: 0;
+}
+
+.close {
+    padding: 10px;
+    border-radius: 100px;
+    background-color: gainsboro;
+}
+
+.hr {
+    margin: 0;
+    width: 93%;
+    align-self: center;
+    border-radius: 100px;
+    border: 2px solid gainsboro;
+}

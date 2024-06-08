@@ -1,0 +1,20 @@
+.header {
+    display: block;
+    position: relative;
+    padding-top: 100px;
+}
+
+.header::after {
+    content: "";
+    background: url('@/assets/images/privacy-policy-welcome.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}

@@ -1,0 +1,200 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+@import '~bootstrap-icons/font/bootstrap-icons.min.css';
+
+@font-face {
+  font-family: 'CascadiaCode';
+  src: url('@/assets/fonts/CascadiaCode/ttf/CascadiaCode.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mitr-Bold';
+  src: url('@/assets/fonts/Mitr/Mitr-Bold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mitr-ExtraLight';
+  src: url('@/assets/fonts/Mitr/Mitr-ExtraLight.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mitr-Light';
+  src: url('@/assets/fonts/Mitr/Mitr-Light.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mitr-Medium';
+  src: url('@/assets/fonts/Mitr/Mitr-Medium.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mitr';
+  src: url('@/assets/fonts/Mitr/Mitr-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mitr-SemiBold';
+  src: url('@/assets/fonts/Mitr/Mitr-SemiBold.ttf');
+  font-display: swap;
+}
+
+* {
+  -moz-box-sizing: border-box;
+
+  -webkit-box-sizing: border-box;
+
+  margin: 0;
+  padding: 0;
+  font-family: 'Mitr';
+  box-sizing: border-box;
+}
+
+html,
+body {
+  -moz-osx-font-smoothing: grayscale;
+
+  -webkit-font-smoothing: antialiased;
+
+  width: 100%;
+  height: auto;
+  max-width: 100vw;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+main {
+  min-height: 100vh;
+}
+
+[data-bs-theme=dark] body {
+  background-color: #111111;
+}
+
+::selection {
+  color: var(--bs-light);
+  background: var(--bs-dark);
+}
+
+[data-bs-theme=dark] ::selection {
+  color: var(--bs-dark);
+  background: var(--bs-light);
+}
+
+::-moz-selection {
+  color: var(--bs-light);
+  background: var(--bs-dark);
+}
+
+::-webkit-scrollbar {
+  width: 1em;
+  height: 1em;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--bs-gray-500);
+  background-clip: padding-box;
+  border: 4px solid transparent;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--bs-gray-600);
+}
+
+::-webkit-scrollbar-button {
+  background: no-repeat;
+  background-size: 0.8em;
+  background-position: center bottom;
+}
+
+::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100" viewBox="0 0 20 20" fill="rgb(233, 226, 229)"><path stroke="none" d="M11.272 5.205L16.272 13.205C16.8964 14.2041 16.1782 15.5 15 15.5H5.00002C3.82186 15.5 3.1036 14.2041 3.72802 13.205L8.72802 5.205C9.31552 4.265 10.6845 4.265 11.272 5.205Z"/></svg>');
+}
+
+::-webkit-scrollbar-button:vertical:decrement:hover {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100" viewBox="0 0 20 20" fill="rgb(42, 46, 49)"><path stroke="none" d="M11.272 5.205L16.272 13.205C16.8964 14.2041 16.1782 15.5 15 15.5H5.00002C3.82186 15.5 3.1036 14.2041 3.72802 13.205L8.72802 5.205C9.31552 4.265 10.6845 4.265 11.272 5.205Z"/></svg>');
+}
+
+::-webkit-scrollbar-button:vertical:increment {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100" viewBox="0 0 20 20" fill="rgb(223, 226, 229)"><path stroke="none" d="M8.72798 15.795L3.72798 7.795C3.10356 6.79593 3.82183 5.5 4.99998 5.5L15 5.5C16.1781 5.5 16.8964 6.79593 16.272 7.795L11.272 15.795C10.6845 16.735 9.31549 16.735 8.72798 15.795Z"/></svg>');
+}
+
+::-webkit-scrollbar-button:vertical:increment:hover {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100" viewBox="0 0 20 20" fill="rgb(42, 46, 49)"><path stroke="none" d="M8.72798 15.795L3.72798 7.795C3.10356 6.79593 3.82183 5.5 4.99998 5.5L15 5.5C16.1781 5.5 16.8964 6.79593 16.272 7.795L11.272 15.795C10.6845 16.735 9.31549 16.735 8.72798 15.795Z"/></svg>');
+}
+
+h1 {
+  font-family: "Mitr-SemiBold";
+}
+
+h2 {
+  font-family: "Mitr-Medium";
+}
+
+h3 {
+  font-family: "Mitr-Medium";
+}
+
+h4 {
+  font-family: "Mitr";
+}
+
+h5 {
+  font-family: "Mitr";
+}
+
+h6 {
+  font-family: "Mitr-Light";
+}
+
+video,
+img {
+  max-width: 100%;
+}
+
+a {
+  color: var(--bs-primary);
+  text-decoration: none;
+}
+
+blockquote {
+  border-left: 2px solid gainsboro;
+  border-left-width: thick;
+  padding-left: 20px;
+}
+
+[data-bs-theme=dark] blockquote {
+  border-left: 2px solid #232323;
+}
+
+code {
+  margin: 0;
+  padding: 2px 4px;
+  border-radius: 5px;
+  color: currentColor;
+  font-family: CascadiaCode;
+  background-color: #EFEFEF;
+}
+
+[data-bs-theme=dark] code {
+  background-color: #101010;
+}
+
+section {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+a.btn,
+button.btn {
+  border-radius: 0.8rem;
+}
