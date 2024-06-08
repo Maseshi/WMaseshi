@@ -1,0 +1,551 @@
+{
+    "layouts": {
+        "Footer": {
+            "license": "License",
+            "follow": "Follow",
+            "status": "Status",
+            "account": "Account",
+            "all_projects": "All Projects",
+            "code_licensed": "Code licensed",
+            "copyright": "© {{from}} - {{to}} {{full_name}}. All rights reserved.",
+            "currently": "Currently",
+            "need_to_contact": "If you have any questions can be contacted at:",
+            "open_source": "Open-Source",
+            "other_links": "Other links",
+            "privacy_policy": "Privacy Policy",
+            "resources": "Resources",
+            "terms_of_services": "Terms of Service",
+            "website_info": "{{full_name}}'s personal website is for the storage and distribution of their work. which everyone can study or use for free"
+        },
+        "Nav": {
+            "NavMenu": {
+                "contact": "Contact",
+                "main": "Home",
+                "ability": "Ability",
+                "about": "About",
+                "others": "Others",
+                "powered": "Powered By",
+                "projects": "Projects"
+            },
+            "Nav": {
+                "all_items": "All Items"
+            },
+            "NavNotification": {
+                "clear": "Clear",
+                "empty_notification": "No notifications yet.",
+                "new_alerts": "New Alerts",
+                "notification": "Notification"
+            },
+            "NavProfile": {
+                "customize": "Customize",
+                "dark_mode": "Dark Mode",
+                "log_out": "Log out",
+                "manage_account": "Manage accounts",
+                "or": "or",
+                "personal": "Personal",
+                "privacy": "Privacy",
+                "privacy_policy": "Privacy Policy",
+                "register": "Create a new account",
+                "security": "Security",
+                "settings": "Settings",
+                "sign_in": "Sign in",
+                "terms_of_services": "Terms of Service",
+                "user": "User"
+            }
+        }
+    },
+    "components": {
+        "LanguageOptions": {
+            "language_options": "Language options"
+        },
+        "ProjectsList": {
+            "so_bad": "So bad",
+            "error_to_fetch": "To check if the piece can be temporarily fetched\nfor a long time for troubleshooting",
+            "not_found": "Not found anything",
+            "can_not_find_any_projects": "The projects or works you were looking for was not found.",
+            "create_at": "Create at"
+        },
+        "CookieAccept": {
+            "agree": "Agree",
+            "cookie_info": "We use third-party cookies to personalize content, advertise and analyze website traffic.",
+            "what_are_cookies": "What are cookies?"
+        },
+        "ScrollBack": {
+            "scroll_to_top": "Scroll to Top"
+        }
+    },
+    "pages": {
+        "Contact": {
+            "website_title": "Contact | {{name}}",
+            "website_description": "If you wish to contact us personally or require any contact information You can look for it on this page. It may take 1 - 2 days to respond.",
+            "website_subject": "Contact us for any inquiries",
+            "contact": "Contact",
+            "our": "our",
+            "contact_description": "If you wish to contact us personally or require any contact information You can look for it on this page. It may take 1 - 2 days to respond.",
+            "type_your_name": "Please enter your name.",
+            "type_your_email": "Please enter your email address.",
+            "email_format_is_incorrect": "Incorrect email format. Please check your email again.",
+            "type_your_subject": "Please enter your subject.",
+            "subject_too_short": "Please enter the title clearly.",
+            "subject_too_long": "Subject too long. Please use concise words to reduce mistakes.",
+            "type_your_message": "Please enter your message.",
+            "message_too_short": "Please enter your details clearly.",
+            "message_too_long": "Your contact details are quite long. Please use concise and clear words to prevent mistakes.",
+            "sended_your_contact": "We have received your email.",
+            "error_while_sending": "An error occurred preventing the sending of the email. Please contact through other channels instead.",
+            "contact_our": "Contact us",
+            "contact_our_description": "You can contact us directly through this form.",
+            "name": "Name",
+            "fill_your_name": "Enter your name",
+            "email_address": "Email Address",
+            "fill_your_email_address": "Enter your email address",
+            "subject": "Subject",
+            "fill_your_subject": "Put your subject here",
+            "message": "Message",
+            "fill_your_message": "Type your message here",
+            "send": "Send",
+            "services": "Services",
+            "services_description": "{{full_name}}'s personal website is for the quarantine and distribution of his work. which anyone can study or use for free",
+            "location": "Location",
+            "thailand": "Thailand"
+        },
+        "Account": {
+            "components": {
+                "DialogConfirm": {
+                    "empty_password": "Please enter an account password.",
+                    "incorrect_password": "Incorrect password",
+                    "error_unknown": "An unknown error occurred.",
+                    "verify_change": "Verify Change",
+                    "type_your_account_password": "Please enter your password to verify your identity.",
+                    "password": "Password",
+                    "cancel": "Cancel",
+                    "confirm": "Confirm"
+                }
+            },
+            "pages": {
+                "Forgot": {
+                    "empty_email": "Please enter the email address for which you forgot your password.",
+                    "can_not_verify": "Your identity could not be verified. Please try again.",
+                    "website_title": "Forgot Password | {{name}}",
+                    "website_subject": "Reset your password via email",
+                    "website_description": "If you forget your password You can visit this page to reset your password through your registered email address.",
+                    "sended_verify_email": "Sended verification email",
+                    "cancel": "Cancel",
+                    "email": "Email",
+                    "empty_email_input": "Please enter your email address to sign in.",
+                    "error_account_not_found": "The account was not found. It may not exist or has been deleted.",
+                    "error_maximum_quota": "Too many attempts to send confirmation emails. Please try again later.",
+                    "error_unknown_problem": "An unknown error occurred. Please contact the administrator.",
+                    "forgot_password": "Forgot password",
+                    "invalid_email_format": "Invalid email format",
+                    "or": "or",
+                    "privacy_policy": "Privacy Policy",
+                    "register": "Register",
+                    "resend_verify_email": "Resend confirmation email",
+                    "send_verify_email": "Send confirmation email",
+                    "sign_in": "Sign-in",
+                    "terms_of_services": "Terms of Services"
+                },
+                "Register": {
+                    "email_format_is_incorrect": "The email format is invalid. Please check again",
+                    "password_at_least": "Password must be at least 8 characters.",
+                    "password_format_is_incorrect": "Invalid password format. Password must contain at least 8 characters, lowercase and uppercase letters, numbers and special characters.",
+                    "need_to_verify_password": "Please verify your password.",
+                    "password_is_not_match": "Passwords do not match. Please try again.",
+                    "please_accept_rule": "By applying for a {{name}} account, you agree to our Terms of Service and Privacy Policy.",
+                    "can_not_verify": "Your identity could not be verified. Please try again.",
+                    "error_invalid_email": "Please enter the email address you signed up for {{name}}'s service.",
+                    "error_missing_password": "Please enter your account password to log in.",
+                    "error_invalid_email_and_password": "Invalid email or password. Please check again.",
+                    "website_title": "Create an account | {{name}}",
+                    "website_subject": "Create a new account to log in",
+                    "website_description": "Create a new account to access {{name}} services.",
+                    "password_pattern": "At least 8 characters, uppercase and lowercase, numbers and special characters.",
+                    "already_account": "Account already exists",
+                    "cancel": "Cancel",
+                    "confirm_password": "Confirm Password",
+                    "create_new_account": "Create a new account",
+                    "email": "Email",
+                    "empty_email_input": "Please enter an email to sign in.",
+                    "empty_password_input": "Please enter the password for that account.",
+                    "error_wrong_password": "Invalid password. Try checking again",
+                    "error_email_already_in_use": "This email address is already in use by another account or try signing in again.",
+                    "error_unknown_problem": "An unknown error occurred. Please contact the administrator",
+                    "error_user_not_found": "The account was not found. may not exist or has been deleted",
+                    "error_too_many_requests": "Too many failed login attempts. Please try again later",
+                    "error_network_request_failed": "Unable to login",
+                    "forgot_password": "Can't remember password",
+                    "invalid_email_format": "Invalid email format.",
+                    "or": "or",
+                    "password": "Password",
+                    "password_minimum": "Please enter a password greater than or equal to 8 characters.",
+                    "passwords_do_not_match": "The passwords don't seem to match.",
+                    "privacy_policy": "Privacy Policy",
+                    "register_rules": "I accept the Privacy Policy and Terms of Service",
+                    "terms_of_services": "Terms of Service",
+                    "verify_password": "Please verify your password again."
+                },
+                "SignIn": {
+                    "error_email_already_in_use": "This email address is already in use by another account or try signing in again.",
+                    "error_missing_password": "Please enter your account password to log in.",
+                    "error_invalid_email": "Please enter the email address you signed up for {{name}}'s service.",
+                    "error_invalid_email_and_password": "Email or password is incorrect. Please check again.",
+                    "website_title": "Sign in | {{name}}",
+                    "website_subject": "Login to your account",
+                    "website_description": "Sign in to your account to access {{name}} services.",
+                    "cancel": "Cancel",
+                    "email": "Email",
+                    "empty_email_input": "Please enter an email to sign in.",
+                    "empty_password_input": "Please enter the password for that account.",
+                    "error_network_request_failed": "Unable to login",
+                    "error_too_many_requests": "Too many failed login attempts. Please try again later",
+                    "error_unknown_problem": "An unknown error occurred. Please contact the administrator",
+                    "error_user_not_found": "The account was not found. may not exist or has been deleted",
+                    "error_wrong_password": "Invalid password. Try checking again",
+                    "forgot_password": "Can't remember password",
+                    "invalid_email_format": "Invalid email format.",
+                    "or": "or",
+                    "password": "Password",
+                    "privacy_policy": "Privacy Policy",
+                    "register": "Create a new account",
+                    "sign_in": "Sign in",
+                    "terms_of_services": "Terms of Service"
+                }
+            },
+            "Account": {
+                "website_description": "Login to your account to manage or view your personal information from here.",
+                "website_subject": "Your account in {{name}}",
+                "website_title": "Account | {{name}}"
+            },
+            "AccountContent": {
+                "profile_picture": "User's profile picture",
+                "user": "User",
+                "status": "Status",
+                "online": "Online",
+                "edit_profile": "Edit Profile"
+            },
+            "AccountEmpty": {
+                "not_found": "Could not find \"{{query}}\"",
+                "page_is_missing": "The page you are currently viewing may have been moved or deleted.",
+                "suggestions": "Try exploring from the sidebar instead",
+                "back": "Back"
+            },
+            "AccountNavbar": {
+                "center": "Center",
+                "account": "Account",
+                "beta": "Beta",
+                "hi": "Hello",
+                "you": "you",
+                "personal": "Personal",
+                "security": "Security",
+                "notification": "Notification",
+                "privacy": "Privacy",
+                "settings": "Settings",
+                "sign_out": "Logout",
+                "user": "User"
+            },
+            "AccountPersonal": {
+                "name_must_not_empty": "Please enter your nickname or alias.",
+                "name_must_not_more_than": "The nickname or alias must not exceed {{number}} characters.",
+                "license_must_not_more_than": "Signatures must not exceed {{number}} characters.",
+                "personal": "Personal",
+                "personal_description": "Adding your personal information will help us get to know you better.",
+                "profile": "Profile",
+                "profile_picture": "User's profile picture",
+                "change": "Change",
+                "reset": "Reset",
+                "upload_profile_rule": "Please make sure your photos follow the community rules.",
+                "upload_profile_description_rule": "This means it must be suitable for all ages, e.g. no pornographic or suggestive content.",
+                "username": "Username",
+                "type_your_nickname": "Type your nickname",
+                "maximum_name_length": "Maximum length is {{number}} characters",
+                "gender": "Gender",
+                "unspecified": "unspecified",
+                "male": "male",
+                "female": "female",
+                "other": "other",
+                "license": "Signature",
+                "type_your_license": "Type your signature here",
+                "maximum_license_length": "Maximum {{number}} characters",
+                "update": "Update",
+                "login_data": "Login data",
+                "role": "Permission Level",
+                "user_role": "User role",
+                "user": "user",
+                "email_address": "Email Address",
+                "user_email": "User's email address",
+                "click_to_copy": "Click to copy",
+                "user_id": "UID",
+                "id_of_user": "User ID",
+                "create_at": "Create at",
+                "user_create_at": "Account Creation Date",
+                "unknown": "Unknown",
+                "user_last_sign_in": "User last logged in time",
+                "last_sign_in": "Last sign in"
+            },
+            "AccountPrivacy": {
+                "privacy": "Privacy",
+                "privacy_description": "Preserve your privacy and choose to accept our terms.",
+                "privacy_policy": "Privacy Policy",
+                "read": "Read",
+                "terms_of_service": "Terms of Service",
+                "cookie_policy": "Cookie Policy",
+                "cookie_policy_description": "When you visit or use this website, Data collection through cookies and other tracking technologies will begin immediately. In order to identify or store information in your browser to work properly and efficiently. Therefore, cookies are very necessary for the website. We are therefore unable to provide this setting for the website to continue to function properly."
+            },
+            "AccountSecurity": {
+                "type_your_new_email": "Please enter a new email address.",
+                "email_format_is_incorrect": "Incorrect email format. Please check again.",
+                "type_confirm_new_email": "Please enter a confirmation email.",
+                "email_does_not_match": "Email address does not match",
+                "type_your_new_password": "Please enter a new password.",
+                "password_must_least_more_than": "Password must be at least {{number}} characters long.",
+                "password_format_is_incorrect": "Invalid password format. Password must contain at least {{number}} letters, lowercase and uppercase letters, numbers and special characters.",
+                "type_confirm_new_password": "Please enter the confirmation password.",
+                "password_does_not_match": "Passwords do not match",
+                "unknown": "Unknown",
+                "unlink": "Unlink",
+                "link": "Connect",
+                "security": "Security",
+                "security_description": "To prevent unauthorized users from logging into your account.",
+                "change_account_data": "Change account",
+                "new_email": "New Email",
+                "confirm_new_email": "Confirm New Email",
+                "update": "Update",
+                "new_password": "New Password",
+                "new_password_description": "At least {{number}} letters, uppercase and lowercase letters, numbers and special characters.",
+                "confirm_new_password": "Confirm new password",
+                "verification": "Verification",
+                "confirmed": "Confirmed",
+                "unconfirmed": "Unconfirmed",
+                "please_sign_in": "Please sign in",
+                "confirm_your_email": "Confirm your email address",
+                "unavailable": "Unavailable",
+                "two_factor": "Two-Factor Authentication",
+                "link_to_account": "Link account",
+                "last_change_password": "Last password changed"
+            },
+            "AccountSettings": {
+                "settings": "Settings",
+                "settings_description": "Set up your account to match your preferences.",
+                "personal": "Personal",
+                "website_language": "Website language",
+                "website_language_description": "Change the website language to match your language. will help you understand the content more easily",
+                "dark_theme": "Night mode",
+                "dark_theme_description": "Changes this website's theme to dark after activation. which will make it more comfortable for the eyes",
+                "dev_mode": "Developer Mode",
+                "dev_mode_description": "Enter developer mode to track the results of website updates, including features needed for debugging.",
+                "manage_account": "Manage accounts",
+                "delete_account_and_services": "Delete accounts and services",
+                "delete_account_and_services_description": "If you no longer use this account, you may delete your account. This will permanently delete all of your data and will not be able to recover it again. Please reconsider the process of deleting your account.",
+                "permanently_delete": "Permanently delete this account"
+            }
+        },
+        "Home": {
+            "components": {
+                "DialogSupport": {
+                    "buy_me_coffee": "Buy me a coffee",
+                    "support_method": "Choose a support method",
+                    "support_modal_description": "Every penny of yours helps me to keep doing other projects.",
+                    "support_modal_thank_you": "Thank you in advance for your continued support",
+                    "support_through_true_money": "Support through True Money"
+                }
+            },
+            "HomePowered": {
+                "powered_by": "Powered by"
+            },
+            "HomeAbout": {
+                "black": "Black",
+                "light_blue": "Light Blue",
+                "white": "White",
+                "favorite_color": "Favorite color",
+                "branch": "Software Engineering",
+                "group": "Faculty of Information and Communication Technology",
+                "university_of_phayao": "University of Phayao (studying)",
+                "education": "Education",
+                "about_me": "About me",
+                "about_me_subject": "Want to know more about {{name}}? This may help you.",
+                "alias": "Alias",
+                "alias_name": "{{name}} ({{pronunciation}})",
+                "birthday": "Birthday",
+                "birthday_at": "January 12, 2005",
+                "difficult": "To get to this point Is it difficult?",
+                "difficult_description": "I think it's not that difficult. You just need a little dedication and don't get discouraged easily. But getting started is always difficult. Because no one can be born and write code immediately. So if we're really interested, I recommend starting today.",
+                "hobby": "Hobby",
+                "introduce_yourself": "Introduce Yourself",
+                "nickname": "Nickname",
+                "nickname_name": "Fluke",
+                "personal": "Personal information",
+                "personal_subject": "personal information about me from time to time",
+                "why": "Why did you enter this industry?",
+                "why_description": "What attracted me to this industry came from my curiosity. Want to know how it works inside your computer? Where did you start and how did you get it? I thought until I wanted to study computer science. It made me especially interested in it and it led to many projects that I see now.",
+                "write_a_program": "Programming",
+                "years_old": "years old"
+            },
+            "Home": {
+                "website_description": "Learning and development is just as important as practicing programming and building on it. On this website I will present all of what I will offer",
+                "website_subject": "{{name}}'s personal website that houses all his projects.",
+                "website_title": "{{name}} - Personal Website"
+            },
+            "HomeOther": {
+                "explore": "Check it out",
+                "github_description": "Unfinished project. in the development Documents for each project details about that project All projects are included here!!",
+                "support": "Support",
+                "support_description": "Want to help or support projects, water, electricity, intellectual property, etc. You can do so through the following steps.",
+                "support_thank_you": "❤ Thank you in advance for your continued support"
+            },
+            "HomeProjects": {
+                "all_projects": "All projects",
+                "all_projects_subject": "Explore all projects created, developed, maintained and designed by {{name}}.",
+                "explore_more_projects": "Explore more projects",
+                "projects": "Projects"
+            },
+            "HomeSkills": {
+                "ability": "Abilities",
+                "ability_subject": "Ability in terms of development, coding, tools and languages",
+                "next": "Next",
+                "previous": "Previous",
+                "skills": "Skills"
+            },
+            "HomeWelcome": {
+                "explore_all_projects": "Explore all projects",
+                "hello": "Hello",
+                "i_am": "I'm {{name}}",
+                "subject": "Learning and developing is as important as practicing programming and then building on it. On this website I will present all of what I will offer",
+                "support": "Support Help"
+            }
+        },
+        "PageNotFound": {
+            "back_to_home_page": "Back to home page",
+            "error_description": "The page you requested could not be found. may have been moved or deleted",
+            "suggestions": "Try checking the URL link again.",
+            "website_description": "You seem to be lost. The one you were viewing may have been deleted or moved.",
+            "website_subject": "The page could not be found on this website.",
+            "website_title": "Page not found | {{name}}"
+        },
+        "PP": {
+            "privacy_policy": "Privacy Policy",
+            "privacy_policy_description": "This Privacy Policy is here to help you know the types of information we collect. The reason we collect including how you will update, manage, export and delete such information.",
+            "privacy_policy_last_edit": "Last revised {{last_change}} | Effective {{effective}}.",
+            "website_description": "To protect the personal information of our users. Please read our Privacy Policy",
+            "website_subject": "{{name}}'s Privacy Policy",
+            "website_title": "Privacy Policy | {{name}}"
+        },
+        "Projects": {
+            "pages": {
+                "Project": {
+                    "Project": {
+                        "project_detail": "Details for project {{title}}"
+                    },
+                    "ProjectChangelog": {
+                        "loading": "Loading...",
+                        "latest": "Latest",
+                        "test": "Test",
+                        "assets": "Resources",
+                        "source_code": "Source Code",
+                        "no_changelog_for_now": "No changes yet\nLooks like we'll have to wait a while."
+                    },
+                    "ProjectContents": {
+                        "get_start": "Get Start",
+                        "news": "News",
+                        "documents": "Documents (coming soon)",
+                        "changelog": "Changelog",
+                        "source_code": "Source Code"
+                    },
+                    "ProjectDetail": {
+                        "error_to_fetch_project": "An error occurred with \"{{query}}\"",
+                        "can_not_load_detail": "We are unable to provide information about this work.\nThis may be because the data has been moved or deleted.",
+                        "back": "Back",
+                        "unknown": "Unknown",
+                        "test": "Test",
+                        "closed": "Closed",
+                        "normal": "Normal",
+                        "error": "Error",
+                        "problem": "Problem",
+                        "development": "Development",
+                        "unspecified": "Unspecified",
+                        "create_at": "Create at",
+                        "status": "Status"
+                    },
+                    "ProjectGetStart": {
+                        "loading": "Loading...",
+                        "hosted_inference_api": "Hosted Inference",
+                        "type_your_sentences": "Type your sentences here...",
+                        "input_data": "Input data",
+                        "compute": "Compute",
+                        "inference_api": "This model can be loaded on the Inference API as required.",
+                        "time_to_compute": "Compute time on {{device}}: {{time}} seconds",
+                        "request_has_been_reset": "The request has been reset.",
+                        "host_error": "An internal system error occurred.",
+                        "frequently_asked_questions": "Frequently asked questions",
+                        "why_is_black": "Why do I get a black image?",
+                        "is_have_delicate": "The system may have detected sensitive content. So you get a black image instead.",
+                        "compute_vary_long": "I pressed calculate but it took a long time to load?",
+                        "is_downloading_or_cpu": "There are two possibilities: either the model is downloading or the system may be using the CPU for calculations.",
+                        "can_view_history": "How can I view history?",
+                        "compute_data_delete_automatic": "We do not save processing history. Previous data will be automatically deleted.",
+                        "document_not_found": "No information found on this page.\nPlease try again later."
+                    },
+                    "ProjectNews": {
+                        "loading": "Loading...",
+                        "post_at": "Posted on",
+                        "no_news_for_now": "There is no news at the moment.\nIt seems quiet. Please come back later."
+                    },
+                    "ProjectSidebar": {
+                        "side_bar": "Side Tab",
+                        "we_now_managing_system": "We are organizing this page's internal system to ensure its stability. Information currently available is subject to change at any time as appropriate",
+                        "in_beta_test": "In testing",
+                        "search_projects": "Search projects",
+                        "projects": "Projects",
+                        "closed": "Closed",
+                        "not_found": "Not found \"{{query}}\"",
+                        "project_not_found": "The project was not found\nIt may have been moved or deleted."
+                    },
+                    "ProjectSourceCode": {
+                        "your_browser_is_not_support_audio": "Your browser does not support audio playback features.",
+                        "not_support_fl_studio": "Sorry, files from FL Studio are currently not supported.",
+                        "view_raw_file": "View raw file",
+                        "can_not_open_file": "The file cannot be opened or the file may be damaged.",
+                        "file_too_large": "Sorry, the file you are about to open is too large. Unable to display",
+                        "loading": "Loading...",
+                        "reference_from_github": "These files and folders are referenced from {{name}}'s Github archive.\nFor more details, see <0>here</0>.",
+                        "file_size": "File size",
+                        "download": "Download",
+                        "source_code_reader": "Source Code Reader",
+                        "no_source_code_available": "No source code available\nCheck on Github to find this source code."
+                    }
+                }
+            },
+            "Projects": {
+                "website_description": "All projects of {{name}} that were created that includes projects that have not yet been published Currently in testing and lots more information",
+                "website_subject": "Collection of projects or projects of {{name}}",
+                "website_title": "Projects | {{name}}"
+            },
+            "ProjectsContent": {
+                "all": "All",
+                "plugin": "Add-on",
+                "website": "Website",
+                "application": "Application",
+                "recommend_projects_type": "Group of subsequent project types",
+                "recommend_projects": "Only this project is supported.",
+                "search_projects": "Find cool projects"
+            },
+            "ProjectsGithub": {
+                "explore_more_projects": "Explore more projects Other than on the website like participating in other repositories\nyou might find some cool things.",
+                "explore": "Explore"
+            },
+            "ProjectsHeader": {
+                "mine": "My",
+                "projects": "Projects",
+                "projects_center": "This is a central location for all of {{name}}'s projects, with project information, news, references and important details for each project. Some of this information may be referenced from {{name}}'s Github."
+            }
+        },
+        "ToS": {
+            "terms_of_service": "Terms of Service",
+            "terms_of_service_description": "Terms of Service is a legal agreement between service providers.",
+            "terms_of_service_last_edit": "Last modified {{last_change}} | Effective {{effective}}.",
+            "website_description": "To protect the personal information of our users. Please read our service policy",
+            "website_subject": "{{name}}'s Terms of Service",
+            "website_title": "Terms of Service | {{name}}"
+        }
+    }
+}
