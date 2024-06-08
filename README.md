@@ -13,9 +13,9 @@
 
 All Maseshi personal website source code, developed with React.js.
 
-## Visit website
+## Visit Website
 
-You can visit Maseshi's website that has been published at https://maseshi.web.app
+You can visit Maseshi's website which has been published at https://maseshi.web.app
 
 ## Found a problem
 
