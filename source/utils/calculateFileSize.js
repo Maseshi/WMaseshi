@@ -12,5 +12,5 @@ export const calculateFileSize = (bytes, size = false, dp = 1) => {
         ++unit
     } while (Math.round(Math.abs(bytes) * r) / r >= thresh && unit < units.length - 1)
 
-    return bytes.toFixed(dp) + ' ' + units[unit]
+    return `${bytes.toFixed(dp)} ${units[unit]}`
 }
